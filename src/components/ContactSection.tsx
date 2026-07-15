@@ -9,7 +9,7 @@ const socialLinks = [
   { label: 'GitHub', href: 'https://github.com/PapiGEGamer-web' },
   { label: 'X', href: 'https://x.com/PapiGEGamer' },
   { label: 'Instagram', href: 'https://www.instagram.com/papigegamer/' },
-  { label: 'YouTube', href: 'https://www.youtube.com/channel/UCcprFWZcz0g9xUtHL5TDERg' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@lastPapiGEGamer' },
 ]
 
 export function ContactSection({ content }: { content: SiteCopy }) {

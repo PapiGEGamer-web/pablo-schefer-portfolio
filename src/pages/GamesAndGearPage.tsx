@@ -1,0 +1,401 @@
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import {
+  ArrowDown,
+  ArrowUpRight,
+  CircuitBoard,
+  Cpu,
+  Gamepad2,
+  HardDrive,
+  MemoryStick,
+  Monitor,
+  SlidersHorizontal,
+  Sparkles,
+  X,
+  type LucideIcon,
+} from 'lucide-react'
+import type { Locale, SiteCopy } from '../content'
+import { games, hardware, type Game, type HardwareItem } from '../data/gamesAndGear'
+import { ContactSection } from '../components/ContactSection'
+import './GamesAndGearPage.css'
+
+type GameFilter = 'all' | 'competitive' | 'coop' | 'open-world' | 'story' | 'survival' | 'creative'
+
+const hardwareIcons: Record<HardwareItem['id'], LucideIcon> = {
+  cpu: Cpu,
+  gpu: Monitor,
+  memory: MemoryStick,
+  board: CircuitBoard,
+  storage: HardDrive,
+}
+
+function GameCover({ game, eager = false }: { game: Game; eager?: boolean }) {
+  const style = { '--game-accent': game.accent } as CSSProperties
+
+  return (
+    <div className={`game-cover game-cover--${game.imageMode ?? 'art'} game-cover--${game.id}`} style={style}>
+      {game.image ? (
+        <img src={game.image} alt="" loading={eager ? 'eager' : 'lazy'} width="600" height="900" />
+      ) : (
+        <span className="game-cover__mark">{game.mark ?? game.title.slice(0, 2)}</span>
+      )}
+      <span className="game-cover__shine" aria-hidden="true" />
+    </div>
+  )
+}
+
+export function GamesAndGearPage({ content, locale }: { content: SiteCopy; locale: Locale }) {
+  const reduceMotion = useReducedMotion()
+  const [filter, setFilter] = useState<GameFilter>('all')
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null)
+  const [activeHardwareId, setActiveHardwareId] = useState<HardwareItem['id']>('gpu')
+  const dialogRef = useRef<HTMLElement | null>(null)
+  const previousFocusRef = useRef<HTMLElement | null>(null)
+  const featuredGames = games.filter((game) => game.status !== 'library')
+  const libraryGames = games.filter((game) => game.status === 'library' || game.id === 'arc-raiders')
+  const activeHardware = hardware.find((item) => item.id === activeHardwareId) ?? hardware[0]
+
+  const labels = locale === 'es' ? {
+    eyebrow: 'Gaming · Hardware · Perfil',
+    title: 'Lo que juego.\nLa máquina que lo mueve.',
+    intro: 'Una biblioteca personal inspirada en mi perfil de Discord, con los juegos que están en mi rotación, mi favorito y el hardware detectado en este equipo.',
+    explore: 'Explorar biblioteca',
+    rotation: 'En rotación',
+    favorite: 'Juego favorito',
+    featuredEyebrow: 'Selección actual',
+    featuredTitle: 'Dos en rotación. Uno que dejó huella.',
+    featuredIntro: 'Pulsa cualquier portada para abrir su ficha, ver de qué trata y consultar sus etiquetas.',
+    libraryEyebrow: 'Biblioteca personal',
+    libraryTitle: '20 juegos que forman parte de mi perfil.',
+    libraryIntro: 'Filtra por el tipo de experiencia y abre cada portada para descubrir por qué encaja en la colección.',
+    filters: {
+      all: 'Todos', competitive: 'Competitivo', coop: 'Cooperativo', 'open-world': 'Mundo abierto', story: 'Narrativa', survival: 'Supervivencia', creative: 'Creativo',
+    },
+    results: 'juegos visibles',
+    details: 'Abrir ficha',
+    visit: 'Ver página oficial',
+    close: 'Cerrar ficha',
+    setupEyebrow: 'Setup · Detectado localmente',
+    setupTitle: 'El equipo detrás de cada partida.',
+    setupIntro: 'Selecciona un componente para recorrer la configuración. Solo se muestran modelos y capacidades técnicas; no se publican números de serie.',
+    detected: 'Configuración verificada',
+  } : {
+    eyebrow: 'Gaming · Hardware · Profile',
+    title: 'What I play.\nThe machine behind it.',
+    intro: 'A personal library inspired by my Discord profile, with the games in my rotation, my favourite and the hardware detected on this machine.',
+    explore: 'Explore library',
+    rotation: 'In rotation',
+    favorite: 'Favourite game',
+    featuredEyebrow: 'Current selection',
+    featuredTitle: 'Two in rotation. One that stayed with me.',
+    featuredIntro: 'Select any cover to open its profile, understand the game and browse its tags.',
+    libraryEyebrow: 'Personal library',
+    libraryTitle: '20 games that are part of my profile.',
+    libraryIntro: 'Filter by experience and open each cover to see why it belongs in the collection.',
+    filters: {
+      all: 'All', competitive: 'Competitive', coop: 'Co-op', 'open-world': 'Open world', story: 'Story', survival: 'Survival', creative: 'Creative',
+    },
+    results: 'games visible',
+    details: 'Open details',
+    visit: 'View official page',
+    close: 'Close details',
+    setupEyebrow: 'Setup · Locally detected',
+    setupTitle: 'The machine behind every session.',
+    setupIntro: 'Select a component to explore the build. Only technical models and capacities are shown; serial numbers are never published.',
+    detected: 'Verified configuration',
+  }
+
+  const filteredGames = useMemo(
+    () => filter === 'all' ? libraryGames : libraryGames.filter((game) => game.filters.includes(filter)),
+    [filter, libraryGames],
+  )
+
+  const openGame = (game: Game) => {
+    previousFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    setSelectedGame(game)
+  }
+
+  const closeGame = () => setSelectedGame(null)
+
+  const handleHardwareKey = (event: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
+    const keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End']
+    if (!keys.includes(event.key)) return
+    event.preventDefault()
+    const offset = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1
+    const nextIndex = event.key === 'Home'
+      ? 0
+      : event.key === 'End'
+        ? hardware.length - 1
+        : (index + offset + hardware.length) % hardware.length
+    const nextItem = hardware[nextIndex]
+    setActiveHardwareId(nextItem.id)
+    window.requestAnimationFrame(() => document.getElementById(`hardware-tab-${nextItem.id}`)?.focus())
+  }
+
+  useEffect(() => {
+    if (!selectedGame) return undefined
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const dialog = dialogRef.current
+    const page = document.querySelector('.games-page')
+    const backgroundTargets = [
+      document.querySelector<HTMLElement>('.site-header'),
+      ...Array.from(page?.children ?? []).filter((element): element is HTMLElement => element instanceof HTMLElement && !element.classList.contains('game-dialog')),
+    ].filter((element): element is HTMLElement => element instanceof HTMLElement)
+    const inertState = backgroundTargets.map((element) => [element, element.hasAttribute('inert')] as const)
+    backgroundTargets.forEach((element) => element.setAttribute('inert', ''))
+
+    const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    const focusTimer = window.setTimeout(() => {
+      dialog?.querySelector<HTMLElement>(focusableSelector)?.focus()
+    }, 0)
+
+    const handleDialogKeys = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedGame(null)
+        return
+      }
+      if (event.key !== 'Tab' || !dialog) return
+
+      const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(focusableSelector)).filter((element) => !element.hasAttribute('disabled'))
+      if (focusable.length === 0) {
+        event.preventDefault()
+        dialog.focus()
+        return
+      }
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', handleDialogKeys)
+    return () => {
+      window.clearTimeout(focusTimer)
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', handleDialogKeys)
+      inertState.forEach(([element, wasInert]) => {
+        if (!wasInert) element.removeAttribute('inert')
+      })
+      previousFocusRef.current?.focus()
+    }
+  }, [selectedGame])
+
+  const reveal = {
+    initial: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 26 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: '-7% 0px' },
+    transition: { duration: reduceMotion ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] as const },
+  }
+
+  return (
+    <div className="games-page">
+      <section className="page-hero games-hero">
+        <motion.div className="page-hero__copy" initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.16, 1, 0.3, 1] }}>
+          <p className="eyebrow">{labels.eyebrow}</p>
+          <h1>{labels.title.split('\n').map((line) => <span key={line}>{line}</span>)}</h1>
+          <p>{labels.intro}</p>
+        </motion.div>
+
+        <motion.div className="games-hero__stack" initial={reduceMotion ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.92, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: reduceMotion ? 0 : 0.12, duration: reduceMotion ? 0 : 0.8, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
+          {featuredGames.map((game, index) => (
+            <div className={`games-hero__cover games-hero__cover--${index + 1}`} key={game.id}>
+              <GameCover game={game} eager />
+            </div>
+          ))}
+          <span className="games-hero__count"><strong>20+</strong>{locale === 'es' ? 'mundos' : 'worlds'}</span>
+        </motion.div>
+
+        <a className="page-hero__scroll" href="#seleccion"><ArrowDown size={15} aria-hidden="true" />{labels.explore}</a>
+      </section>
+
+      <section className="section games-featured" id="seleccion">
+        <motion.div className="section-heading section-heading--split" {...reveal}>
+          <div>
+            <p className="eyebrow">{labels.featuredEyebrow}</p>
+            <h2>{labels.featuredTitle}</h2>
+          </div>
+          <p className="section-heading__intro">{labels.featuredIntro}</p>
+        </motion.div>
+
+        <div className="featured-game-grid">
+          {featuredGames.map((game, index) => (
+            <motion.button
+              className={`featured-game featured-game--${game.status}`}
+              type="button"
+              key={game.id}
+              onClick={() => openGame(game)}
+              initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: reduceMotion ? 0 : index * 0.08, duration: reduceMotion ? 0 : 0.65 }}
+              style={{ '--game-accent': game.accent } as CSSProperties}
+              aria-label={`${labels.details}: ${game.title}`}
+            >
+              <GameCover game={game} />
+              <span className="featured-game__copy">
+                <span className="featured-game__status"><Sparkles size={13} aria-hidden="true" />{game.status === 'favorite' ? labels.favorite : labels.rotation}</span>
+                <strong>{game.title}</strong>
+                <span>{game.description[locale]}</span>
+                <span className="game-tags">{game.tags[locale].map((tag) => <i key={tag}>{tag}</i>)}</span>
+              </span>
+            </motion.button>
+          ))}
+        </div>
+      </section>
+
+      <section className="games-library" id="biblioteca">
+        <div className="games-library__inner">
+          <motion.div className="section-heading section-heading--split" {...reveal}>
+            <div>
+              <p className="eyebrow">{labels.libraryEyebrow}</p>
+              <h2>{labels.libraryTitle}</h2>
+            </div>
+            <p className="section-heading__intro">{labels.libraryIntro}</p>
+          </motion.div>
+
+          <div className="game-filters" aria-label={locale === 'es' ? 'Filtros de juegos' : 'Game filters'}>
+            <span><SlidersHorizontal size={15} aria-hidden="true" /></span>
+            {(Object.keys(labels.filters) as GameFilter[]).map((option) => (
+              <button type="button" key={option} className={filter === option ? 'is-active' : ''} onClick={() => setFilter(option)} aria-pressed={filter === option}>
+                {labels.filters[option]}
+              </button>
+            ))}
+            <small>{filteredGames.length} {labels.results}</small>
+          </div>
+
+          <motion.div className="game-grid" layout>
+            <AnimatePresence mode="popLayout">
+              {filteredGames.map((game) => (
+                <motion.button
+                  className="game-card"
+                  type="button"
+                  key={game.id}
+                  layout
+                  initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.94 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.28 }}
+                  onClick={() => openGame(game)}
+                  style={{ '--game-accent': game.accent } as CSSProperties}
+                  aria-label={`${labels.details}: ${game.title}`}
+                >
+                  <GameCover game={game} />
+                  <span className="game-card__copy">
+                    <strong>{game.title}</strong>
+                    <small>{game.tags[locale].slice(0, 2).join(' · ')}</small>
+                  </span>
+                </motion.button>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="section setup-section" id="equipo">
+        <motion.div className="section-heading section-heading--split" {...reveal}>
+          <div>
+            <p className="eyebrow">{labels.setupEyebrow}</p>
+            <h2>{labels.setupTitle}</h2>
+          </div>
+          <p className="section-heading__intro">{labels.setupIntro}</p>
+        </motion.div>
+
+        <div className="setup-console">
+          <div className="setup-console__rail" role="tablist" aria-label={locale === 'es' ? 'Componentes del ordenador' : 'Computer components'}>
+            {hardware.map((item, index) => {
+              const Icon = hardwareIcons[item.id]
+              const selected = item.id === activeHardware.id
+              return (
+                <button
+                  id={`hardware-tab-${item.id}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  aria-controls="hardware-panel"
+                  tabIndex={selected ? 0 : -1}
+                  className={selected ? 'is-active' : ''}
+                  key={item.id}
+                  onClick={() => setActiveHardwareId(item.id)}
+                  onKeyDown={(event) => handleHardwareKey(event, index)}
+                >
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <Icon size={20} aria-hidden="true" />
+                  <span><strong>{item.label[locale]}</strong><small>{item.metric}</small></span>
+                </button>
+              )
+            })}
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.article
+              className="setup-console__detail"
+              id="hardware-panel"
+              role="tabpanel"
+              aria-labelledby={`hardware-tab-${activeHardware.id}`}
+              key={activeHardware.id}
+              initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -14 }}
+              transition={{ duration: reduceMotion ? 0 : 0.32 }}
+            >
+              <header>
+                <span><span className="status-dot" aria-hidden="true" />{labels.detected}</span>
+                <strong>{activeHardware.metric}</strong>
+              </header>
+              <div className="setup-console__icon">
+                {(() => {
+                  const Icon = hardwareIcons[activeHardware.id]
+                  return <Icon size={54} aria-hidden="true" />
+                })()}
+              </div>
+              <p className="eyebrow">{activeHardware.label[locale]}</p>
+              <h3>{activeHardware.model}</h3>
+              <p>{activeHardware.summary[locale]}</p>
+              <ul>
+                {activeHardware.details[locale].map((detail) => <li key={detail}>{detail}</li>)}
+              </ul>
+            </motion.article>
+          </AnimatePresence>
+        </div>
+      </section>
+
+      <ContactSection content={content} />
+
+      <AnimatePresence>
+        {selectedGame && (
+          <motion.div className="game-dialog" initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }} animate={{ opacity: 1 }} exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }} onClick={closeGame}>
+            <motion.article
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="game-dialog-title"
+              tabIndex={-1}
+              initial={reduceMotion ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 28, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={reduceMotion ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 18, scale: 0.97 }}
+              transition={{ duration: reduceMotion ? 0 : 0.34, ease: [0.16, 1, 0.3, 1] }}
+              onClick={(event) => event.stopPropagation()}
+              style={{ '--game-accent': selectedGame.accent } as CSSProperties}
+            >
+              <button className="game-dialog__close" type="button" onClick={closeGame} aria-label={labels.close}><X size={20} /></button>
+              <GameCover game={selectedGame} eager />
+              <div className="game-dialog__copy">
+                <span className="eyebrow"><Gamepad2 size={14} aria-hidden="true" />{selectedGame.platform}</span>
+                <h2 id="game-dialog-title">{selectedGame.title}</h2>
+                <p>{selectedGame.description[locale]}</p>
+                <div className="game-tags">{selectedGame.tags[locale].map((tag) => <i key={tag}>{tag}</i>)}</div>
+                <a href={selectedGame.href} target="_blank" rel="noreferrer">{labels.visit}<ArrowUpRight size={16} aria-hidden="true" /></a>
+              </div>
+            </motion.article>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}

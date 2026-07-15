@@ -8,6 +8,19 @@ import { ContactSection } from '../components/ContactSection'
 import { MagneticLink } from '../components/MagneticLink'
 import { Monogram } from '../components/Monogram'
 
+const signalItems = [
+  'DSC / 01',
+  'VIBE / 02',
+  'FNLB / 03',
+  'KOS / 04',
+  'EDGAR / LIVE',
+  'GW2 / 100K',
+  'GAMES / 20',
+  'RTX / 5070',
+  'RYZEN / X3D',
+  'SPOTIFY / READY',
+]
+
 export function HomePage({ content, locale }: { content: SiteCopy; locale: Locale }) {
   const reduceMotion = useReducedMotion()
   const home = content.home
@@ -68,13 +81,14 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
       </section>
 
       <div className="signal-strip" aria-hidden="true">
-        <div>
-          <span>DSC / 01</span><i />
-          <span>VIBE / 02</span><i />
-          <span>FNLB / 03</span><i />
-          <span>KOS / 04</span><i />
-          <span>EDGAR / LIVE</span><i />
-          <span>GW2 / 100K</span><i />
+        <div className="signal-strip__track">
+          {[0, 1].map((copyIndex) => (
+            <div className="signal-strip__group" key={copyIndex}>
+              {signalItems.map((item) => (
+                <span className="signal-strip__item" key={item}><span>{item}</span><i /></span>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
 
