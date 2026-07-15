@@ -21,6 +21,9 @@ export type SiteCopy = {
     allCommunities: string
     edgarLive: string
     projects: string
+    personal: string
+    gamesGear: string
+    music: string
     fnlb: string
     kernelos: string
     contact: string
@@ -48,6 +51,8 @@ export type SiteCopy = {
     profile: SeoCopy
     communities: SeoCopy
     edgar: SeoCopy
+    gamesGear: SeoCopy
+    music: SeoCopy
     notFound: SeoCopy
   }
   home: {
@@ -85,6 +90,7 @@ export type SiteCopy = {
     body: string[]
     portraitLabel: string
     profileLoopLabel: string
+    presence: string
     discordIdentity: { label: string; name: string; handle: string; meta: string; action: string }
     location: string
     stats: { value: string; label: string }[]
@@ -152,6 +158,9 @@ export const copy: Record<Locale, SiteCopy> = {
       allCommunities: 'Todas las comunidades',
       edgarLive: 'Edgar Pons · Live',
       projects: 'Proyectos',
+      personal: 'Personal',
+      gamesGear: 'Juegos y equipo',
+      music: 'Música',
       fnlb: 'FNLB',
       kernelos: 'KernelOS',
       contact: 'Contacto',
@@ -172,7 +181,7 @@ export const copy: Record<Locale, SiteCopy> = {
       online: 'en línea aprox.',
       open: 'Abrir',
       live: 'En directo',
-      dataNote: 'Datos públicos de Discord · 15.07.2026',
+      dataNote: 'Datos públicos de Discord · 16.07.2026',
     },
     seo: {
       home: {
@@ -190,6 +199,14 @@ export const copy: Record<Locale, SiteCopy> = {
       edgar: {
         title: 'Comunidad Edgar Pons — Estado de Discord',
         description: 'Panel público casi en tiempo real de la comunidad de Discord de Edgar Pons y experiencia de moderación de Pablo Schefer.',
+      },
+      gamesGear: {
+        title: 'Juegos y equipo — Pablo Schefer',
+        description: 'Los juegos actuales, el favorito y el ordenador de Pablo Schefer en una biblioteca visual e interactiva.',
+      },
+      music: {
+        title: 'Música y Spotify — Pablo Schefer',
+        description: 'Monitor musical de Pablo Schefer, preparado para mostrar su reproducción pública de Spotify mediante la presencia de Discord.',
       },
       notFound: { title: 'Página no encontrada — Pablo Schefer', description: 'La página solicitada no existe.' },
     },
@@ -282,6 +299,7 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       portraitLabel: 'Pablo / PapiGEGamer',
       profileLoopLabel: 'Comunidad en el proceso',
+      presence: 'En línea',
       discordIdentity: {
         label: 'Perfil de Discord',
         name: 'PapiGEGamer 🐾',
@@ -329,9 +347,9 @@ export const copy: Record<Locale, SiteCopy> = {
       intro: 'Una página dedicada a mi trabajo como moderador y a la actividad pública que Discord permite consultar de forma segura.',
       roleLabel: 'Mi rol',
       role: 'Moderador actual',
-      liveEyebrow: 'Discord · Casi en tiempo real',
+      liveEyebrow: 'Discord · Monitor automático',
       liveTitle: 'Actividad pública ahora.',
-      liveIntro: 'El panel consulta datos públicos de Discord cada minuto. La propia caché de Discord puede introducir unos minutos de retraso.',
+      liveIntro: 'La web comprueba Discord cada 15 segundos, permite actualizar manualmente y anima cada cambio. El widget público de origen mantiene una caché obligatoria de 300 segundos.',
       membersLabel: 'Miembros, aprox.',
       onlineLabel: 'En línea, aprox.',
       voiceLabel: 'En voz',
@@ -367,6 +385,9 @@ export const copy: Record<Locale, SiteCopy> = {
       allCommunities: 'All communities',
       edgarLive: 'Edgar Pons · Live',
       projects: 'Projects',
+      personal: 'Personal',
+      gamesGear: 'Games & gear',
+      music: 'Music',
       fnlb: 'FNLB',
       kernelos: 'KernelOS',
       contact: 'Contact',
@@ -387,13 +408,15 @@ export const copy: Record<Locale, SiteCopy> = {
       online: 'online, approx.',
       open: 'Open',
       live: 'Live',
-      dataNote: 'Public Discord data · 15 Jul 2026',
+      dataNote: 'Public Discord data · 16 Jul 2026',
     },
     seo: {
       home: { title: 'Pablo Schefer Orduña — Discord, Vibe Coding & Communities', description: 'Pablo Schefer Orduña’s portfolio: Discord moderation, vibe coding and collaboration across FNLB, KernelOS and tech communities.' },
       profile: { title: 'Profile — Pablo Schefer Orduña', description: 'Pablo Schefer Orduña, PapiGEGamer on Discord: community moderation, vibe coding and digital collaboration.' },
       communities: { title: 'Communities — Pablo Schefer Orduña', description: 'Pablo Schefer’s moderation experience across FNLB, Nate Gentile and Edgar Pons, plus GW2 / Gatitos 2 and VALORANT ESP.' },
       edgar: { title: 'Edgar Pons Community — Discord Status', description: 'A near-real-time public panel for the Edgar Pons Discord community and Pablo Schefer’s moderation work.' },
+      gamesGear: { title: 'Games & gear — Pablo Schefer', description: 'Pablo Schefer’s current games, favourite and computer setup in a visual, interactive library.' },
+      music: { title: 'Music & Spotify — Pablo Schefer', description: 'Pablo Schefer’s music monitor, ready to show public Spotify playback through his Discord presence.' },
       notFound: { title: 'Page not found — Pablo Schefer', description: 'The requested page does not exist.' },
     },
     home: {
@@ -448,6 +471,7 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       portraitLabel: 'Pablo / PapiGEGamer',
       profileLoopLabel: 'Community in the loop',
+      presence: 'Online',
       discordIdentity: { label: 'Discord profile', name: 'PapiGEGamer 🐾', handle: '@papigegamerantiguo', meta: 'Moderation · Technology · Vibe coding', action: 'Open profile' },
       location: 'Spain · On Discord since 2019',
       stats: [
@@ -489,9 +513,9 @@ export const copy: Record<Locale, SiteCopy> = {
       intro: 'A dedicated page for my work as a moderator and the public activity Discord allows us to query safely.',
       roleLabel: 'My role',
       role: 'Current moderator',
-      liveEyebrow: 'Discord · Near real time',
+      liveEyebrow: 'Discord · Automatic monitor',
       liveTitle: 'Public activity now.',
-      liveIntro: 'The panel requests public Discord data every minute. Discord’s own cache can introduce a delay of several minutes.',
+      liveIntro: 'The site checks Discord every 15 seconds, supports manual refresh and animates every change. The public source widget has a mandatory 300-second cache.',
       membersLabel: 'Members, approx.',
       onlineLabel: 'Online, approx.',
       voiceLabel: 'In voice',

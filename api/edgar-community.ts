@@ -1,5 +1,6 @@
 const discordApi = 'https://discord.com/api/v10'
 const edgarGuildId = '822550944608026645'
+const snapshotRefreshSeconds = 15
 const discordHeaders = {
   Accept: 'application/json',
   'User-Agent': 'PabloScheferPortfolio/1.0 (+https://pablo-schefer.vercel.app)',
@@ -39,8 +40,13 @@ function errorResponse() {
 
 export async function GET() {
   try {
-    const widgetResponse = await fetch(`${discordApi}/guilds/${edgarGuildId}/widget.json`, {
+    // Discord gives the stable widget URL a five-minute CDN lifetime. A shared,
+    // time-bucketed key asks for one fresh public snapshot per interval without
+    // turning every visitor into a separate upstream request.
+    const snapshotWindow = Math.floor(Date.now() / (snapshotRefreshSeconds * 1_000))
+    const widgetResponse = await fetch(`${discordApi}/guilds/${edgarGuildId}/widget.json?snapshot=${snapshotWindow}`, {
       headers: discordHeaders,
+      cache: 'no-store',
       signal: AbortSignal.timeout(5_000),
     })
     if (!widgetResponse.ok) return errorResponse()
@@ -112,12 +118,17 @@ export async function GET() {
           visibleMemberCount: voiceChannels.reduce((total, channel) => total + channel.members.length, 0),
           channels: voiceChannels,
         },
+        source: {
+          mode: 'discord_widget',
+          upstreamCacheSeconds: 300,
+          effectiveRefreshSeconds: snapshotRefreshSeconds,
+        },
         updatedAt: new Date().toISOString(),
       },
       {
         headers: {
-          'Cache-Control': 'public, max-age=30, s-maxage=60, stale-while-revalidate=300, stale-if-error=3600',
-          'Vercel-CDN-Cache-Control': 'max-age=60, stale-while-revalidate=300, stale-if-error=3600',
+          'Cache-Control': 'public, max-age=0, s-maxage=10, must-revalidate, stale-if-error=300',
+          'Vercel-CDN-Cache-Control': 'max-age=10, must-revalidate, stale-if-error=300',
           'X-Content-Type-Options': 'nosniff',
         },
       },

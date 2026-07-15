@@ -10,6 +10,8 @@ import { EdgarPonsPage } from './pages/EdgarPonsPage'
 import { HomePage } from './pages/HomePage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { ProfilePage } from './pages/ProfilePage'
+import { GamesAndGearPage } from './pages/GamesAndGearPage'
+import { MusicPage } from './pages/MusicPage'
 
 const productionOrigin = 'https://pablo-schefer.vercel.app'
 
@@ -18,6 +20,8 @@ function getSeo(content: SiteCopy, pathname: string) {
   if (pathname === '/perfil') return content.seo.profile
   if (pathname === '/comunidades') return content.seo.communities
   if (pathname === '/comunidades/edgar-pons') return content.seo.edgar
+  if (pathname === '/juegos-y-equipo') return content.seo.gamesGear
+  if (pathname === '/musica') return content.seo.music
   return content.seo.notFound
 }
 
@@ -101,6 +105,8 @@ function App() {
             <Route path="/perfil" element={<ProfilePage content={content} locale={locale} />} />
             <Route path="/comunidades" element={<CommunitiesPage content={content} locale={locale} />} />
             <Route path="/comunidades/edgar-pons" element={<EdgarPonsPage content={content} locale={locale} />} />
+            <Route path="/juegos-y-equipo" element={<GamesAndGearPage content={content} locale={locale} />} />
+            <Route path="/musica" element={<MusicPage content={content} locale={locale} />} />
             <Route path="*" element={<NotFoundPage content={content} />} />
           </Routes>
         </motion.main>

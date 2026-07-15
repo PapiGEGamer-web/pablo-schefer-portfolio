@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ChevronDown, Menu, Radio, X } from 'lucide-react'
+import { ChevronDown, Gamepad2, Menu, Music2, Radio, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
 
@@ -10,7 +10,7 @@ type SiteHeaderProps = {
   onLocaleChange: (locale: Locale) => void
 }
 
-type DropdownId = 'communities' | 'projects' | null
+type DropdownId = 'communities' | 'projects' | 'personal' | null
 
 export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps) {
   const [dropdown, setDropdown] = useState<DropdownId>(null)
@@ -135,6 +135,39 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
               )}
             </AnimatePresence>
           </div>
+
+          <div className="nav-dropdown">
+            <button
+              type="button"
+              aria-expanded={dropdown === 'personal'}
+              aria-haspopup="menu"
+              onClick={() => toggleDropdown('personal')}
+            >
+              {content.nav.personal}
+              <ChevronDown size={13} aria-hidden="true" />
+            </button>
+            <AnimatePresence>
+              {dropdown === 'personal' && (
+                <motion.div
+                  className="nav-dropdown__menu"
+                  role="menu"
+                  initial={{ opacity: 0, y: -8, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                  transition={{ duration: 0.18 }}
+                >
+                  <Link to="/juegos-y-equipo" role="menuitem" onClick={closeNavigation}>
+                    <span>{content.nav.gamesGear}</span>
+                    <small><Gamepad2 size={11} aria-hidden="true" /> 20+</small>
+                  </Link>
+                  <Link to="/musica" role="menuitem" onClick={closeNavigation}>
+                    <span>{content.nav.music}</span>
+                    <small className="nav-live"><Music2 size={11} aria-hidden="true" /> Ready</small>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </nav>
 
         <div className="header-actions">
@@ -232,6 +265,20 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                   <motion.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                     <Link to="/#fnlb" onClick={closeNavigation}>{content.nav.fnlb}</Link>
                     <Link to="/#kernelos" onClick={closeNavigation}>{content.nav.kernelos}</Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="mobile-menu__group">
+              <button type="button" aria-expanded={mobileGroup === 'personal'} onClick={() => toggleMobileGroup('personal')}>
+                <span>05</span>{content.nav.personal}<ChevronDown size={20} aria-hidden="true" />
+              </button>
+              <AnimatePresence initial={false}>
+                {mobileGroup === 'personal' && (
+                  <motion.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                    <Link to="/juegos-y-equipo" onClick={closeNavigation}>{content.nav.gamesGear}</Link>
+                    <Link to="/musica" onClick={closeNavigation}>{content.nav.music}</Link>
                   </motion.div>
                 )}
               </AnimatePresence>

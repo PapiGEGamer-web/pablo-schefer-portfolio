@@ -41,11 +41,11 @@ export function ProfilePage({ content, locale }: { content: SiteCopy; locale: Lo
           <div className="profile__portrait">
             <img src="/pablo-schefer-portrait.webp" alt="Pablo Schefer Orduña" width="1200" height="1500" />
             <div className="profile__crosshair" aria-hidden="true" />
-            <span className="profile__presence" aria-label={content.common.current}><span className="status-dot" aria-hidden="true" /> Online</span>
           </div>
           <div className="profile__caption">
             <span>{profile.portraitLabel}</span>
-            <span>{profile.profileLoopLabel}</span>
+            <span className="profile__presence" aria-label={profile.presence}><span className="status-dot" aria-hidden="true" />{profile.presence}</span>
+            <span className="profile__caption-loop">{profile.profileLoopLabel}</span>
           </div>
         </motion.div>
 
