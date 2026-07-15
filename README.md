@@ -2,7 +2,7 @@
 
 Portafolio bilingüe centrado en Discord, vibecoding y colaboración en comunidades y proyectos como FNLB y KernelOS.
 
-Producción: [pabloschefer.vercel.app](https://pabloschefer.vercel.app)
+Producción: [pablo-schefer.vercel.app](https://pablo-schefer.vercel.app)
 
 ## Desarrollo
 
