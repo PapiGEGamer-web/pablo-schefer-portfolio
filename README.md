@@ -2,6 +2,8 @@
 
 Portafolio bilingüe centrado en automatización, robótica industrial y sistemas de comunidad.
 
+Producción: [pabloschefer.vercel.app](https://pabloschefer.vercel.app)
+
 ## Desarrollo
 
 ```bash
