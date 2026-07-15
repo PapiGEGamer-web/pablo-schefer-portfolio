@@ -1,0 +1,17 @@
+{
+  "name": "Pablo Schefer Orduña — Portfolio",
+  "short_name": "Pablo Schefer",
+  "description": "Automatización, robótica industrial y sistemas para comunidades.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0c0d",
+  "theme_color": "#0b0c0d",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
