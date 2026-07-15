@@ -1089,6 +1089,67 @@ h3 {
   line-height: 1.76;
 }
 
+.profile__discord {
+  display: grid;
+  width: min(100%, 680px);
+  grid-template-columns: auto 1fr auto;
+  gap: 0.9rem;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 1rem 1.1rem;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--line);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.profile__discord:hover {
+  background: rgba(129, 216, 204, 0.055);
+  border-color: rgba(129, 216, 204, 0.35);
+  transform: translateY(-2px);
+}
+
+.profile__discord-icon {
+  display: grid;
+  width: 42px;
+  aspect-ratio: 1;
+  place-items: center;
+  color: #101213;
+  background: var(--cyan);
+  border-radius: 50%;
+}
+
+.profile__discord-copy {
+  display: grid;
+  gap: 0.16rem;
+}
+
+.profile__discord-copy > span {
+  color: var(--muted);
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.profile__discord-copy strong {
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.profile__discord-copy small {
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.profile__discord-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--muted);
+  font-size: 0.58rem;
+  white-space: nowrap;
+}
+
 .profile__location {
   display: flex;
   align-items: center;
@@ -1258,7 +1319,7 @@ h3 {
 
 @media (max-width: 560px) {
   .brand__name { display: none; }
-  .hero__title { font-size: clamp(3.25rem, 17vw, 5.6rem); }
+  .hero__title { font-size: clamp(3rem, 14.25vw, 4.8rem); }
   .hero__intro { font-size: 0.96rem; }
   .hero__actions { flex-direction: column; align-items: stretch; }
   .magnetic-link { width: 100%; }
@@ -1272,6 +1333,7 @@ h3 {
   .method-list__index { grid-row: 1; }
   .method-list__signal { grid-column: 3; grid-row: 1; }
   .profile { width: 100%; padding-inline: 20px; }
+  .profile__discord-action { display: none; }
   .contact { padding-inline: 20px; }
   .contact h2 { font-size: clamp(3.3rem, 15vw, 5.4rem); }
   .contact__orb { display: none; }
