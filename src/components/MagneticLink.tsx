@@ -1,5 +1,6 @@
 import type { MouseEvent, ReactNode } from 'react'
 import { ArrowUpRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 type MagneticLinkProps = {
   href: string
@@ -24,17 +25,25 @@ export function MagneticLink({ href, children, variant = 'solid', external = fal
     event.currentTarget.style.setProperty('--magnetic-y', '0px')
   }
 
-  return (
-    <a
-      className={`magnetic-link magnetic-link--${variant} ${className}`}
-      href={href}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      target={external ? '_blank' : undefined}
-      rel={external ? 'noreferrer' : undefined}
-    >
+  const content = (
+    <>
       <span>{children}</span>
       <ArrowUpRight size={17} strokeWidth={1.7} aria-hidden="true" />
+    </>
+  )
+  const classes = `magnetic-link magnetic-link--${variant} ${className}`
+
+  if (!external && href.startsWith('/')) {
+    return (
+      <Link className={classes} to={href} onMouseMove={onMove} onMouseLeave={onLeave}>
+        {content}
+      </Link>
+    )
+  }
+
+  return (
+    <a className={classes} href={href} onMouseMove={onMove} onMouseLeave={onLeave} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}>
+      {content}
     </a>
   )
 }
