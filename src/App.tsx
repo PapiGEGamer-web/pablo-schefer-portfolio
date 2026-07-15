@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'motion/react'
-import { ArrowDown, ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, AtSign, ChevronDown, Menu, X } from 'lucide-react'
 import { AmbientField } from './components/AmbientField'
 import { MagneticLink } from './components/MagneticLink'
 import { Monogram } from './components/Monogram'
 import { copy, type Locale } from './content'
 
 const githubUrl = 'https://github.com/PapiGEGamer-web'
+const discordProfileUrl = 'https://discord.com/users/633600812970541056'
 const socialLinks = [
+  { label: 'Discord', href: discordProfileUrl },
   { label: 'GitHub', href: githubUrl },
   { label: 'X', href: 'https://x.com/PapiGEGamer' },
   { label: 'Instagram', href: 'https://www.instagram.com/papigegamer/' },
@@ -26,6 +28,15 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = locale
   }, [locale])
+
+  useEffect(() => {
+    document.title = content.seoTitle
+    document.querySelector('meta[name="description"]')?.setAttribute('content', content.seoDescription)
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', content.seoTitle)
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', content.seoDescription)
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content', content.seoTitle)
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content', content.seoDescription)
+  }, [content.seoDescription, content.seoTitle])
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -52,17 +63,18 @@ function App() {
 
   return (
     <div className="site-shell">
+      <a className="skip-link" href="#main">{content.skipLabel}</a>
       <AmbientField />
       <div className="pointer-glow" aria-hidden="true" />
       <motion.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />
 
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Pablo Schefer Orduña — inicio">
+        <a className="brand" href="#top" aria-label={content.homeLabel}>
           <span className="brand__mark">P</span>
           <span className="brand__name">Pablo Schefer</span>
         </a>
 
-        <nav className="desktop-nav" aria-label="Navegación principal">
+        <nav className="desktop-nav" aria-label={content.navigationLabel}>
           {content.nav.map((item) => (
             <a key={item.href} href={item.href}>
               {item.label}
@@ -129,7 +141,7 @@ function App() {
         {menuOpen && (
           <motion.nav
             className="mobile-menu"
-            aria-label="Navegación móvil"
+            aria-label={content.mobileNavigationLabel}
             initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
             animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
             exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
@@ -187,8 +199,8 @@ function App() {
               >
                 <p className="hero__intro">{content.heroIntro}</p>
                 <div className="hero__actions">
-                  <MagneticLink href="#capacidades">{content.primaryCta}</MagneticLink>
-                  <MagneticLink href="#contacto" variant="ghost">
+                  <MagneticLink href="#evidencia">{content.primaryCta}</MagneticLink>
+                  <MagneticLink href="#perfil" variant="ghost">
                     {content.secondaryCta}
                   </MagneticLink>
                 </div>
@@ -215,12 +227,12 @@ function App() {
 
         <div className="signal-strip" aria-hidden="true">
           <div>
-            <span>AUT / 01</span><i />
-            <span>RBT / 02</span><i />
-            <span>COM / 03</span><i />
-            <span>SYS / 04</span><i />
-            <span>AUT / 01</span><i />
-            <span>RBT / 02</span><i />
+            <span>DSC / 01</span><i />
+            <span>VIBE / 02</span><i />
+            <span>FNLB / 03</span><i />
+            <span>KOS / 04</span><i />
+            <span>DSC / 01</span><i />
+            <span>VIBE / 02</span><i />
           </div>
         </div>
 
@@ -290,10 +302,10 @@ function App() {
               </motion.a>
             ))}
           </div>
-          <p className="proof__note">Data snapshot · 15.07.2026</p>
+          <p className="proof__note">{content.proofNote}</p>
         </section>
 
-        <section className="bridge-statement" aria-label="Principio de trabajo">
+        <section className="bridge-statement" aria-label={content.bridgeLead}>
           <motion.p {...reveal}>
             <span>{content.bridgeLead}</span>
             {content.bridgeText}
@@ -336,8 +348,8 @@ function App() {
               <div className="profile__crosshair" aria-hidden="true" />
             </div>
             <div className="profile__caption">
-              <span>Portrait / 001</span>
-              <span>Human in the loop</span>
+              <span>Pablo / PapiGEGamer</span>
+              <span>{content.profileLoopLabel}</span>
             </div>
           </motion.div>
           <motion.div className="profile__copy" {...reveal}>
@@ -346,6 +358,23 @@ function App() {
             {content.profileBody.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
+            <a
+              className="profile__discord"
+              href={discordProfileUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${content.discordIdentity.action}: ${content.discordIdentity.name}`}
+            >
+              <span className="profile__discord-icon" aria-hidden="true"><AtSign size={20} /></span>
+              <span className="profile__discord-copy">
+                <span>{content.discordIdentity.label}</span>
+                <strong>{content.discordIdentity.name}</strong>
+                <small>{content.discordIdentity.meta}</small>
+              </span>
+              <span className="profile__discord-action">
+                {content.discordIdentity.action}<ArrowUpRight size={14} aria-hidden="true" />
+              </span>
+            </a>
             <div className="profile__location">
               <span className="status-dot" aria-hidden="true" />
               {content.profileNote}
@@ -358,10 +387,10 @@ function App() {
             <p className="eyebrow">{content.contactEyebrow}</p>
             <h2>{content.contactTitle}</h2>
             <p>{content.contactBody}</p>
-            <MagneticLink href={githubUrl} external className="contact__button">
+            <MagneticLink href={discordProfileUrl} external className="contact__button">
               {content.contactCta}
             </MagneticLink>
-            <div className="contact__socials" aria-label="Redes sociales">
+            <div className="contact__socials" aria-label={content.socialLabel}>
               {socialLinks.map((link) => (
                 <a href={link.href} target="_blank" rel="noreferrer" key={link.label}>
                   {link.label}<ArrowUpRight size={13} aria-hidden="true" />
@@ -374,7 +403,7 @@ function App() {
       </main>
 
       <footer className="site-footer">
-        <a className="brand" href="#top" aria-label="Volver arriba">
+        <a className="brand" href="#top" aria-label={content.backToTopLabel}>
           <span className="brand__mark">P</span>
           <span className="brand__name">Pablo Schefer</span>
         </a>

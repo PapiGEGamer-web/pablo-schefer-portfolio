@@ -1,6 +1,6 @@
 # Pablo Schefer Orduña — Portfolio
 
-Portafolio bilingüe centrado en automatización, robótica industrial y sistemas de comunidad.
+Portafolio bilingüe centrado en Discord, vibecoding y colaboración en comunidades y proyectos como FNLB y KernelOS.
 
 Producción: [pabloschefer.vercel.app](https://pabloschefer.vercel.app)
 
