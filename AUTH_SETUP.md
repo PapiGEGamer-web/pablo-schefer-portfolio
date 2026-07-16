@@ -1,4 +1,4 @@
-# Activar cuentas y códigos de seis dígitos
+# Activar cuentas y códigos de ocho dígitos
 
 La interfaz usa Supabase Auth con OTP por correo. Para activarla en producción:
 
