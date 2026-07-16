@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import {
+  Activity,
   ArrowDown,
   ArrowUpRight,
   CircuitBoard,
@@ -9,6 +10,7 @@ import {
   HardDrive,
   MemoryStick,
   Monitor,
+  Radio,
   SlidersHorizontal,
   Sparkles,
   Zap,
@@ -17,6 +19,7 @@ import {
 } from 'lucide-react'
 import type { Locale, SiteCopy } from '../content'
 import { dreamHardware, games, hardware, type Game, type HardwareItem } from '../data/gamesAndGear'
+import { type LanyardActivity, useLanyardPresence } from '../hooks/useLanyardPresence'
 import { ContactSection } from '../components/ContactSection'
 import './GamesAndGearPage.css'
 
@@ -47,8 +50,59 @@ function GameCover({ game, eager = false }: { game: Game; eager?: boolean }) {
   )
 }
 
+const nonGameActivities = [
+  'custom status', 'kernelos', 'discord', 'spotify', 'visual studio code', 'chrome', 'github',
+  'crunchyroll', 'anilist', 'myanimelist', 'animeflv', 'hidive', 'plex', 'jellyfin',
+]
+
+function activityImage(activity: LanyardActivity) {
+  const image = activity.assets?.large_image
+  if (!image) return undefined
+  if (/^https?:\/\//i.test(image)) return image
+  if (image.startsWith('mp:')) return `https://media.discordapp.net/${image.slice(3)}`
+  if (activity.application_id) return `https://cdn.discordapp.com/app-assets/${activity.application_id}/${image}.png`
+  return undefined
+}
+
+function activityText(activity: LanyardActivity) {
+  return [activity.name, activity.details, activity.state, activity.assets?.large_text, activity.assets?.small_text].filter(Boolean).join(' ')
+}
+
+function normalizeActivityTitle(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+}
+
+function gameFromActivity(activity: LanyardActivity): Game | null {
+  if (activity.type !== 0) return null
+  const normalized = normalizeActivityTitle(activityText(activity))
+  if (!normalized || nonGameActivities.some((name) => normalized.includes(name))) return null
+
+  const matched = games.find((game) => {
+    const title = normalizeActivityTitle(game.title)
+    if (normalized.includes(title)) return true
+    return game.id === 'arc-raiders' && normalized.includes('raiders')
+  })
+  if (matched) return matched
+
+  const title = activity.name.trim()
+  if (!title || title.length > 80) return null
+  return {
+    id: `live-${normalizeActivityTitle(title).replace(/\s+/g, '-')}`,
+    title,
+    status: 'library',
+    image: activityImage(activity) ?? null,
+    accent: '#f0a24a',
+    description: { es: activity.details || activity.state || 'Actividad de juego detectada en Discord.', en: activity.details || activity.state || 'Game activity detected on Discord.' },
+    tags: { es: ['En directo', 'Discord'], en: ['Live', 'Discord'] },
+    filters: [],
+    platform: 'Discord Rich Presence',
+    href: '',
+  }
+}
+
 export function GamesAndGearPage({ content, locale }: { content: SiteCopy; locale: Locale }) {
   const reduceMotion = useReducedMotion()
+  const { activities, phase, socketLive } = useLanyardPresence()
   const [filter, setFilter] = useState<GameFilter>('all')
   const [selectedGame, setSelectedGame] = useState<Game | null>(null)
   const [hardwareMode, setHardwareMode] = useState<HardwareMode>('current')
@@ -91,6 +145,13 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
     aspirational: 'Objetivo aspiracional · No es el equipo actual',
     currentDisclosure: 'Hardware instalado y detectado localmente. Esta vista representa el equipo que utilizo ahora.',
     dreamDisclosure: 'Configuración de referencia que me gustaría construir. Los componentes se basan en fichas oficiales, pero no forman parte de mi equipo actual.',
+    liveEyebrow: 'Discord · Rich Presence',
+    liveTitle: 'Jugando ahora',
+    liveIntro: 'La actividad pública de Discord aparece aquí en directo con su portada, estado y ficha del juego.',
+    idleTitle: 'Ahora mismo no estoy jugando.',
+    idleBody: 'Cuando Discord detecte un juego abierto, esta tarjeta se actualizará automáticamente.',
+    liveBadge: 'EN DIRECTO',
+    connection: 'Conexión Lanyard',
   } : {
     eyebrow: 'Gaming · Hardware · Profile',
     title: 'What I play.\nThe machine behind it.',
@@ -122,7 +183,20 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
     aspirational: 'Aspirational target · Not the current machine',
     currentDisclosure: 'Locally installed and detected hardware. This view represents the machine I use today.',
     dreamDisclosure: 'A reference configuration I would like to build. Components are based on official specifications, but they are not part of my current machine.',
+    liveEyebrow: 'Discord · Rich Presence',
+    liveTitle: 'Playing now',
+    liveIntro: 'Public Discord activity appears here live with the game cover, current state and profile.',
+    idleTitle: 'I am not playing right now.',
+    idleBody: 'As soon as Discord detects an open game, this card updates automatically.',
+    liveBadge: 'LIVE',
+    connection: 'Lanyard connection',
   }
+
+  const liveActivity = useMemo(() => activities.find((activity) => gameFromActivity(activity) !== null) ?? null, [activities])
+  const liveGame = useMemo(() => liveActivity ? gameFromActivity(liveActivity) : null, [liveActivity])
+const connectionLabel = phase === 'ready'
+  ? (socketLive ? 'WebSocket live' : 'REST · 15 s')
+  : locale === 'es' ? 'Conectando…' : 'Connecting…'
 
   const filteredGames = useMemo(
     () => filter === 'all' ? libraryGames : libraryGames.filter((game) => game.filters.includes(filter)),
@@ -239,6 +313,57 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
         </motion.div>
 
         <a className="page-hero__scroll" href="#seleccion"><ArrowDown size={15} aria-hidden="true" />{labels.explore}</a>
+      </section>
+
+      <section className="section games-live" id="juego-en-directo">
+        <motion.div className="section-heading section-heading--split" {...reveal}>
+          <div>
+            <p className="eyebrow">{labels.liveEyebrow}</p>
+            <h2>{labels.liveTitle}</h2>
+          </div>
+          <p className="section-heading__intro">{labels.liveIntro}</p>
+        </motion.div>
+
+        <motion.article
+          className={`game-live-card${liveGame ? ' game-live-card--active' : ''}`}
+          style={{ '--game-accent': liveGame?.accent ?? '#f0a24a' } as CSSProperties}
+          aria-live="polite"
+          {...reveal}
+        >
+          <header>
+            <span><span className="status-dot" aria-hidden="true" />{connectionLabel}</span>
+            <span><Radio size={14} aria-hidden="true" />DISCORD / LANYARD</span>
+          </header>
+
+          {liveGame && liveActivity ? (
+            <div className="game-live-card__content">
+              <GameCover game={liveGame} eager />
+              <div className="game-live-card__copy">
+                <span className="eyebrow"><Activity size={14} aria-hidden="true" />{labels.liveBadge}</span>
+                <h3>{liveGame.title}</h3>
+                <p>{[liveActivity.details, liveActivity.state].filter(Boolean).join(' · ') || liveGame.description[locale]}</p>
+                <span className="game-tags">{liveGame.tags[locale].map((tag) => <i key={tag}>{tag}</i>)}</span>
+                <div className="game-live-card__actions">
+                  <button type="button" onClick={() => openGame(liveGame)}><Gamepad2 size={16} aria-hidden="true" />{labels.details}</button>
+                  {liveGame.href && <a href={liveGame.href} target="_blank" rel="noreferrer"><ArrowUpRight size={16} aria-hidden="true" />{labels.visit}</a>}
+                </div>
+              </div>
+              <aside className="game-live-card__facts">
+                <strong>{liveGame.platform}</strong>
+                <span>{labels.connection}</span>
+                <small>{liveActivity.name}</small>
+              </aside>
+            </div>
+          ) : (
+            <div className="game-live-card__idle">
+              <span className="game-live-card__icon"><Gamepad2 size={38} aria-hidden="true" /></span>
+              <div>
+                <h3>{labels.idleTitle}</h3>
+                <p>{labels.idleBody}</p>
+              </div>
+            </div>
+          )}
+        </motion.article>
       </section>
 
       <section className="section games-featured" id="seleccion">
