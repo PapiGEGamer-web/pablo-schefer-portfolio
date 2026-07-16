@@ -23,6 +23,7 @@ import {
 import type { Locale, SiteCopy } from '../content'
 import { ContactSection } from '../components/ContactSection'
 import { type LanyardActivity, useLanyardPresence } from '../hooks/useLanyardPresence'
+import { useAuth } from '../contexts/AuthContext'
 import './AnimePage.css'
 
 type AnimeEntry = {
@@ -59,6 +60,7 @@ type AnimeMetadata = {
 
 const historyKey = 'pablo-portfolio-anime-history-v1'
 const metadataKey = 'pablo-portfolio-anime-metadata-v1'
+const ownerEmail = 'pablopme41@gmail.com'
 const crunchyrollIcon = 'https://s4.anilist.co/file/anilistcdn/link/icon/5-AWN2pVlluCOO.png'
 const animeSignals = ['anime', 'crunchyroll', 'anilist', 'myanimelist', 'mal-sync', 'animeflv', 'aniyomi', 'taiga', 'hidive', 'plex', 'jellyfin', 'viendo', 'watching', 'episode', 'episodio', 'capitulo', 'capítulo']
 const ignoreSignals = ['spotify', 'visual studio', 'code', 'github', 'valorant', 'roblox', 'fortnite', 'steam', 'chrome']
@@ -226,6 +228,7 @@ function AnimeRating({ score, locale, compact = false }: { score: number | null 
 }
 
 export function AnimePage({ content, locale }: { content: SiteCopy; locale: Locale }) {
+  const auth = useAuth()
   const reduceMotion = useReducedMotion()
   const { activities, phase, socketLive } = useLanyardPresence()
   const [history, setHistory] = useState<AnimeEntry[]>(() => readHistory())
@@ -321,6 +324,13 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
   const liveMetadata = metadataFor(liveEntry)
   const heroMetadata = liveMetadata ?? metadataFor(history[0] ?? null)
   const selectedMetadata = metadataFor(selectedEntry)
+  const isOwner = auth.user?.email?.toLowerCase() === ownerEmail
+
+  const clearHistory = () => {
+    if (!isOwner) return
+    window.localStorage.removeItem(historyKey)
+    setHistory(seededHistory)
+  }
 
   useEffect(() => {
     if (!liveEntry) return
@@ -499,8 +509,8 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
             <h2>{labels.historyTitle}</h2>
           </div>
           <p>{labels.historyIntro}</p>
-          {history.length > seededHistory.length && (
-            <button type="button" onClick={() => { window.localStorage.removeItem(historyKey); setHistory(seededHistory) }}>
+          {isOwner && history.length > seededHistory.length && (
+            <button type="button" onClick={clearHistory}>
               {labels.clear}
             </button>
           )}
