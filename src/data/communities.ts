@@ -1,3 +1,5 @@
+import { communityAssets } from './communityAssets'
+
 export type CommunityKey = 'fnlb' | 'nate' | 'edgar' | 'gw2' | 'valorant'
 
 type CommunityVisual = {
@@ -35,8 +37,8 @@ export const communities: Community[] = [
     onlineApprox: 8_422,
     accent: 'amber',
     visual: {
-      logo: '/communities/fnlb-logo.webp',
-      cover: '/communities/fnlb-cover.webp',
+      logo: communityAssets.fnlbLogo,
+      cover: communityAssets.fnlbCover,
       alt: { es: 'Identidad visual de FNLB', en: 'FNLB visual identity' },
       focus: 'center',
     },
@@ -51,8 +53,8 @@ export const communities: Community[] = [
     metric: 'TECH',
     accent: 'cyan',
     visual: {
-      logo: '/communities/nate-logo.webp',
-      cover: '/communities/nate-cover.webp',
+      logo: communityAssets.nateLogo,
+      cover: communityAssets.nateCover,
       alt: { es: 'Identidad visual de la comunidad de Nate Gentile', en: 'Nate Gentile community visual identity' },
       focus: 'center 42%',
     },
@@ -68,8 +70,8 @@ export const communities: Community[] = [
     metric: 'LIVE',
     accent: 'violet',
     visual: {
-      logo: '/communities/edgar-logo.webp',
-      cover: '/communities/edgar-pons.webp',
+      logo: communityAssets.edgarLogo,
+      cover: communityAssets.edgarPonsCover,
       alt: { es: 'Identidad visual de la comunidad de Edgar Pons', en: 'Edgar Pons community visual identity' },
       focus: 'center',
     },
@@ -86,8 +88,8 @@ export const communities: Community[] = [
     onlineApprox: 18_510,
     accent: 'cyan',
     visual: {
-      logo: '/communities/gw2.webp',
-      cover: '/communities/gw2.webp',
+      logo: communityAssets.gw2Visual,
+      cover: communityAssets.gw2Visual,
       alt: { es: 'Identidad visual de GW2, Gatitos 2', en: 'GW2, Gatitos 2 visual identity' },
       focus: 'center',
     },
@@ -102,8 +104,8 @@ export const communities: Community[] = [
     metric: '98K+',
     accent: 'amber',
     visual: {
-      logo: '/communities/valorant-es.webp',
-      cover: '/communities/valorant-es.webp',
+      logo: communityAssets.valorantEsVisual,
+      cover: communityAssets.valorantEsVisual,
       alt: { es: 'Identidad visual de VALORANT ESP', en: 'VALORANT ESP visual identity' },
       focus: 'center',
     },

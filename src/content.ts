@@ -1,4 +1,5 @@
 import type { CommunityKey } from './data/communities'
+import { communityAssets } from './data/communityAssets'
 
 export type Locale = 'es' | 'en'
 
@@ -259,7 +260,7 @@ export const copy: Record<Locale, SiteCopy> = {
           text: 'Colaboro en el ecosistema FNLB, una plataforma de lobby bots para Fortnite donde producto, soporte y comunidad avanzan juntos.',
           link: 'https://fnlb.net/',
           linkLabel: 'Conocer FNLB',
-          image: '/communities/fnlb-cover.webp',
+          image: communityAssets.fnlbCover,
           imageAlt: 'Identidad visual azul de FNLB',
         },
         {
@@ -279,7 +280,7 @@ export const copy: Record<Locale, SiteCopy> = {
           text: 'Cinco experiencias públicas destacadas y otros roles actuales e históricos en gaming, tecnología y creadores.',
           link: '/comunidades',
           linkLabel: 'Explorar comunidades',
-          image: '/communities/edgar-pons.webp',
+          image: communityAssets.edgarPonsCover,
           imageAlt: 'Identidad visual de la comunidad de Edgar Pons',
           internal: true,
         },
@@ -452,9 +453,9 @@ export const copy: Record<Locale, SiteCopy> = {
       proofTitle: 'Where I contribute. What I help build.',
       proofIntro: 'Collaborations presented with context and official links—without inflated credentials.',
       proof: [
-        { type: 'Product · Community', metric: '≈60K', title: 'FNLB', text: 'I collaborate within the FNLB ecosystem, a Fortnite lobby-bot platform where product, support and community evolve together.', link: 'https://fnlb.net/', linkLabel: 'Discover FNLB', image: '/communities/fnlb-cover.webp', imageAlt: 'Blue FNLB visual identity' },
+        { type: 'Product · Community', metric: '≈60K', title: 'FNLB', text: 'I collaborate within the FNLB ecosystem, a Fortnite lobby-bot platform where product, support and community evolve together.', link: 'https://fnlb.net/', linkLabel: 'Discover FNLB', image: communityAssets.fnlbCover, imageAlt: 'Blue FNLB visual identity' },
         { type: 'Project · Custom OS', metric: 'K//OS', title: 'KernelOS', text: 'I collaborate within the KernelOS ecosystem, a Windows environment tuned for gaming, low latency and stability.', link: 'https://kernelos.org/', linkLabel: 'View KernelOS', image: '/media/projects/kernelos-cover.webp', imageAlt: 'Dark KernelOS background with an oni mask' },
-        { type: 'Discord · Operations', metric: '05+', title: 'Community network', text: 'Five featured public experiences plus other current and previous roles across gaming, technology and creators.', link: '/comunidades', linkLabel: 'Explore communities', image: '/communities/edgar-pons.webp', imageAlt: 'Edgar Pons community visual identity', internal: true },
+        { type: 'Discord · Operations', metric: '05+', title: 'Community network', text: 'Five featured public experiences plus other current and previous roles across gaming, technology and creators.', link: '/comunidades', linkLabel: 'Explore communities', image: communityAssets.edgarPonsCover, imageAlt: 'Edgar Pons community visual identity', internal: true },
       ],
       bridgeLead: 'One way to move forward:',
       bridgeText: 'understand fast, build clearly, improve together.',
