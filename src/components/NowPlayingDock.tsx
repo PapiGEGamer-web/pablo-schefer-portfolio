@@ -7,7 +7,7 @@ import { useLanyardPresence } from '../hooks/useLanyardPresence'
 import { SpotifyEmbed } from './SpotifyEmbed'
 import './NowPlayingDock.css'
 
-export function NowPlayingDock({ locale }: { locale: Locale }) {
+export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale: Locale; placement?: 'bottom-right' | 'top-left' }) {
   const reduceMotion = useReducedMotion()
   const { phase, progress, socketLive, track } = useLanyardPresence()
   const [expanded, setExpanded] = useState(true)
@@ -56,6 +56,7 @@ export function NowPlayingDock({ locale }: { locale: Locale }) {
   return (
     <motion.aside
       className={`now-dock${track ? ' now-dock--active' : ''}`}
+      data-placement={placement}
       aria-live="polite"
       initial={reduceMotion ? false : { opacity: 0, y: 22, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}

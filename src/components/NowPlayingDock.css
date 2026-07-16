@@ -14,6 +14,13 @@
   transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
+.now-dock[data-placement='top-left'] {
+  top: 118px;
+  right: auto;
+  bottom: auto;
+  left: 20px;
+}
+
 .mobile-nav-open .now-dock {
   visibility: hidden;
   pointer-events: none;
@@ -139,6 +146,12 @@
 
 @media (max-width: 600px) {
   .now-dock { right: 8px; bottom: 8px; width: calc(100vw - 16px); border-radius: 18px; }
+  .now-dock[data-placement='top-left'] {
+    top: 92px;
+    right: 8px;
+    bottom: auto;
+    left: 8px;
+  }
   .now-dock__player-footer { align-items: flex-start; flex-direction: column; }
 }
 

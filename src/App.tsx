@@ -117,6 +117,7 @@ function App() {
       </AnimatePresence>
 
       {location.pathname === '/' && <NowPlayingDock locale={locale} />}
+      {location.pathname === '/perfil' && <NowPlayingDock locale={locale} placement="top-left" />}
       <SiteFooter content={content} />
     </div>
   )
