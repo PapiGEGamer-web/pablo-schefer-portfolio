@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { ChevronDown, Disc3, ExternalLink, Music2, Volume2, X } from 'lucide-react'
+import { ChevronDown, ExternalLink, Music2, Volume2, X } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
@@ -41,7 +41,7 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
     player: 'Official Spotify player',
   }
 
-  if (!visible) return null
+  if (!visible || !track) return null
 
   const status = phase === 'connecting'
     ? labels.connecting
@@ -73,14 +73,13 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
 
       <div className="now-dock__summary">
         <div className="now-dock__art" aria-hidden="true">
-          {track ? <img src={track.album_art_url} alt="" width="96" height="96" /> : <Disc3 size={24} />}
+          <img src={track.album_art_url} alt="" width="96" height="96" />
         </div>
         <div className="now-dock__copy">
           <strong>{track?.song ?? 'Spotify × Discord'}</strong>
           <span>{track?.artist ?? labels.visitors}</span>
         </div>
-        {track ? (
-          <button
+        <button
             className="now-dock__play"
             type="button"
             aria-expanded={expanded}
@@ -89,18 +88,9 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
           >
             {expanded ? <ChevronDown size={18} aria-hidden="true" /> : <Music2 size={17} aria-hidden="true" />}
           </button>
-        ) : (
-          <Link className="now-dock__play" to="/musica" aria-label={labels.details}>
-            <Music2 size={17} aria-hidden="true" />
-          </Link>
-        )}
       </div>
 
-      {track && (
-        <span className="now-dock__progress" aria-hidden="true">
-          <i style={{ width: `${progress.percent}%` }} />
-        </span>
-      )}
+      <span className="now-dock__progress" aria-hidden="true"><i style={{ width: `${progress.percent}%` }} /></span>
 
       <AnimatePresence initial={false}>
         {expanded && track && (

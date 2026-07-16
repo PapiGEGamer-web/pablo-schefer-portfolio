@@ -5,6 +5,7 @@ import { AmbientField } from './components/AmbientField'
 import { SiteFooter } from './components/SiteFooter'
 import { SiteHeader } from './components/SiteHeader'
 import { NowPlayingDock } from './components/NowPlayingDock'
+import { AnimeNowDock } from './components/AnimeNowDock'
 import { copy, type Locale, type SiteCopy } from './content'
 import { CommunitiesPage } from './pages/CommunitiesPage'
 import { EdgarPonsPage } from './pages/EdgarPonsPage'
@@ -116,8 +117,12 @@ function App() {
         </motion.main>
       </AnimatePresence>
 
-      {location.pathname === '/' && <NowPlayingDock locale={locale} />}
-      {location.pathname === '/perfil' && <NowPlayingDock locale={locale} placement="top-left" />}
+      {!['/musica', '/anime'].includes(location.pathname) && (
+        <>
+          <NowPlayingDock locale={locale} placement={location.pathname === '/perfil' ? 'top-left' : 'bottom-right'} />
+          <AnimeNowDock locale={locale} />
+        </>
+      )}
       <SiteFooter content={content} />
     </div>
   )

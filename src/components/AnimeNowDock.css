@@ -1,0 +1,33 @@
+.anime-dock {
+  position: fixed;
+  z-index: 34;
+  bottom: 20px;
+  left: 20px;
+  width: min(360px, calc(100vw - 40px));
+  overflow: hidden;
+  color: #f2eee7;
+  background: rgba(22, 19, 17, 0.94);
+  border: 1px solid rgba(244, 117, 33, 0.3);
+  border-radius: 22px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(244, 117, 33, 0.04) inset;
+  backdrop-filter: blur(24px) saturate(1.2);
+}
+
+.anime-dock__bar { display: flex; align-items: center; justify-content: space-between; min-height: 38px; padding: 0.55rem 0.7rem 0.45rem; color: #a49b92; font: 0.51rem ui-monospace, 'Cascadia Code', monospace; letter-spacing: 0.09em; text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+.anime-dock__bar span { display: inline-flex; align-items: center; gap: 0.5rem; }
+.anime-dock__bar i { width: 7px; aspect-ratio: 1; background: #f47521; border-radius: 50%; box-shadow: 0 0 0 4px rgba(244, 117, 33, 0.12), 0 0 14px rgba(244, 117, 33, 0.5); animation: animeDockSignal 1.8s ease-in-out infinite; }
+.anime-dock__bar button { display: grid; width: 28px; aspect-ratio: 1; place-items: center; color: #a49b92; background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
+.anime-dock__bar button:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.anime-dock__body { display: grid; grid-template-columns: 58px minmax(0, 1fr) 36px; align-items: center; gap: 0.8rem; padding: 0.8rem; }
+.anime-dock__art { display: grid; width: 58px; height: 76px; place-items: center; overflow: hidden; color: #f47521; background: #2b2521; border-radius: 13px; }
+.anime-dock__art img { width: 100%; height: 100%; object-fit: cover; }
+.anime-dock__copy { display: grid; min-width: 0; gap: 0.22rem; }
+.anime-dock__copy strong, .anime-dock__copy span, .anime-dock__copy small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.anime-dock__copy strong { font-size: 0.75rem; font-weight: 720; }
+.anime-dock__copy span, .anime-dock__copy small { color: #afa69c; font-size: 0.6rem; }
+.anime-dock__copy small { color: #f5a064; font-size: 0.55rem; }
+.anime-dock__link { display: grid; width: 36px; aspect-ratio: 1; place-items: center; color: #20150e; background: #f47521; border-radius: 50%; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.anime-dock__link:hover { box-shadow: 0 12px 26px rgba(244, 117, 33, 0.28); transform: translateY(-2px) rotate(8deg); }
+@keyframes animeDockSignal { 50% { opacity: 0.55; transform: scale(0.82); } }
+@media (max-width: 600px) { .anime-dock { right: 8px; bottom: 8px; left: 8px; width: auto; border-radius: 18px; } }
+@media (prefers-reduced-motion: reduce) { .anime-dock__bar i { animation: none; } }
