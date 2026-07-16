@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ChevronDown, ExternalLink, Music2, Volume2, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
 import { useLanyardPresence } from '../hooks/useLanyardPresence'
@@ -13,7 +13,7 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
   const { phase, progress, socketLive, track } = useLanyardPresence()
   const [expanded, setExpanded] = useState(true)
   const [visible, setVisible] = useState(true)
-  const dock = useDockPosition('pablo-portfolio-spotify-dock-position', placement)
+  const dock = useDockPosition('pablo-portfolio-spotify-dock-position', placement, 'spotify', Boolean(track))
 
   const labels = locale === 'es' ? {
     connecting: 'Conectando Spotify',
@@ -59,7 +59,7 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
     <motion.aside
       className={`now-dock${track ? ' now-dock--active' : ''}${dock.isDragging ? ' is-dragging' : ''}`}
       data-corner={dock.corner}
-      style={dock.style}
+      style={{ ...dock.style, '--dock-stack-index': dock.stackIndex } as CSSProperties}
       data-placement={placement}
       aria-live="polite"
       initial={reduceMotion ? false : { opacity: 0, y: 22, scale: 0.96 }}

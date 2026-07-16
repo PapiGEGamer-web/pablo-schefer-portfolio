@@ -14,10 +14,10 @@
   transition: left 0.45s cubic-bezier(0.16, 1, 0.3, 1), right 0.45s cubic-bezier(0.16, 1, 0.3, 1), top 0.45s cubic-bezier(0.16, 1, 0.3, 1), bottom 0.45s cubic-bezier(0.45, 0, 0.55, 1);
 }
 
-.anime-dock[data-corner='top-left'] { top: 118px; right: auto; bottom: auto; left: 20px; }
-.anime-dock[data-corner='top-right'] { top: 118px; right: 20px; bottom: auto; left: auto; }
-.anime-dock[data-corner='bottom-left'] { top: auto; right: auto; bottom: 20px; left: 20px; }
-.anime-dock[data-corner='bottom-right'] { top: auto; right: 20px; bottom: 20px; left: auto; }
+.anime-dock[data-corner='top-left'] { top: calc(118px + (var(--dock-stack-index, 0) * 330px)); right: auto; bottom: auto; left: 20px; }
+.anime-dock[data-corner='top-right'] { top: calc(118px + (var(--dock-stack-index, 0) * 330px)); right: 20px; bottom: auto; left: auto; }
+.anime-dock[data-corner='bottom-left'] { top: auto; right: auto; bottom: calc(20px + (var(--dock-stack-index, 0) * 330px)); left: 20px; }
+.anime-dock[data-corner='bottom-right'] { top: auto; right: 20px; bottom: calc(20px + (var(--dock-stack-index, 0) * 330px)); left: auto; }
 .anime-dock.is-dragging { cursor: grabbing; transition: left 0.16s cubic-bezier(0.22, 1, 0.36, 1), top 0.16s cubic-bezier(0.22, 1, 0.36, 1); }
 
 .anime-dock__bar { display: flex; align-items: center; justify-content: space-between; min-height: 38px; padding: 0.55rem 0.7rem 0.45rem; color: #a49b92; font: 0.51rem ui-monospace, 'Cascadia Code', monospace; letter-spacing: 0.09em; text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
@@ -38,10 +38,10 @@
 @keyframes animeDockSignal { 50% { opacity: 0.55; transform: scale(0.82); } }
 @media (max-width: 600px) {
   .anime-dock { width: auto; border-radius: 18px; }
-  .anime-dock[data-corner='top-left'], .anime-dock[data-corner='top-right'] { top: 92px; bottom: auto; }
+  .anime-dock[data-corner='top-left'], .anime-dock[data-corner='top-right'] { top: calc(92px + (var(--dock-stack-index, 0) * 190px)); bottom: auto; }
   .anime-dock[data-corner='top-left'] { right: 8px; left: 8px; }
   .anime-dock[data-corner='top-right'] { right: 8px; left: 8px; }
-  .anime-dock[data-corner='bottom-left'] { right: 8px; bottom: 8px; left: 8px; }
-  .anime-dock[data-corner='bottom-right'] { right: 8px; bottom: 8px; left: 8px; }
+  .anime-dock[data-corner='bottom-left'] { right: 8px; bottom: calc(8px + (var(--dock-stack-index, 0) * 190px)); left: 8px; }
+  .anime-dock[data-corner='bottom-right'] { right: 8px; bottom: calc(8px + (var(--dock-stack-index, 0) * 190px)); left: 8px; }
 }
 @media (prefers-reduced-motion: reduce) { .anime-dock__bar i { animation: none; } }
