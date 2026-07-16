@@ -6,6 +6,7 @@ import { SiteFooter } from './components/SiteFooter'
 import { SiteHeader } from './components/SiteHeader'
 import { NowPlayingDock } from './components/NowPlayingDock'
 import { AnimeNowDock } from './components/AnimeNowDock'
+import { EasterEggs } from './components/EasterEggs'
 import { copy, type Locale, type SiteCopy } from './content'
 import { CommunitiesPage } from './pages/CommunitiesPage'
 import { EdgarPonsPage } from './pages/EdgarPonsPage'
@@ -89,6 +90,7 @@ function App() {
     <div className="site-shell">
       <a className="skip-link" href="#main">{content.common.skipLabel}</a>
       <AmbientField />
+      <EasterEggs />
       <div className="pointer-glow" aria-hidden="true" />
       <motion.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />
       <SiteHeader content={content} locale={locale} onLocaleChange={setLocale} />

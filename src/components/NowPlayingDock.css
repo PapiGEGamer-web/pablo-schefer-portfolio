@@ -11,15 +11,14 @@
   border-radius: 22px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(30, 215, 96, 0.035) inset;
   backdrop-filter: blur(24px) saturate(1.2);
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease, left 0.45s cubic-bezier(0.16, 1, 0.3, 1), right 0.45s cubic-bezier(0.16, 1, 0.3, 1), top 0.45s cubic-bezier(0.16, 1, 0.3, 1), bottom 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.now-dock[data-placement='top-left'] {
-  top: 118px;
-  right: auto;
-  bottom: auto;
-  left: 20px;
-}
+.now-dock[data-corner='top-left'] { top: 118px; right: auto; bottom: auto; left: 20px; }
+.now-dock[data-corner='top-right'] { top: 118px; right: 20px; bottom: auto; left: auto; }
+.now-dock[data-corner='bottom-left'] { top: auto; right: auto; bottom: 20px; left: 20px; }
+.now-dock[data-corner='bottom-right'] { top: auto; right: 20px; bottom: 20px; left: auto; }
+.now-dock.is-dragging { transition: none; cursor: grabbing; }
 
 .mobile-nav-open .now-dock {
   visibility: hidden;
@@ -146,12 +145,14 @@
 
 @media (max-width: 600px) {
   .now-dock { right: 8px; bottom: 8px; width: calc(100vw - 16px); border-radius: 18px; }
-  .now-dock[data-placement='top-left'] {
+  .now-dock[data-corner='top-left'], .now-dock[data-corner='top-right'] {
     top: 92px;
-    right: 8px;
     bottom: auto;
-    left: 8px;
   }
+  .now-dock[data-corner='top-left'] { right: auto; left: 8px; }
+  .now-dock[data-corner='top-right'] { right: 8px; left: auto; }
+  .now-dock[data-corner='bottom-left'] { right: auto; bottom: 8px; left: 8px; }
+  .now-dock[data-corner='bottom-right'] { right: 8px; bottom: 8px; left: auto; }
   .now-dock__player-footer { align-items: flex-start; flex-direction: column; }
 }
 

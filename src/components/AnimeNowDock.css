@@ -11,7 +11,14 @@
   border-radius: 22px;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(244, 117, 33, 0.04) inset;
   backdrop-filter: blur(24px) saturate(1.2);
+  transition: left 0.45s cubic-bezier(0.16, 1, 0.3, 1), right 0.45s cubic-bezier(0.16, 1, 0.3, 1), top 0.45s cubic-bezier(0.16, 1, 0.3, 1), bottom 0.45s cubic-bezier(0.45, 0, 0.55, 1);
 }
+
+.anime-dock[data-corner='top-left'] { top: 118px; right: auto; bottom: auto; left: 20px; }
+.anime-dock[data-corner='top-right'] { top: 118px; right: 20px; bottom: auto; left: auto; }
+.anime-dock[data-corner='bottom-left'] { top: auto; right: auto; bottom: 20px; left: 20px; }
+.anime-dock[data-corner='bottom-right'] { top: auto; right: 20px; bottom: 20px; left: auto; }
+.anime-dock.is-dragging { transition: none; cursor: grabbing; }
 
 .anime-dock__bar { display: flex; align-items: center; justify-content: space-between; min-height: 38px; padding: 0.55rem 0.7rem 0.45rem; color: #a49b92; font: 0.51rem ui-monospace, 'Cascadia Code', monospace; letter-spacing: 0.09em; text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
 .anime-dock__bar span { display: inline-flex; align-items: center; gap: 0.5rem; }
@@ -29,5 +36,12 @@
 .anime-dock__link { display: grid; width: 36px; aspect-ratio: 1; place-items: center; color: #20150e; background: #f47521; border-radius: 50%; transition: transform 0.25s ease, box-shadow 0.25s ease; }
 .anime-dock__link:hover { box-shadow: 0 12px 26px rgba(244, 117, 33, 0.28); transform: translateY(-2px) rotate(8deg); }
 @keyframes animeDockSignal { 50% { opacity: 0.55; transform: scale(0.82); } }
-@media (max-width: 600px) { .anime-dock { right: 8px; bottom: 8px; left: 8px; width: auto; border-radius: 18px; } }
+@media (max-width: 600px) {
+  .anime-dock { width: auto; border-radius: 18px; }
+  .anime-dock[data-corner='top-left'], .anime-dock[data-corner='top-right'] { top: 92px; bottom: auto; }
+  .anime-dock[data-corner='top-left'] { right: 8px; left: 8px; }
+  .anime-dock[data-corner='top-right'] { right: 8px; left: 8px; }
+  .anime-dock[data-corner='bottom-left'] { right: 8px; bottom: 8px; left: 8px; }
+  .anime-dock[data-corner='bottom-right'] { right: 8px; bottom: 8px; left: 8px; }
+}
 @media (prefers-reduced-motion: reduce) { .anime-dock__bar i { animation: none; } }

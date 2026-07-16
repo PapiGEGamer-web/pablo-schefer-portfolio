@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
 import { useLanyardPresence } from '../hooks/useLanyardPresence'
+import { useDockPosition } from '../hooks/useDockPosition'
 import { SpotifyEmbed } from './SpotifyEmbed'
 import './NowPlayingDock.css'
 
@@ -12,6 +13,7 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
   const { phase, progress, socketLive, track } = useLanyardPresence()
   const [expanded, setExpanded] = useState(true)
   const [visible, setVisible] = useState(true)
+  const dock = useDockPosition('pablo-portfolio-spotify-dock-position', placement)
 
   const labels = locale === 'es' ? {
     connecting: 'Conectando Spotify',
@@ -55,14 +57,16 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
 
   return (
     <motion.aside
-      className={`now-dock${track ? ' now-dock--active' : ''}`}
+      className={`now-dock${track ? ' now-dock--active' : ''}${dock.isDragging ? ' is-dragging' : ''}`}
+      data-corner={dock.corner}
+      style={dock.style}
       data-placement={placement}
       aria-live="polite"
       initial={reduceMotion ? false : { opacity: 0, y: 22, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: reduceMotion ? 0 : 0.7, duration: reduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="now-dock__bar">
+      <div className="now-dock__bar" {...dock.dragHandlers} title={locale === 'es' ? 'Arrastra para mover' : 'Drag to move'}>
         <span className={`now-dock__signal${track ? ' now-dock__signal--live' : ''}`} aria-hidden="true" />
         <span>{status}</span>
         {track && <span className="now-dock__transport">{socketLive ? 'LIVE' : '15S'}</span>}

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
 import { type LanyardActivity, useLanyardPresence } from '../hooks/useLanyardPresence'
+import { useDockPosition } from '../hooks/useDockPosition'
 import './AnimeNowDock.css'
 
 const animeSignals = ['anime', 'crunchyroll', 'anilist', 'myanimelist', 'mal-sync', 'animeflv', 'aniyomi', 'taiga', 'hidive', 'plex', 'jellyfin', 'viendo', 'watching', 'episode', 'episodio', 'capitulo', 'capítulo']
@@ -41,6 +42,7 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
   const { activities } = useLanyardPresence()
   const [metadata, setMetadata] = useState<AnimeMetadata | null>(null)
   const [visible, setVisible] = useState(true)
+  const dock = useDockPosition('pablo-portfolio-anime-dock-position', 'bottom-left')
   const activity = useMemo(() => activities.find(isAnimeActivity) ?? null, [activities])
   const title = useMemo(() => activity ? cleanTitle(activity.details) || cleanTitle(activity.assets?.large_text) || cleanTitle(activity.state) || activity.name : '', [activity])
   const image = activity ? resolveImage(activity) : undefined
@@ -63,13 +65,15 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
 
   return (
     <motion.aside
-      className="anime-dock"
+      className={`anime-dock${dock.isDragging ? ' is-dragging' : ''}`}
+      data-corner={dock.corner}
+      style={dock.style}
       aria-live="polite"
       initial={reduceMotion ? false : { opacity: 0, x: -18, y: 18 }}
       animate={{ opacity: 1, x: 0, y: 0 }}
       transition={{ duration: reduceMotion ? 0 : 0.42, ease: [0.16, 1, 0.3, 1] }}
     >
-      <header className="anime-dock__bar">
+      <header className="anime-dock__bar" {...dock.dragHandlers} title={locale === 'es' ? 'Arrastra para mover' : 'Drag to move'}>
         <span><i aria-hidden="true" />{labels.live}</span>
         <button type="button" onClick={() => setVisible(false)} aria-label={labels.close}><X size={14} aria-hidden="true" /></button>
       </header>
