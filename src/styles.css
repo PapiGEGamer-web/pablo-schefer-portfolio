@@ -2828,15 +2828,29 @@ h3 {
 .voice-member__status--dnd { background: #f23f43; }
 
 .voice-member__avatar {
+  position: relative;
   display: grid;
   width: 29px;
   aspect-ratio: 1;
   place-items: center;
+  overflow: hidden;
   color: #fff;
   font-size: 0.58rem;
   font-weight: 720;
   background: linear-gradient(135deg, #5865f2, #7c84ff);
   border-radius: 50%;
+}
+
+.voice-member__avatar > span {
+  grid-area: 1 / 1;
+}
+
+.voice-member__avatar img {
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  grid-area: 1 / 1;
+  object-fit: cover;
 }
 
 .voice-channel > p,

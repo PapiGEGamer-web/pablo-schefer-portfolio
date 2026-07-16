@@ -4,7 +4,9 @@ import { ArrowUpRight, ChevronDown, Clock3, Eye, Headphones, Radio, RefreshCw, U
 import type { Locale, SiteCopy } from '../content'
 
 type VoiceMember = {
+  id: string
   username: string
+  avatarUrl: string | null
   status: 'online' | 'idle' | 'dnd' | 'offline'
 }
 
@@ -43,7 +45,7 @@ function createSnapshotSignature(data: EdgarCommunityData) {
     online: data.server.onlineApprox,
     channels: data.voice.channels.map((channel) => ({
       id: channel.id,
-      members: channel.members.map((member) => `${member.username}:${member.status}`),
+      members: channel.members.map((member) => `${member.id}:${member.username}:${member.avatarUrl}:${member.status}`),
     })),
   })
 }
@@ -278,9 +280,22 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
                         {expanded && channel.members.length > 0 && (
                           <motion.ul initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                             {channel.members.map((member, memberIndex) => (
-                              <li key={`${channel.id}-${member.username}-${memberIndex}`}>
+                              <li key={`${channel.id}-${member.id}-${memberIndex}`}>
                                 <span className={`voice-member__status voice-member__status--${member.status}`} aria-hidden="true" />
-                                <span className="voice-member__avatar" aria-hidden="true">{member.username.trim().charAt(0).toUpperCase() || '?'}</span>
+                                <span className="voice-member__avatar" aria-hidden="true">
+                                  <span>{member.username.trim().charAt(0).toUpperCase() || '?'}</span>
+                                  {member.avatarUrl && (
+                                    <img
+                                      src={member.avatarUrl}
+                                      alt=""
+                                      width="58"
+                                      height="58"
+                                      loading="lazy"
+                                      referrerPolicy="no-referrer"
+                                      onError={(event) => event.currentTarget.remove()}
+                                    />
+                                  )}
+                                </span>
                                 <span>{member.username}</span>
                               </li>
                             ))}

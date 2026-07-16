@@ -25,6 +25,18 @@ function safeText(value: unknown, maxLength: number, fallback: string) {
   return (text || fallback).slice(0, maxLength)
 }
 
+function discordAvatarUrl(value: unknown) {
+  if (typeof value !== 'string') return null
+
+  try {
+    const url = new URL(value)
+    const allowedHosts = new Set(['cdn.discordapp.com', 'media.discordapp.net'])
+    return url.protocol === 'https:' && allowedHosts.has(url.hostname) ? url.toString() : null
+  } catch {
+    return null
+  }
+}
+
 function errorResponse() {
   return Response.json(
     { error: 'discord_unavailable' },
@@ -81,7 +93,9 @@ export async function GET() {
             const rawStatus = stringValue(member.status, 'offline')
             const status = ['online', 'idle', 'dnd', 'offline'].includes(rawStatus) ? rawStatus : 'offline'
             return {
+              id: safeText(member.id, 32, 'discord-member'),
               username: safeText(member.username, 64, 'Discord member'),
+              avatarUrl: discordAvatarUrl(member.avatar_url),
               status,
             }
           })
