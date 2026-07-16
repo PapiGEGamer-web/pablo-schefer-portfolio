@@ -20,7 +20,7 @@ export type Community = {
   metric: string
   membersApprox?: number
   onlineApprox?: number
-  accent: 'amber' | 'cyan' | 'violet'
+  accent: 'amber' | 'blue' | 'cyan' | 'green' | 'red' | 'violet'
   visual: CommunityVisual
 }
 
@@ -32,10 +32,10 @@ export const communities: Community[] = [
     guildId: '1106879710744543303',
     href: 'https://discord.gg/fnlb',
     current: true,
-    metric: '≈60K',
-    membersApprox: 59_999,
+    metric: '60K',
+    membersApprox: 60_000,
     onlineApprox: 8_422,
-    accent: 'amber',
+    accent: 'blue',
     visual: {
       logo: communityAssets.fnlbLogo,
       cover: communityAssets.fnlbCover,
@@ -50,8 +50,9 @@ export const communities: Community[] = [
     guildId: '1044520223648256011',
     href: 'https://www.nategentile.com/',
     current: true,
-    metric: 'TECH',
-    accent: 'cyan',
+    metric: '50K+',
+    membersApprox: 50_000,
+    accent: 'green',
     visual: {
       logo: communityAssets.nateLogo,
       cover: communityAssets.nateCover,
@@ -67,11 +68,12 @@ export const communities: Community[] = [
     href: '/comunidades/edgar-pons',
     internal: true,
     current: true,
-    metric: 'LIVE',
-    accent: 'violet',
+    metric: '30K+',
+    membersApprox: 30_000,
+    accent: 'blue',
     visual: {
       logo: communityAssets.edgarLogo,
-      cover: communityAssets.edgarPonsCover,
+      cover: communityAssets.edgarBanner,
       alt: { es: 'Identidad visual de la comunidad de Edgar Pons', en: 'Edgar Pons community visual identity' },
       focus: 'center',
     },
@@ -86,7 +88,7 @@ export const communities: Community[] = [
     metric: '103K+',
     membersApprox: 103_192,
     onlineApprox: 18_510,
-    accent: 'cyan',
+    accent: 'violet',
     visual: {
       logo: communityAssets.gw2Logo,
       cover: communityAssets.gw2Cover,
@@ -103,7 +105,7 @@ export const communities: Community[] = [
     current: true,
     metric: '50K+',
     membersApprox: 50_000,
-    accent: 'violet',
+    accent: 'red',
     visual: {
       logo: communityAssets.kernelosLogo,
       cover: '/media/projects/kernelos-cover.webp',
@@ -119,7 +121,7 @@ export const communities: Community[] = [
     href: 'https://discord.gg/valorantesp',
     current: false,
     metric: '98K+',
-    accent: 'amber',
+    accent: 'red',
     visual: {
       logo: communityAssets.valorantEsLogo,
       cover: communityAssets.valorantEsCover,

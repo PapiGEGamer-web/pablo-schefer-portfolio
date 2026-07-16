@@ -262,7 +262,7 @@ export const copy: Record<Locale, SiteCopy> = {
       proof: [
         {
           type: 'Producto · Comunidad',
-          metric: '≈60K',
+          metric: '60K',
           title: 'FNLB',
           text: 'Colaboro en el ecosistema FNLB, una plataforma de lobby bots para Fortnite donde producto, soporte y comunidad avanzan juntos.',
           link: 'https://fnlb.net/',
@@ -463,7 +463,7 @@ export const copy: Record<Locale, SiteCopy> = {
       proofTitle: 'Where I contribute. What I help build.',
       proofIntro: 'Collaborations presented with context and official links—without inflated credentials.',
       proof: [
-        { type: 'Product · Community', metric: '≈60K', title: 'FNLB', text: 'I collaborate within the FNLB ecosystem, a Fortnite lobby-bot platform where product, support and community evolve together.', link: 'https://fnlb.net/', linkLabel: 'Discover FNLB', image: communityAssets.fnlbCover, imageAlt: 'Blue FNLB visual identity' },
+        { type: 'Product · Community', metric: '60K', title: 'FNLB', text: 'I collaborate within the FNLB ecosystem, a Fortnite lobby-bot platform where product, support and community evolve together.', link: 'https://fnlb.net/', linkLabel: 'Discover FNLB', image: communityAssets.fnlbCover, imageAlt: 'Blue FNLB visual identity' },
         { type: 'Project · Community', metric: '50K+', title: 'KernelOS', text: 'I collaborate within the KernelOS ecosystem: a Custom OS for gaming, low latency and a Discord community. Its historic server passed 1,500,000 members; after it closed, the new one has more than 50,000.', link: 'https://kernelos.org/', linkLabel: 'View KernelOS', image: '/media/projects/kernelos-cover.webp', imageAlt: 'Dark KernelOS background with an oni mask' },
         { type: 'Discord · Operations', metric: '06+', title: 'Community network', text: 'Six featured public experiences plus other current and previous roles across gaming, technology and creators.', link: '/comunidades', linkLabel: 'Explore communities', image: communityAssets.edgarPonsCover, imageAlt: 'Edgar Pons community visual identity', internal: true },
       ],

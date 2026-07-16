@@ -63,7 +63,7 @@ export function CommunityCard({ community, content, locale, index = 0, compact =
       <strong>{community.metric}</strong>
       <h3>{community.shortName}</h3>
       <p>{copy.text}</p>
-      {!compact && (community.membersApprox || community.onlineApprox) && (
+      {(community.membersApprox || community.onlineApprox) && (
         <div className="community-card__numbers">
           {community.membersApprox && <span>{new Intl.NumberFormat(locale).format(community.membersApprox)} <small>{content.common.members}</small></span>}
           {community.onlineApprox && <span>{new Intl.NumberFormat(locale).format(community.onlineApprox)} <small>{content.common.online}</small></span>}

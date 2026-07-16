@@ -2023,6 +2023,18 @@ h3 {
   background: radial-gradient(380px circle at var(--card-x) var(--card-y), rgba(88, 101, 242, 0.16), transparent 56%);
 }
 
+.community-card--blue::before {
+  background: radial-gradient(380px circle at var(--card-x) var(--card-y), rgba(44, 135, 255, 0.2), transparent 56%);
+}
+
+.community-card--green::before {
+  background: radial-gradient(380px circle at var(--card-x) var(--card-y), rgba(118, 220, 83, 0.16), transparent 56%);
+}
+
+.community-card--red::before {
+  background: radial-gradient(380px circle at var(--card-x) var(--card-y), rgba(255, 70, 85, 0.18), transparent 56%);
+}
+
 .community-card:hover {
   border-color: rgba(129, 216, 204, 0.3);
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
@@ -2039,6 +2051,18 @@ h3 {
 
 .community-card--violet:hover {
   border-color: rgba(88, 101, 242, 0.48);
+}
+
+.community-card--blue:hover {
+  border-color: rgba(44, 135, 255, 0.52);
+}
+
+.community-card--green:hover {
+  border-color: rgba(118, 220, 83, 0.42);
+}
+
+.community-card--red:hover {
+  border-color: rgba(255, 70, 85, 0.48);
 }
 
 .community-card__link {
@@ -2157,6 +2181,18 @@ h3 {
 
 .community-card--cyan > .community-card__link > strong {
   color: var(--cyan);
+}
+
+.community-card--blue > .community-card__link > strong {
+  color: #63a9ff;
+}
+
+.community-card--green > .community-card__link > strong {
+  color: #9be86a;
+}
+
+.community-card--red > .community-card__link > strong {
+  color: #ff6672;
 }
 
 .community-card--violet > .community-card__link > strong {
