@@ -134,7 +134,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                   transition={{ duration: 0.18 }}
                 >
                   <Link to="/#fnlb" role="menuitem" onClick={closeNavigation}><span>{content.nav.fnlb}</span><small>{locale === 'es' ? 'Comunidad' : 'Community'}</small></Link>
-                  <Link to="/#kernelos" role="menuitem" onClick={closeNavigation}><span>{content.nav.kernelos}</span><small>CustomOS</small></Link>
+                  <Link to="/#kernelos" role="menuitem" onClick={closeNavigation}><span>{content.nav.kernelos}</span><small>{locale === 'es' ? 'Comunidad · CustomOS' : 'Community · Custom OS'}</small></Link>
                 </motion.div>
               )}
             </AnimatePresence>

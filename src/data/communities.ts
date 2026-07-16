@@ -1,6 +1,6 @@
 import { communityAssets } from './communityAssets'
 
-export type CommunityKey = 'fnlb' | 'nate' | 'edgar' | 'gw2' | 'valorant'
+export type CommunityKey = 'fnlb' | 'nate' | 'edgar' | 'kernelos' | 'gw2' | 'valorant'
 
 type CommunityVisual = {
   logo: string
@@ -88,9 +88,26 @@ export const communities: Community[] = [
     onlineApprox: 18_510,
     accent: 'cyan',
     visual: {
-      logo: communityAssets.gw2Visual,
-      cover: communityAssets.gw2Visual,
+      logo: communityAssets.gw2Logo,
+      cover: communityAssets.gw2Cover,
       alt: { es: 'Identidad visual de GW2, Gatitos 2', en: 'GW2, Gatitos 2 visual identity' },
+      focus: 'center',
+    },
+  },
+  {
+    id: 'kernelos',
+    name: 'KernelOS',
+    shortName: 'KernelOS',
+    guildId: 'kernelos-community',
+    href: 'https://kernelos.org/',
+    current: true,
+    metric: '50K+',
+    membersApprox: 50_000,
+    accent: 'violet',
+    visual: {
+      logo: communityAssets.kernelosLogo,
+      cover: '/media/projects/kernelos-cover.webp',
+      alt: { es: 'Logo de KernelOS con máscara oni', en: 'KernelOS oni mask logo' },
       focus: 'center',
     },
   },
@@ -104,8 +121,8 @@ export const communities: Community[] = [
     metric: '98K+',
     accent: 'amber',
     visual: {
-      logo: communityAssets.valorantEsVisual,
-      cover: communityAssets.valorantEsVisual,
+      logo: communityAssets.valorantEsLogo,
+      cover: communityAssets.valorantEsCover,
       alt: { es: 'Identidad visual de VALORANT ESP', en: 'VALORANT ESP visual identity' },
       focus: 'center',
     },
