@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ChevronDown, Gamepad2, Menu, Music2, Radio, Tv, X } from 'lucide-react'
+import { ChevronDown, Gamepad2, Menu, Music2, Radio, Tv, UserRound, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
+import { useAuth } from '../contexts/AuthContext'
 
 type SiteHeaderProps = {
   content: SiteCopy
@@ -18,6 +19,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
   const [menuOpen, setMenuOpen] = useState(false)
   const [mobileGroup, setMobileGroup] = useState<DropdownId>(null)
   const headerRef = useRef<HTMLElement>(null)
+  const auth = useAuth()
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
@@ -179,6 +181,10 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
         </nav>
 
         <div className="header-actions">
+          <Link className={`account-trigger${auth.user ? ' is-authenticated' : ''}`} to="/cuenta" onClick={closeNavigation} aria-label={locale === 'es' ? 'Cuenta e inicio de sesión' : 'Account and sign in'}>
+            <UserRound size={17} aria-hidden="true" />
+            {auth.user && <span aria-hidden="true" />}
+          </Link>
           <div className="language-picker">
             <button
               className="language-picker__trigger"
@@ -249,6 +255,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
           >
             <NavLink to="/" end onClick={closeNavigation}><span>01</span>{content.nav.home}</NavLink>
             <NavLink to="/perfil" onClick={closeNavigation}><span>02</span>{content.nav.profile}</NavLink>
+            <NavLink to="/cuenta" onClick={closeNavigation}><span>•</span>{locale === 'es' ? 'Cuenta' : 'Account'}</NavLink>
 
             <div className="mobile-menu__group">
               <button type="button" aria-expanded={mobileGroup === 'communities'} onClick={() => toggleMobileGroup('communities')}>

@@ -245,7 +245,8 @@ h3 {
 }
 
 .language-picker__trigger,
-.menu-trigger {
+.menu-trigger,
+.account-trigger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -373,6 +374,10 @@ h3 {
   width: min(100%, 1440px);
   margin: 2rem auto 0;
 }
+
+.account-trigger { position: relative; width: 38px; aspect-ratio: 1; border: 1px solid var(--line); border-radius: 50%; transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease, transform 0.25s ease; }
+.account-trigger:hover { color: var(--amber); background: rgba(255, 255, 255, 0.05); border-color: rgba(240, 162, 74, 0.42); transform: translateY(-1px); }
+.account-trigger > span { position: absolute; top: 5px; right: 4px; width: 7px; aspect-ratio: 1; background: #55d98a; border: 2px solid #111314; border-radius: 50%; box-shadow: 0 0 9px rgba(85, 217, 138, 0.6); }
 
 .eyebrow {
   color: var(--amber);

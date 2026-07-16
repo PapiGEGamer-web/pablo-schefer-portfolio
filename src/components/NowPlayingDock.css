@@ -19,7 +19,7 @@
 .now-dock[data-corner='top-right'] { top: calc(118px + (var(--dock-stack-index, 0) * 330px)); right: 20px; bottom: auto; left: auto; }
 .now-dock[data-corner='bottom-left'] { top: auto; right: auto; bottom: calc(20px + (var(--dock-stack-index, 0) * 330px)); left: 20px; }
 .now-dock[data-corner='bottom-right'] { top: auto; right: 20px; bottom: calc(20px + (var(--dock-stack-index, 0) * 330px)); left: auto; }
-.now-dock.is-dragging { cursor: grabbing; transition: left 0.16s cubic-bezier(0.22, 1, 0.36, 1), top 0.16s cubic-bezier(0.22, 1, 0.36, 1); }
+.now-dock.is-dragging { cursor: grabbing; transition: none; will-change: left, top; }
 
 .mobile-nav-open .now-dock {
   visibility: hidden;

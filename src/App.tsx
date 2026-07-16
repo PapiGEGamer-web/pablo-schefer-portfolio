@@ -16,6 +16,7 @@ import { ProfilePage } from './pages/ProfilePage'
 import { GamesAndGearPage } from './pages/GamesAndGearPage'
 import { MusicPage } from './pages/MusicPage'
 import { AnimePage } from './pages/AnimePage'
+import { AccountPage } from './pages/AccountPage'
 
 const productionOrigin = 'https://pablo-schefer.vercel.app'
 
@@ -27,6 +28,7 @@ function getSeo(content: SiteCopy, pathname: string) {
   if (pathname === '/juegos-y-equipo') return content.seo.gamesGear
   if (pathname === '/musica') return content.seo.music
   if (pathname === '/anime') return content.seo.anime
+  if (pathname === '/cuenta') return { title: 'Cuenta — Pablo Schefer', description: 'Registro, verificación por correo e inicio de sesión en el portfolio de Pablo Schefer.' }
   return content.seo.notFound
 }
 
@@ -114,6 +116,7 @@ function App() {
             <Route path="/juegos-y-equipo" element={<GamesAndGearPage content={content} locale={locale} />} />
             <Route path="/musica" element={<MusicPage content={content} locale={locale} />} />
             <Route path="/anime" element={<AnimePage content={content} locale={locale} />} />
+            <Route path="/cuenta" element={<AccountPage locale={locale} />} />
             <Route path="*" element={<NotFoundPage content={content} />} />
           </Routes>
         </motion.main>
