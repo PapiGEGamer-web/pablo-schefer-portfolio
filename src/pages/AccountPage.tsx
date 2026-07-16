@@ -26,6 +26,8 @@ function messageFor(error: unknown, locale: Locale) {
   const text = error instanceof Error ? error.message : ''
   if (text === 'auth_not_configured') return locale === 'es' ? 'El servicio de cuentas todavía no está conectado.' : 'The account service is not connected yet.'
   if (/invalid login credentials/i.test(text)) return locale === 'es' ? 'Correo o contraseña incorrectos.' : 'Incorrect email or password.'
+  if (/invalid_email/i.test(text)) return locale === 'es' ? 'Introduce un correo válido.' : 'Enter a valid email address.'
+  if (/weak_password/i.test(text)) return locale === 'es' ? 'La contraseña debe tener al menos 12 caracteres.' : 'Password must be at least 12 characters.'
   if (/token.*expired|expired.*token|invalid.*token/i.test(text)) return locale === 'es' ? 'El código es incorrecto o ha caducado.' : 'The code is invalid or has expired.'
   if (/rate limit/i.test(text)) return locale === 'es' ? 'Demasiados intentos. Espera un momento.' : 'Too many attempts. Please wait a moment.'
   return text || (locale === 'es' ? 'No se ha podido completar la operación.' : 'The operation could not be completed.')
@@ -76,7 +78,7 @@ export function AccountPage({ locale }: { locale: Locale }) {
     event.preventDefault()
     if (mode === 'login') void run(() => auth.signIn(email.trim(), password))
     if (mode === 'register') void run(async () => {
-      if (password.length < 8) throw new Error(locale === 'es' ? 'La contraseña debe tener al menos 8 caracteres.' : 'Password must be at least 8 characters.')
+      if (password.length < 12) throw new Error(locale === 'es' ? 'La contraseña debe tener al menos 12 caracteres.' : 'Password must be at least 12 characters.')
       if (cleanUsername(username).length < 3) throw new Error(labels.usernameRequired)
       await auth.sendRegistrationCode(email.trim())
       setMode('verify'); setNotice(labels.sent)
@@ -128,7 +130,7 @@ export function AccountPage({ locale }: { locale: Locale }) {
                 <h2>{mode === 'login' ? labels.login : mode === 'register' ? labels.register : labels.verify}</h2>
                 {mode !== 'login' && <label><span><UserRound size={15} />{labels.username}</span><input autoComplete="nickname" minLength={3} maxLength={32} required value={username} onChange={(event) => setUsername(event.target.value)} placeholder={labels.usernamePlaceholder} readOnly={mode === 'verify'} /></label>}
                 <label><span><Mail size={15} />{labels.email}</span><input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} readOnly={mode === 'verify'} /></label>
-                {mode !== 'verify' && <label><span><KeyRound size={15} />{labels.password}</span><input type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} minLength={8} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>}
+                {mode !== 'verify' && <label><span><KeyRound size={15} />{labels.password}</span><input type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} minLength={mode === 'register' ? 12 : 8} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>}
                 {mode === 'verify' && <label><span><ShieldCheck size={15} />{labels.code}</span><input className="account-code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{8}" minLength={8} maxLength={8} required value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, '').slice(0, 8))} /></label>}
                 {notice && <p className="account-notice">{notice}</p>}{error && <p className="account-error">{error}</p>}
                 <button className="account-submit" type="submit" disabled={busy}>{busy ? '…' : mode === 'login' ? labels.enter : mode === 'register' ? labels.send : labels.confirm}<ArrowRight size={17} /></button>

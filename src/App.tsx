@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'motion/react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { AmbientField } from './components/AmbientField'
@@ -8,15 +8,16 @@ import { NowPlayingDock } from './components/NowPlayingDock'
 import { AnimeNowDock } from './components/AnimeNowDock'
 import { EasterEggs } from './components/EasterEggs'
 import { copy, type Locale, type SiteCopy } from './content'
-import { CommunitiesPage } from './pages/CommunitiesPage'
-import { EdgarPonsPage } from './pages/EdgarPonsPage'
 import { HomePage } from './pages/HomePage'
-import { NotFoundPage } from './pages/NotFoundPage'
-import { ProfilePage } from './pages/ProfilePage'
-import { GamesAndGearPage } from './pages/GamesAndGearPage'
-import { MusicPage } from './pages/MusicPage'
-import { AnimePage } from './pages/AnimePage'
-import { AccountPage } from './pages/AccountPage'
+
+const ProfilePage = lazy(() => import('./pages/ProfilePage').then((module) => ({ default: module.ProfilePage })))
+const CommunitiesPage = lazy(() => import('./pages/CommunitiesPage').then((module) => ({ default: module.CommunitiesPage })))
+const EdgarPonsPage = lazy(() => import('./pages/EdgarPonsPage').then((module) => ({ default: module.EdgarPonsPage })))
+const GamesAndGearPage = lazy(() => import('./pages/GamesAndGearPage').then((module) => ({ default: module.GamesAndGearPage })))
+const MusicPage = lazy(() => import('./pages/MusicPage').then((module) => ({ default: module.MusicPage })))
+const AnimePage = lazy(() => import('./pages/AnimePage').then((module) => ({ default: module.AnimePage })))
+const AccountPage = lazy(() => import('./pages/AccountPage').then((module) => ({ default: module.AccountPage })))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })))
 
 const productionOrigin = 'https://pablo-schefer.vercel.app'
 
@@ -60,6 +61,7 @@ function App() {
   const reduceMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 130, damping: 28, mass: 0.25 })
+  const pointerFrame = useRef(0)
 
   useEffect(() => {
     document.documentElement.lang = locale
@@ -108,11 +110,19 @@ function App() {
 
   useEffect(() => {
     const onPointerMove = (event: PointerEvent) => {
-      document.documentElement.style.setProperty('--pointer-x', `${event.clientX}px`)
-      document.documentElement.style.setProperty('--pointer-y', `${event.clientY}px`)
+      if (pointerFrame.current) return
+      const { clientX, clientY } = event
+      pointerFrame.current = window.requestAnimationFrame(() => {
+        document.documentElement.style.setProperty('--pointer-x', `${clientX}px`)
+        document.documentElement.style.setProperty('--pointer-y', `${clientY}px`)
+        pointerFrame.current = 0
+      })
     }
     window.addEventListener('pointermove', onPointerMove, { passive: true })
-    return () => window.removeEventListener('pointermove', onPointerMove)
+    return () => {
+      window.removeEventListener('pointermove', onPointerMove)
+      window.cancelAnimationFrame(pointerFrame.current)
+    }
   }, [])
 
   return (
@@ -135,17 +145,19 @@ function App() {
           exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -12 }}
           transition={{ duration: reduceMotion ? 0 : 0.38, ease: [0.16, 1, 0.3, 1] }}
         >
-          <Routes location={location}>
-            <Route path="/" element={<HomePage content={content} locale={locale} />} />
-            <Route path="/perfil" element={<ProfilePage content={content} locale={locale} />} />
-            <Route path="/comunidades" element={<CommunitiesPage content={content} locale={locale} />} />
-            <Route path="/comunidades/edgar-pons" element={<EdgarPonsPage content={content} locale={locale} />} />
-            <Route path="/juegos-y-equipo" element={<GamesAndGearPage content={content} locale={locale} />} />
-            <Route path="/musica" element={<MusicPage content={content} locale={locale} />} />
-            <Route path="/anime" element={<AnimePage content={content} locale={locale} />} />
-            <Route path="/cuenta" element={<AccountPage locale={locale} />} />
-            <Route path="*" element={<NotFoundPage content={content} />} />
-          </Routes>
+          <Suspense fallback={<div className="route-loader" role="status" aria-label={locale === 'es' ? 'Cargando página' : 'Loading page'}><span /></div>}>
+            <Routes location={location}>
+              <Route path="/" element={<HomePage content={content} locale={locale} />} />
+              <Route path="/perfil" element={<ProfilePage content={content} locale={locale} />} />
+              <Route path="/comunidades" element={<CommunitiesPage content={content} locale={locale} />} />
+              <Route path="/comunidades/edgar-pons" element={<EdgarPonsPage content={content} locale={locale} />} />
+              <Route path="/juegos-y-equipo" element={<GamesAndGearPage content={content} locale={locale} />} />
+              <Route path="/musica" element={<MusicPage content={content} locale={locale} />} />
+              <Route path="/anime" element={<AnimePage content={content} locale={locale} />} />
+              <Route path="/cuenta" element={<AccountPage locale={locale} />} />
+              <Route path="*" element={<NotFoundPage content={content} />} />
+            </Routes>
+          </Suspense>
         </motion.main>
       </AnimatePresence>
 

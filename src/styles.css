@@ -1562,6 +1562,29 @@ h3 {
   overflow: clip;
 }
 
+.route-loader {
+  min-height: 58vh;
+  display: grid;
+  place-items: center;
+}
+
+.route-loader span {
+  width: 34px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: route-loader-spin 0.75s linear infinite;
+}
+
+@keyframes route-loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-loader span { animation: none; }
+}
+
 .section,
 .page-hero,
 .community-philosophy,
@@ -3501,4 +3524,21 @@ h3 {
     transition-duration: 0.01ms !important;
   }
   .pointer-glow { display: none; }
+}
+
+@media (pointer: coarse) {
+  .pointer-glow { display: none; }
+}
+
+@supports (content-visibility: auto) {
+  .capabilities,
+  .community-preview,
+  .proof,
+  .method,
+  .contact,
+  .community-philosophy,
+  .edgar-integration {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 900px;
+  }
 }

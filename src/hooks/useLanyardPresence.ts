@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { createContext, createElement, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 
 export const discordUserId = '1179009666110476328'
 
@@ -58,7 +58,7 @@ export function formatLanyardTime(milliseconds: number) {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
-export function useLanyardPresence() {
+function useLanyardPresenceSource() {
   const [phase, setPhase] = useState<LanyardConnectionPhase>('connecting')
   const [presence, setPresence] = useState<LanyardPresence | null>(null)
   const [clock, setClock] = useState(0)
@@ -80,7 +80,9 @@ export function useLanyardPresence() {
 
       socket.addEventListener('message', (event) => {
         try {
-          const payload = JSON.parse(String(event.data)) as LanyardEnvelope
+          const raw = String(event.data)
+          if (raw.length > 256_000) return
+          const payload = JSON.parse(raw) as LanyardEnvelope
 
           if (payload.op === 1) {
             const hello = payload.d as { heartbeat_interval?: number }
@@ -143,11 +145,18 @@ export function useLanyardPresence() {
     }
 
     void refresh()
-    const restFallback = window.setInterval(() => void refresh(), 15_000)
+    const restFallback = window.setInterval(() => {
+      if (!document.hidden) void refresh()
+    }, 30_000)
+    const refreshWhenVisible = () => {
+      if (!document.hidden) void refresh()
+    }
+    document.addEventListener('visibilitychange', refreshWhenVisible)
 
     return () => {
       stopped = true
       window.clearInterval(restFallback)
+      document.removeEventListener('visibilitychange', refreshWhenVisible)
       clearHeartbeat()
       socket?.close()
     }
@@ -175,4 +184,19 @@ export function useLanyardPresence() {
     socketLive,
     track: presence?.spotify ?? null,
   }
+}
+
+type LanyardContextValue = ReturnType<typeof useLanyardPresenceSource>
+
+const LanyardContext = createContext<LanyardContextValue | null>(null)
+
+export function LanyardProvider({ children }: { children: ReactNode }) {
+  const value = useLanyardPresenceSource()
+  return createElement(LanyardContext.Provider, { value }, children)
+}
+
+export function useLanyardPresence() {
+  const value = useContext(LanyardContext)
+  if (!value) throw new Error('useLanyardPresence must be used inside LanyardProvider')
+  return value
 }

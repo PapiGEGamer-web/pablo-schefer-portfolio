@@ -25,7 +25,7 @@ export const games: Game[] = [
     id: 'gta-vi',
     title: 'Grand Theft Auto VI',
     status: 'rotation',
-    image: '/games/grand-theft-auto-vi.jpg',
+    image: '/games/grand-theft-auto-vi.webp',
     accent: '#f38ab8',
     description: {
       es: 'Crimen, personajes cruzados y libertad de mundo abierto en Vice City y el estado de Leonida.',
@@ -70,7 +70,7 @@ export const games: Game[] = [
     id: 'fortnite',
     title: 'Fortnite',
     status: 'library',
-    image: '/games/fortnite.jpg',
+    image: '/games/fortnite.webp',
     mark: 'FN',
     accent: '#9b68ff',
     description: {
@@ -86,7 +86,7 @@ export const games: Game[] = [
     id: 'valorant',
     title: 'VALORANT',
     status: 'library',
-    image: '/games/valorant.jpg',
+    image: '/games/valorant.webp',
     mark: 'V',
     accent: '#ff4655',
     description: {
@@ -208,7 +208,7 @@ export const games: Game[] = [
     id: 'geoguessr',
     title: 'GeoGuessr',
     status: 'library',
-    image: '/games/geoguessr.jpg',
+    image: '/games/geoguessr.webp',
     mark: 'GEO',
     accent: '#e74755',
     description: {
@@ -239,7 +239,7 @@ export const games: Game[] = [
     id: 'minecraft',
     title: 'Minecraft',
     status: 'library',
-    image: '/games/minecraft.jpg',
+    image: '/games/minecraft.webp',
     mark: 'MC',
     accent: '#67a647',
     description: {
@@ -255,7 +255,7 @@ export const games: Game[] = [
     id: 'genshin-impact',
     title: 'Genshin Impact',
     status: 'library',
-    image: '/games/genshin-impact.jpg',
+    image: '/games/genshin-impact.webp',
     mark: 'GI',
     accent: '#b9d7ff',
     description: {
@@ -301,7 +301,7 @@ export const games: Game[] = [
     id: 'roblox',
     title: 'Roblox',
     status: 'library',
-    image: '/games/roblox.jpg',
+    image: '/games/roblox.webp',
     mark: 'R',
     accent: '#ffffff',
     description: {
@@ -317,7 +317,7 @@ export const games: Game[] = [
     id: 'zenless-zone-zero',
     title: 'Zenless Zone Zero',
     status: 'library',
-    image: '/games/zenless-zone-zero.jpg',
+    image: '/games/zenless-zone-zero.webp',
     mark: 'ZZZ',
     accent: '#d6ff3f',
     description: {

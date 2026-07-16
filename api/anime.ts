@@ -1,3 +1,5 @@
+import { apiSecurityHeaders, enforceRateLimit, jsonResponse } from '../server/security.js'
+
 const anilistEndpoint = 'https://graphql.anilist.co'
 const requestTimeoutMs = 6_000
 const maxTitleLength = 120
@@ -124,16 +126,7 @@ function cleanSynopsis(value: unknown) {
 }
 
 function errorResponse(error: string, status: number) {
-  return Response.json(
-    { error },
-    {
-      status,
-      headers: {
-        'Cache-Control': 'no-store',
-        'X-Content-Type-Options': 'nosniff',
-      },
-    },
-  )
+  return jsonResponse({ error }, status)
 }
 
 function validatedTitle(request: Request) {
@@ -156,6 +149,8 @@ function validatedTitle(request: Request) {
 }
 
 export async function GET(request: Request) {
+  const limited = enforceRateLimit(request, { scope: 'anime', limit: 150, windowMs: 60_000 })
+  if (limited) return limited
   const title = validatedTitle(request)
   if (!title) return errorResponse('invalid_title', 400)
 
@@ -235,9 +230,9 @@ export async function GET(request: Request) {
       },
       {
         headers: {
+          ...apiSecurityHeaders,
           'Cache-Control': 'public, max-age=300, s-maxage=86400, stale-while-revalidate=604800, stale-if-error=604800',
           'Vercel-CDN-Cache-Control': 'max-age=86400, stale-while-revalidate=604800, stale-if-error=604800',
-          'X-Content-Type-Options': 'nosniff',
         },
       },
     )

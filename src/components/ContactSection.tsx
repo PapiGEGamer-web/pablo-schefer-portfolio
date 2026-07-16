@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { ArrowUpRight, Send } from 'lucide-react'
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, useEffect, useRef, useState } from 'react'
 import type { SiteCopy } from '../content'
 import { MagneticLink } from './MagneticLink'
 
@@ -17,6 +17,11 @@ export function ContactSection({ content }: { content: SiteCopy }) {
   const reduceMotion = useReducedMotion()
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState('')
+  const startedAt = useRef(0)
+
+  useEffect(() => {
+    startedAt.current = Date.now()
+  }, [])
   const reveal = {
     initial: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 28 },
     whileInView: { opacity: 1, y: 0 },
@@ -41,11 +46,13 @@ export function ContactSection({ content }: { content: SiteCopy }) {
           email: formData.get('email'),
           message: formData.get('message'),
           company: formData.get('company'),
+          startedAt: startedAt.current,
         }),
       })
 
       if (!response.ok) throw new Error('send_failed')
       form.reset()
+      startedAt.current = Date.now()
       setStatus('sent')
     } catch {
       setStatus('error')

@@ -20,14 +20,18 @@ export function AmbientField() {
     if (!context) return
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const lowPower = window.matchMedia('(pointer: coarse), (max-width: 820px)').matches
     const pointer = { x: -1000, y: -1000 }
     let points: Point[] = []
     let frame = 0
     let width = 0
     let height = 0
+    let lastDraw = 0
 
     const createPoints = () => {
-      const count = Math.min(52, Math.max(22, Math.floor((width * height) / 28000)))
+      const maximum = lowPower ? 34 : 52
+      const minimum = lowPower ? 16 : 22
+      const count = Math.min(maximum, Math.max(minimum, Math.floor((width * height) / (lowPower ? 38_000 : 28_000))))
       points = Array.from({ length: count }, (_, index) => ({
         x: (index * 137.5) % width,
         y: (index * 83.7) % height,
@@ -39,7 +43,7 @@ export function AmbientField() {
     }
 
     const resize = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2)
+      const ratio = Math.min(window.devicePixelRatio || 1, lowPower ? 1.5 : 2)
       width = window.innerWidth
       height = window.innerHeight
       canvas.width = width * ratio
@@ -56,6 +60,11 @@ export function AmbientField() {
     }
 
     const draw = (time = 0) => {
+      if (!reduceMotion && lowPower && time - lastDraw < 32) {
+        frame = window.requestAnimationFrame(draw)
+        return
+      }
+      lastDraw = time
       context.clearRect(0, 0, width, height)
 
       points.forEach((point, index) => {

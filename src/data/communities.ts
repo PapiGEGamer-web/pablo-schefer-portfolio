@@ -5,6 +5,8 @@ export type CommunityKey = 'fnlb' | 'nate' | 'edgar' | 'kernelos' | 'gw2' | 'val
 type CommunityVisual = {
   logo: string
   cover: string
+  staticLogo?: string
+  staticCover?: string
   alt: { es: string; en: string }
   focus?: string
 }
@@ -40,6 +42,8 @@ export const communities: Community[] = [
     visual: {
       logo: communityAssets.fnlbLogo,
       cover: communityAssets.fnlbCover,
+      staticLogo: communityAssets.fnlbLogoStatic,
+      staticCover: communityAssets.fnlbCoverStatic,
       alt: { es: 'Identidad visual de FNLB', en: 'FNLB visual identity' },
       focus: 'center',
     },
@@ -97,6 +101,7 @@ export const communities: Community[] = [
     visual: {
       logo: communityAssets.gw2Logo,
       cover: communityAssets.gw2Cover,
+      staticLogo: communityAssets.gw2LogoStatic,
       alt: { es: 'Identidad visual de GW2, Gatitos 2', en: 'GW2, Gatitos 2 visual identity' },
       focus: 'center',
     },
@@ -130,6 +135,7 @@ export const communities: Community[] = [
     visual: {
       logo: communityAssets.valorantEsLogo,
       cover: communityAssets.valorantEsCover,
+      staticLogo: communityAssets.valorantEsLogoStatic,
       alt: { es: 'Identidad visual de VALORANT ESP', en: 'VALORANT ESP visual identity' },
       focus: 'center',
     },

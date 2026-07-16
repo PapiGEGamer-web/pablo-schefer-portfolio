@@ -40,7 +40,7 @@ export function CommunityCard({ community, content, locale, index = 0, compact =
       <figure className="community-card__visual">
         <img
           className="community-card__cover"
-          src={community.visual.cover}
+          src={compact ? community.visual.staticCover ?? community.visual.cover : community.visual.cover}
           alt=""
           width="1280"
           height="720"
@@ -51,7 +51,7 @@ export function CommunityCard({ community, content, locale, index = 0, compact =
         <span className="community-card__visual-shade" aria-hidden="true" />
         <span className="community-card__logo">
           <img
-            src={community.visual.logo}
+            src={compact ? community.visual.staticLogo ?? community.visual.logo : community.visual.logo}
             alt={community.visual.alt[locale]}
             width="200"
             height="200"

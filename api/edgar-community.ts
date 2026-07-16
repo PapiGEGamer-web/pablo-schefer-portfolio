@@ -1,3 +1,5 @@
+import { apiSecurityHeaders, enforceRateLimit, jsonResponse } from '../server/security.js'
+
 const discordApi = 'https://discord.com/api/v10'
 const edgarGuildId = '822550944608026645'
 const snapshotRefreshSeconds = 15
@@ -38,19 +40,12 @@ function discordAvatarUrl(value: unknown) {
 }
 
 function errorResponse() {
-  return Response.json(
-    { error: 'discord_unavailable' },
-    {
-      status: 503,
-      headers: {
-        'Cache-Control': 'no-store',
-        'X-Content-Type-Options': 'nosniff',
-      },
-    },
-  )
+  return jsonResponse({ error: 'discord_unavailable' }, 503)
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const limited = enforceRateLimit(request, { scope: 'edgar-community', limit: 60, windowMs: 60_000 })
+  if (limited) return limited
   try {
     // Discord gives the stable widget URL a five-minute CDN lifetime. A shared,
     // time-bucketed key asks for one fresh public snapshot per interval without
@@ -141,9 +136,9 @@ export async function GET() {
       },
       {
         headers: {
+          ...apiSecurityHeaders,
           'Cache-Control': 'public, max-age=0, s-maxage=10, must-revalidate, stale-if-error=300',
           'Vercel-CDN-Cache-Control': 'max-age=10, must-revalidate, stale-if-error=300',
-          'X-Content-Type-Options': 'nosniff',
         },
       },
     )
