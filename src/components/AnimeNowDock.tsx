@@ -37,11 +37,12 @@ function resolveImage(activity: LanyardActivity) {
 }
 
 type AnimeMetadata = { coverImage?: string; title?: string; score?: number | null }
+type ResolvedAnimeMetadata = { queryTitle: string; anime: AnimeMetadata }
 
 export function AnimeNowDock({ locale }: { locale: Locale }) {
   const reduceMotion = useReducedMotion()
   const { activities } = useLanyardPresence()
-  const [metadata, setMetadata] = useState<AnimeMetadata | null>(null)
+  const [metadata, setMetadata] = useState<ResolvedAnimeMetadata | null>(null)
   const [visible, setVisible] = useState(true)
   const activity = useMemo(() => activities.find(isAnimeActivity) ?? null, [activities])
   const dock = useDockPosition('pablo-portfolio-anime-dock-position', 'bottom-left', 'anime', Boolean(activity))
@@ -53,7 +54,7 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
     const controller = new AbortController()
     void fetch(`/api/anime?title=${encodeURIComponent(title)}`, { signal: controller.signal })
       .then((response) => response.ok ? response.json() as Promise<{ anime?: AnimeMetadata }> : null)
-      .then((payload) => { if (payload?.anime) setMetadata(payload.anime) })
+      .then((payload) => { if (payload?.anime) setMetadata({ queryTitle: title, anime: payload.anime }) })
       .catch(() => undefined)
     return () => controller.abort()
   }, [title])
@@ -63,6 +64,7 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
   const labels = locale === 'es'
     ? { live: 'Anime en directo', source: 'Crunchyroll · Discord', details: 'Ver anime', close: 'Cerrar tarjeta de anime', score: 'Valoración' }
     : { live: 'Anime live', source: 'Crunchyroll · Discord', details: 'View anime', close: 'Close anime card', score: 'Rating' }
+  const resolvedMetadata = metadata?.queryTitle === title ? metadata.anime : null
 
   return (
     <m.aside
@@ -81,12 +83,12 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
       </header>
       <div className="anime-dock__body">
         <div className="anime-dock__art">
-          {metadata?.title === title && (metadata.coverImage || image) ? <img src={metadata.coverImage ?? image} alt="" width="76" height="106" /> : image ? <img src={image} alt="" width="76" height="106" /> : <Tv size={25} aria-hidden="true" />}
+          {resolvedMetadata && (resolvedMetadata.coverImage || image) ? <img src={resolvedMetadata.coverImage ?? image} alt="" width="76" height="106" /> : image ? <img src={image} alt="" width="76" height="106" /> : <Tv size={25} aria-hidden="true" />}
         </div>
         <div className="anime-dock__copy">
-          <strong>{metadata?.title === title ? metadata.title : title}</strong>
+          <strong>{resolvedMetadata?.title ?? title}</strong>
           <span>{[activity.state, labels.source].filter(Boolean).join(' · ')}</span>
-          {metadata?.title === title && metadata.score ? <small>{labels.score} · {metadata.score.toFixed(0)}%</small> : null}
+          {resolvedMetadata?.score !== null && resolvedMetadata?.score !== undefined ? <small>{labels.score} · {resolvedMetadata.score.toFixed(0)}%</small> : null}
         </div>
         <Link to="/anime" className="anime-dock__link" aria-label={labels.details}><ArrowUpRight size={17} aria-hidden="true" /></Link>
       </div>

@@ -37,6 +37,8 @@ export function ContactSection({ content }: { content: SiteCopy }) {
 
     setStatus('sending')
     setError('')
+    const controller = new AbortController()
+    const timeout = window.setTimeout(() => controller.abort(), 12_000)
 
     try {
       const response = await fetch('/api/contact', {
@@ -49,6 +51,7 @@ export function ContactSection({ content }: { content: SiteCopy }) {
           company: formData.get('company'),
           startedAt: startedAt.current,
         }),
+        signal: controller.signal,
       })
 
       if (!response.ok) throw new Error('send_failed')
@@ -58,6 +61,8 @@ export function ContactSection({ content }: { content: SiteCopy }) {
     } catch {
       setStatus('error')
       setError(content.contact.error)
+    } finally {
+      window.clearTimeout(timeout)
     }
   }
 
