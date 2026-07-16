@@ -58,6 +58,8 @@ export function useDockPosition(storageKey: string, defaultCorner: DockCorner, i
 
   const onPointerDown = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (event.pointerType === 'mouse' && event.button !== 0) return
+    const target = event.target
+    if (target instanceof Element && target.closest('button, a, input, textarea, select')) return
     const card = event.currentTarget.closest<HTMLElement>('.now-dock, .anime-dock')
     const bounds = card?.getBoundingClientRect()
     if (!bounds) return

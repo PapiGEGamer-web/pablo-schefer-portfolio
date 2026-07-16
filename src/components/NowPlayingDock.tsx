@@ -62,11 +62,12 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
       style={{ ...dock.style, '--dock-stack-index': dock.stackIndex } as CSSProperties}
       data-placement={placement}
       aria-live="polite"
+      {...dock.dragHandlers}
       initial={reduceMotion ? false : { opacity: 0, y: 22, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: reduceMotion ? 0 : 0.7, duration: reduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
     >
-      <div className="now-dock__bar" {...dock.dragHandlers} title={locale === 'es' ? 'Arrastra para mover' : 'Drag to move'}>
+      <div className="now-dock__bar" title={locale === 'es' ? 'Arrastra desde el centro para mover' : 'Drag from the center to move'}>
         <span className={`now-dock__signal${track ? ' now-dock__signal--live' : ''}`} aria-hidden="true" />
         <span>{status}</span>
         {track && <span className="now-dock__transport">{socketLive ? 'LIVE' : '15S'}</span>}

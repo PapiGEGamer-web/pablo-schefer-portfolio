@@ -69,11 +69,12 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
       data-corner={dock.corner}
       style={{ ...dock.style, '--dock-stack-index': dock.stackIndex } as CSSProperties}
       aria-live="polite"
+      {...dock.dragHandlers}
       initial={reduceMotion ? false : { opacity: 0, x: -18, y: 18 }}
       animate={{ opacity: 1, x: 0, y: 0 }}
       transition={{ duration: reduceMotion ? 0 : 0.42, ease: [0.16, 1, 0.3, 1] }}
     >
-      <header className="anime-dock__bar" {...dock.dragHandlers} title={locale === 'es' ? 'Arrastra para mover' : 'Drag to move'}>
+      <header className="anime-dock__bar" title={locale === 'es' ? 'Arrastra desde el centro para mover' : 'Drag from the center to move'}>
         <span><i aria-hidden="true" />{labels.live}</span>
         <button type="button" onClick={() => setVisible(false)} aria-label={labels.close}><X size={14} aria-hidden="true" /></button>
       </header>
