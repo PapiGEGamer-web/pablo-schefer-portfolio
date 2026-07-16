@@ -10,6 +10,8 @@ type ProofItem = {
   text: string
   link: string
   linkLabel: string
+  image?: string
+  imageAlt?: string
   internal?: boolean
 }
 
@@ -185,8 +187,8 @@ export const copy: Record<Locale, SiteCopy> = {
     },
     seo: {
       home: {
-        title: 'Pablo Schefer Orduña — Discord, Vibecoding y Comunidades',
-        description: 'Portfolio de Pablo Schefer Orduña: moderación en Discord, vibecoding y colaboración en FNLB, KernelOS y comunidades tecnológicas.',
+        title: 'Pablo Schefer — Comunidades, código y cultura digital',
+        description: 'Portfolio de Pablo Schefer: moderación en Discord, vibecoding, proyectos digitales y presencia pública en tiempo real.',
       },
       profile: {
         title: 'Perfil — Pablo Schefer Orduña',
@@ -194,7 +196,7 @@ export const copy: Record<Locale, SiteCopy> = {
       },
       communities: {
         title: 'Comunidades — Pablo Schefer Orduña',
-        description: 'Experiencia de Pablo Schefer moderando FNLB, Nate Gentile y Edgar Pons, además de GW2 / Gatitos 2 y VALORANT ESP.',
+        description: 'Experiencia de Pablo Schefer moderando comunidades de tecnología, gaming y creadores, incluidas FNLB, Nate Gentile y Edgar Pons.',
       },
       edgar: {
         title: 'Comunidad Edgar Pons — Estado de Discord',
@@ -202,7 +204,7 @@ export const copy: Record<Locale, SiteCopy> = {
       },
       gamesGear: {
         title: 'Juegos y equipo — Pablo Schefer',
-        description: 'Los juegos actuales, el favorito y el ordenador de Pablo Schefer en una biblioteca visual e interactiva.',
+        description: 'Juegos actuales, equipo real y un setup objetivo extremo con RTX 5090 en una biblioteca visual e interactiva.',
       },
       music: {
         title: 'Música y Spotify — Pablo Schefer',
@@ -244,7 +246,7 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       communityEyebrow: '02 — Comunidades',
       communityTitle: 'Moderación con contexto, escala y cercanía.',
-      communityIntro: 'Actualmente modero FNLB, Nate Gentile y Edgar Pons. Mi recorrido incluye también GW2 / Gatitos 2 y VALORANT ESP.',
+      communityIntro: 'Actualmente modero FNLB, Nate Gentile, Edgar Pons y otros servidores. Mi recorrido incluye también GW2 / Gatitos 2, VALORANT ESP y más comunidades.',
       communityCta: 'Ver experiencia completa',
       proofEyebrow: '03 — Proyectos y ecosistemas',
       proofTitle: 'Donde participo. Lo que ayudo a construir.',
@@ -257,6 +259,8 @@ export const copy: Record<Locale, SiteCopy> = {
           text: 'Colaboro en el ecosistema FNLB, una plataforma de lobby bots para Fortnite donde producto, soporte y comunidad avanzan juntos.',
           link: 'https://fnlb.net/',
           linkLabel: 'Conocer FNLB',
+          image: '/communities/fnlb-cover.webp',
+          imageAlt: 'Identidad visual azul de FNLB',
         },
         {
           type: 'Proyecto · CustomOS',
@@ -265,14 +269,18 @@ export const copy: Record<Locale, SiteCopy> = {
           text: 'Colaboro en el ecosistema KernelOS, un entorno Windows afinado para gaming, baja latencia y estabilidad.',
           link: 'https://kernelos.org/',
           linkLabel: 'Ver KernelOS',
+          image: '/media/projects/kernelos-cover.webp',
+          imageAlt: 'Fondo oscuro de KernelOS con una máscara oni',
         },
         {
           type: 'Discord · Operaciones',
-          metric: '05',
+          metric: '05+',
           title: 'Red de comunidades',
-          text: 'Experiencia actual e histórica en comunidades de gaming, tecnología y creadores de contenido.',
+          text: 'Cinco experiencias públicas destacadas y otros roles actuales e históricos en gaming, tecnología y creadores.',
           link: '/comunidades',
           linkLabel: 'Explorar comunidades',
+          image: '/communities/edgar-pons.webp',
+          imageAlt: 'Identidad visual de la comunidad de Edgar Pons',
           internal: true,
         },
       ],
@@ -293,8 +301,8 @@ export const copy: Record<Locale, SiteCopy> = {
       title: 'Comunidad primero. Curiosidad técnica. Entrega constante.',
       lede: 'Una identidad digital construida entre Discord, producto y ganas de convertir ideas en algo real.',
       body: [
-        'Soy Pablo Schefer Orduña. Mi trayectoria digital nace en Discord, donde actualmente modero las comunidades de FNLB, Nate Gentile y Edgar Pons.',
-        'También he moderado GW2 —conocido como Gatitos 2— y VALORANT ESP. Esa experiencia me ha enseñado a leer el contexto, resolver fricciones y cuidar los sistemas que permiten crecer a una comunidad.',
+        'Soy Pablo Schefer Orduña. Mi trayectoria digital nace en Discord, donde actualmente modero las comunidades de FNLB, Nate Gentile, Edgar Pons y otros servidores.',
+        'También he moderado GW2 —conocido como Gatitos 2—, VALORANT ESP y más comunidades. Estas cinco fichas son experiencias públicas destacadas, no el límite de mi recorrido.',
         'Como programador orientado al vibecoding, utilizo IA y un stack web moderno para llevar ideas a prototipos y productos. Colaboro además con FNLB y con la CustomOS del ecosistema KernelOS.',
       ],
       portraitLabel: 'Pablo / PapiGEGamer',
@@ -309,18 +317,18 @@ export const copy: Record<Locale, SiteCopy> = {
       },
       location: 'España · En Discord desde 2019',
       stats: [
-        { value: '03', label: 'comunidades moderadas actualmente' },
-        { value: '02', label: 'experiencias anteriores destacadas' },
+        { value: '03+', label: 'comunidades moderadas actualmente' },
+        { value: '02+', label: 'experiencias anteriores destacadas' },
         { value: '2019', label: 'inicio en Discord' },
       ],
       rolesEyebrow: 'Experiencia',
       rolesTitle: 'Comunidades que forman parte de mi recorrido.',
-      rolesIntro: 'Roles actuales e históricos, separados con claridad y conectados a sus páginas o comunidades públicas.',
+      rolesIntro: 'Cinco roles públicos destacados, dentro de una trayectoria que incluye otros servidores actuales e históricos.',
     },
     communities: {
       eyebrow: 'Comunidades — Discord',
       title: 'Detrás de cada cifra hay personas, contexto y confianza.',
-      intro: 'Mi experiencia abarca comunidades de tecnología, gaming y creadores. El objetivo siempre es el mismo: que la conversación fluya y la comunidad pueda crecer sin perder su identidad.',
+      intro: 'Estas cinco fichas reúnen experiencias públicas destacadas; además modero y he moderado otros servidores de tecnología, gaming y creadores. El objetivo siempre es que la conversación fluya sin perder identidad.',
       roleLabel: 'Rol',
       viewCommunity: 'Abrir comunidad',
       viewLivePage: 'Ver página en directo',
@@ -331,7 +339,7 @@ export const copy: Record<Locale, SiteCopy> = {
         gw2: { role: 'Moderador anterior', text: 'Experiencia de moderación en GW2, conocido como Gatitos 2: una comunidad social y gaming que supera los 103.000 miembros.' },
         valorant: { role: 'Moderador anterior', text: 'Experiencia histórica en una de las grandes comunidades hispanohablantes dedicadas a VALORANT.' },
       },
-      note: 'Los cargos reflejan la información facilitada por Pablo. Las cifras son aproximadas y proceden de endpoints públicos de Discord.',
+      note: 'Selección de cinco experiencias públicas; no representa todos los servidores. Los cargos reflejan la información facilitada por Pablo y las cifras son aproximadas.',
       philosophyEyebrow: 'Cómo modero',
       philosophyTitle: 'Presencia visible. Criterio sereno. Sistemas claros.',
       philosophyBody: 'La buena moderación no consiste solo en reaccionar: combina escucha, consistencia, documentación y coordinación para prevenir problemas y sostener una cultura sana.',
@@ -411,11 +419,11 @@ export const copy: Record<Locale, SiteCopy> = {
       dataNote: 'Public Discord data · 16 Jul 2026',
     },
     seo: {
-      home: { title: 'Pablo Schefer Orduña — Discord, Vibe Coding & Communities', description: 'Pablo Schefer Orduña’s portfolio: Discord moderation, vibe coding and collaboration across FNLB, KernelOS and tech communities.' },
+      home: { title: 'Pablo Schefer — Communities, code & digital culture', description: 'Pablo Schefer’s portfolio: Discord moderation, vibe coding, digital projects and public real-time presence.' },
       profile: { title: 'Profile — Pablo Schefer Orduña', description: 'Pablo Schefer Orduña, PapiGEGamer on Discord: community moderation, vibe coding and digital collaboration.' },
-      communities: { title: 'Communities — Pablo Schefer Orduña', description: 'Pablo Schefer’s moderation experience across FNLB, Nate Gentile and Edgar Pons, plus GW2 / Gatitos 2 and VALORANT ESP.' },
+      communities: { title: 'Communities — Pablo Schefer Orduña', description: 'Pablo Schefer’s moderation experience across technology, gaming and creator communities, including FNLB, Nate Gentile and Edgar Pons.' },
       edgar: { title: 'Edgar Pons Community — Discord Status', description: 'A near-real-time public panel for the Edgar Pons Discord community and Pablo Schefer’s moderation work.' },
-      gamesGear: { title: 'Games & gear — Pablo Schefer', description: 'Pablo Schefer’s current games, favourite and computer setup in a visual, interactive library.' },
+      gamesGear: { title: 'Games & gear — Pablo Schefer', description: 'Current games, real hardware and an extreme RTX 5090 target setup in a visual, interactive library.' },
       music: { title: 'Music & Spotify — Pablo Schefer', description: 'Pablo Schefer’s music monitor, ready to show public Spotify playback through his Discord presence.' },
       notFound: { title: 'Page not found — Pablo Schefer', description: 'The requested page does not exist.' },
     },
@@ -438,15 +446,15 @@ export const copy: Record<Locale, SiteCopy> = {
       ],
       communityEyebrow: '02 — Communities',
       communityTitle: 'Moderation with context, scale and empathy.',
-      communityIntro: 'I currently moderate FNLB, Nate Gentile and Edgar Pons. My path also includes GW2 / Gatitos 2 and VALORANT ESP.',
+      communityIntro: 'I currently moderate FNLB, Nate Gentile, Edgar Pons and other servers. My path also includes GW2 / Gatitos 2, VALORANT ESP and more communities.',
       communityCta: 'View full experience',
       proofEyebrow: '03 — Projects & ecosystems',
       proofTitle: 'Where I contribute. What I help build.',
       proofIntro: 'Collaborations presented with context and official links—without inflated credentials.',
       proof: [
-        { type: 'Product · Community', metric: '≈60K', title: 'FNLB', text: 'I collaborate within the FNLB ecosystem, a Fortnite lobby-bot platform where product, support and community evolve together.', link: 'https://fnlb.net/', linkLabel: 'Discover FNLB' },
-        { type: 'Project · Custom OS', metric: 'K//OS', title: 'KernelOS', text: 'I collaborate within the KernelOS ecosystem, a Windows environment tuned for gaming, low latency and stability.', link: 'https://kernelos.org/', linkLabel: 'View KernelOS' },
-        { type: 'Discord · Operations', metric: '05', title: 'Community network', text: 'Current and previous experience across gaming, technology and content-creator communities.', link: '/comunidades', linkLabel: 'Explore communities', internal: true },
+        { type: 'Product · Community', metric: '≈60K', title: 'FNLB', text: 'I collaborate within the FNLB ecosystem, a Fortnite lobby-bot platform where product, support and community evolve together.', link: 'https://fnlb.net/', linkLabel: 'Discover FNLB', image: '/communities/fnlb-cover.webp', imageAlt: 'Blue FNLB visual identity' },
+        { type: 'Project · Custom OS', metric: 'K//OS', title: 'KernelOS', text: 'I collaborate within the KernelOS ecosystem, a Windows environment tuned for gaming, low latency and stability.', link: 'https://kernelos.org/', linkLabel: 'View KernelOS', image: '/media/projects/kernelos-cover.webp', imageAlt: 'Dark KernelOS background with an oni mask' },
+        { type: 'Discord · Operations', metric: '05+', title: 'Community network', text: 'Five featured public experiences plus other current and previous roles across gaming, technology and creators.', link: '/comunidades', linkLabel: 'Explore communities', image: '/communities/edgar-pons.webp', imageAlt: 'Edgar Pons community visual identity', internal: true },
       ],
       bridgeLead: 'One way to move forward:',
       bridgeText: 'understand fast, build clearly, improve together.',
@@ -465,8 +473,8 @@ export const copy: Record<Locale, SiteCopy> = {
       title: 'Community first. Technical curiosity. Consistent delivery.',
       lede: 'A digital identity built across Discord, product work and the drive to turn ideas into something real.',
       body: [
-        'I am Pablo Schefer Orduña. My digital path began on Discord, where I currently moderate the FNLB, Nate Gentile and Edgar Pons communities.',
-        'I have also moderated GW2—known as Gatitos 2—and VALORANT ESP. That experience taught me to read context, resolve friction and care for the systems that help a community grow.',
+        'I am Pablo Schefer Orduña. My digital path began on Discord, where I currently moderate FNLB, Nate Gentile, Edgar Pons and other servers.',
+        'I have also moderated GW2—known as Gatitos 2—VALORANT ESP and more communities. These five cards are public highlights, not the limit of my experience.',
         'As a vibe-coding-oriented developer, I use AI and a modern web stack to turn ideas into prototypes and products. I also collaborate with FNLB and the Custom OS within the KernelOS ecosystem.',
       ],
       portraitLabel: 'Pablo / PapiGEGamer',
@@ -475,18 +483,18 @@ export const copy: Record<Locale, SiteCopy> = {
       discordIdentity: { label: 'Discord profile', name: 'PapiGEGamer 🐾', handle: '@papigegamerantiguo', meta: 'Moderation · Technology · Vibe coding', action: 'Open profile' },
       location: 'Spain · On Discord since 2019',
       stats: [
-        { value: '03', label: 'communities moderated today' },
-        { value: '02', label: 'highlighted previous roles' },
+        { value: '03+', label: 'communities moderated today' },
+        { value: '02+', label: 'highlighted previous roles' },
         { value: '2019', label: 'start on Discord' },
       ],
       rolesEyebrow: 'Experience',
       rolesTitle: 'Communities that shaped my path.',
-      rolesIntro: 'Current and previous roles are clearly separated and linked to their public pages or communities.',
+      rolesIntro: 'Five featured public roles within a path that includes other current and previous servers.',
     },
     communities: {
       eyebrow: 'Communities — Discord',
       title: 'Behind every number are people, context and trust.',
-      intro: 'My experience spans technology, gaming and creator communities. The goal stays the same: help conversations flow and let the community grow without losing its identity.',
+      intro: 'These five cards are public highlights; I also moderate and have moderated other technology, gaming and creator servers. The goal remains to help conversations flow without losing identity.',
       roleLabel: 'Role',
       viewCommunity: 'Open community',
       viewLivePage: 'View live page',
@@ -497,7 +505,7 @@ export const copy: Record<Locale, SiteCopy> = {
         gw2: { role: 'Previous moderator', text: 'Previous moderation work in GW2, known as Gatitos 2: a social and gaming community with more than 103,000 members.' },
         valorant: { role: 'Previous moderator', text: 'Previous experience in one of the large Spanish-speaking communities dedicated to VALORANT.' },
       },
-      note: 'Roles reflect information provided by Pablo. Counts are approximate and come from public Discord endpoints.',
+      note: 'A selection of five public experiences, not every server. Roles reflect information provided by Pablo and counts are approximate.',
       philosophyEyebrow: 'How I moderate',
       philosophyTitle: 'Visible presence. Calm judgement. Clear systems.',
       philosophyBody: 'Good moderation is not only reactive. It combines listening, consistency, documentation and coordination to prevent problems and support a healthy culture.',

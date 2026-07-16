@@ -39,7 +39,12 @@ export function ProfilePage({ content, locale }: { content: SiteCopy; locale: Lo
       <section className="section profile profile--page" id="identidad">
         <motion.div className="profile__visual" {...reveal}>
           <div className="profile__portrait">
-            <img src="/pablo-schefer-portrait.webp" alt="Pablo Schefer Orduña" width="1200" height="1500" />
+            <img
+              src="/media/profile/pablo-schefer-bw.webp"
+              alt={locale === 'es' ? 'Retrato en blanco y negro de Pablo Schefer Orduña' : 'Black-and-white portrait of Pablo Schefer Orduña'}
+              width="1024"
+              height="1024"
+            />
             <div className="profile__crosshair" aria-hidden="true" />
           </div>
           <div className="profile__caption">

@@ -25,8 +25,8 @@ export function CommunitiesPage({ content, locale }: { content: SiteCopy; locale
         </motion.div>
         <motion.div className="community-page__counter" initial={{ opacity: 0, scale: 0.88, rotate: -5 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.18, duration: 0.8, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
           <Radio size={24} />
-          <strong>05</strong>
-          <span>{locale === 'es' ? 'Espacios de Discord' : 'Discord spaces'}</span>
+          <strong>05+</strong>
+          <span>{locale === 'es' ? 'Experiencias destacadas' : 'Featured experiences'}</span>
         </motion.div>
         <a className="page-hero__scroll" href="#recorrido"><ArrowDown size={15} aria-hidden="true" />{locale === 'es' ? 'Mapa de comunidades' : 'Community map'}</a>
       </section>

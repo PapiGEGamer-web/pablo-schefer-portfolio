@@ -1,0 +1,147 @@
+.now-dock {
+  position: fixed;
+  z-index: 35;
+  right: 20px;
+  bottom: 20px;
+  width: min(390px, calc(100vw - 40px));
+  overflow: hidden;
+  color: #ece9e2;
+  background: rgba(16, 18, 19, 0.93);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(30, 215, 96, 0.035) inset;
+  backdrop-filter: blur(24px) saturate(1.2);
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.mobile-nav-open .now-dock {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.now-dock__bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 38px;
+  padding: 0.55rem 0.7rem 0.45rem;
+  color: #8f9592;
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.51rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.now-dock__bar button {
+  display: grid;
+  width: 28px;
+  aspect-ratio: 1;
+  place-items: center;
+  color: #8f9592;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.now-dock__bar button:hover,
+.now-dock__bar button:focus-visible { color: #fff; background: rgba(255, 255, 255, 0.08); }
+
+.now-dock__signal {
+  width: 7px;
+  aspect-ratio: 1;
+  background: #777d7a;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.035);
+}
+
+.now-dock__signal--live {
+  background: #1ed760;
+  box-shadow: 0 0 0 4px rgba(30, 215, 96, 0.1), 0 0 14px rgba(30, 215, 96, 0.5);
+  animation: dockSignal 1.8s ease-in-out infinite;
+}
+
+.now-dock__transport { color: #1ed760; }
+
+.now-dock__summary {
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr) 42px;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem;
+}
+
+.now-dock__art {
+  display: grid;
+  width: 50px;
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  color: #1ed760;
+  background: #252829;
+  border-radius: 13px;
+}
+
+.now-dock__art img { width: 100%; height: 100%; object-fit: cover; }
+
+.now-dock__copy { display: grid; min-width: 0; gap: 0.22rem; }
+.now-dock__copy strong,
+.now-dock__copy span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.now-dock__copy strong { font-size: 0.75rem; font-weight: 720; }
+.now-dock__copy span { color: #9da29f; font-size: 0.61rem; }
+
+.now-dock__play {
+  display: grid;
+  width: 42px;
+  aspect-ratio: 1;
+  place-items: center;
+  color: #071109;
+  background: #1ed760;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 9px 24px rgba(30, 215, 96, 0.16);
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.now-dock__play:hover,
+.now-dock__play:focus-visible { box-shadow: 0 13px 28px rgba(30, 215, 96, 0.25); transform: translateY(-2px) scale(1.04); }
+
+.now-dock__progress { display: block; height: 2px; background: rgba(255, 255, 255, 0.08); }
+.now-dock__progress i { display: block; height: 100%; background: #1ed760; transition: width 1s linear; }
+
+.now-dock__player { overflow: hidden; border-top: 1px solid rgba(255, 255, 255, 0.07); }
+.now-dock__player .spotify-embed {
+  width: calc(100% - 1.44rem);
+  margin: 0.72rem 0.72rem 0;
+}
+
+.now-dock__player-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.55rem 0.8rem 0.75rem;
+  color: #878d89;
+  font-size: 0.52rem;
+}
+
+.now-dock__player-footer span,
+.now-dock__player-footer a { display: inline-flex; align-items: center; gap: 0.4rem; }
+.now-dock__player-footer a { color: #d4d7d5; transition: color 0.2s ease; }
+.now-dock__player-footer a:hover { color: #1ed760; }
+
+@keyframes dockSignal { 50% { opacity: 0.55; transform: scale(0.82); } }
+
+@media (max-width: 600px) {
+  .now-dock { right: 8px; bottom: 8px; width: calc(100vw - 16px); border-radius: 18px; }
+  .now-dock__player-footer { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .now-dock__signal--live { animation: none; }
+}

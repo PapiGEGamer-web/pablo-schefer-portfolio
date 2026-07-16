@@ -28,7 +28,7 @@ export function EdgarPonsPage({ content, locale }: { content: SiteCopy; locale: 
         </motion.div>
 
         <motion.div className="discord-orbit" initial={{ opacity: 0, scale: 0.88, rotate: -4 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.16, duration: 0.85, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
-          <div className="discord-orbit__core">EP</div>
+          <div className="discord-orbit__core"><img src="/communities/edgar-logo.webp" alt="" width="256" height="256" /></div>
           <span className="discord-orbit__node discord-orbit__node--one"><MessageCircle size={18} /></span>
           <span className="discord-orbit__node discord-orbit__node--two"><Headphones size={18} /></span>
           <span className="discord-orbit__node discord-orbit__node--three"><Radio size={18} /></span>

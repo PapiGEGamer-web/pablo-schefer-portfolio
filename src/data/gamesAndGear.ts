@@ -361,13 +361,19 @@ export const games: Game[] = [
   },
 ]
 
+export type HardwareId = 'cpu' | 'gpu' | 'memory' | 'board' | 'storage' | 'power'
+
 export type HardwareItem = {
-  id: 'cpu' | 'gpu' | 'memory' | 'board' | 'storage'
+  id: HardwareId
   label: LocalizedText
   model: string
   metric: string
   summary: LocalizedText
   details: LocalizedList
+  source?: {
+    href: string
+    label: LocalizedText
+  }
 }
 
 export const hardware: HardwareItem[] = [
@@ -427,6 +433,117 @@ export const hardware: HardwareItem[] = [
     details: {
       es: ['WD_BLACK SN770 · 1 TB', 'Samsung 840 EVO · 250 GB', 'Toshiba HDD · 1 TB', 'Dos SSD WDC · 256 GB'],
       en: ['WD_BLACK SN770 · 1 TB', 'Samsung 840 EVO · 250 GB', 'Toshiba HDD · 1 TB', 'Two WDC SSDs · 256 GB'],
+    },
+  },
+]
+
+export const dreamHardware: HardwareItem[] = [
+  {
+    id: 'gpu',
+    label: { es: 'Gráfica objetivo', en: 'Target graphics card' },
+    model: 'NVIDIA GeForce RTX 5090',
+    metric: '32 GB GDDR7',
+    summary: {
+      es: 'La meta gráfica del setup: la GeForce de referencia más potente de NVIDIA, planteada para juego 4K extremo, creación y cargas aceleradas por IA.',
+      en: 'The graphics target for the build: NVIDIA’s most powerful reference GeForce, intended for extreme 4K gaming, creation and AI-accelerated workloads.',
+    },
+    details: {
+      es: ['Arquitectura Blackwell', '21.760 núcleos CUDA', '32 GB GDDR7 · 512-bit', '575 W TGP'],
+      en: ['Blackwell architecture', '21,760 CUDA cores', '32 GB GDDR7 · 512-bit', '575 W TGP'],
+    },
+    source: {
+      href: 'https://www.nvidia.com/en-gb/geforce/graphics-cards/50-series/rtx-5090/',
+      label: { es: 'Ficha oficial de NVIDIA', en: 'Official NVIDIA specifications' },
+    },
+  },
+  {
+    id: 'cpu',
+    label: { es: 'Procesador objetivo', en: 'Target processor' },
+    model: 'AMD Ryzen 9 9950X3D2 Dual Edition',
+    metric: '16C / 32T',
+    summary: {
+      es: 'Un objetivo de plataforma AM5 de gama entusiasta, con 3D V-Cache en ambos chiplets para combinar juego, desarrollo y creación exigente.',
+      en: 'An enthusiast-class AM5 platform target, with 3D V-Cache on both chiplets to combine gaming, development and demanding creative work.',
+    },
+    details: {
+      es: ['Zen 5 · 16 núcleos', 'Hasta 5,6 GHz', '208 MB de caché L2 + L3', '200 W · PCIe 5.0'],
+      en: ['Zen 5 · 16 cores', 'Up to 5.6 GHz', '208 MB L2 + L3 cache', '200 W · PCIe 5.0'],
+    },
+    source: {
+      href: 'https://www.amd.com/en/products/processors/desktops/ryzen/9000-series/amd-ryzen-9-9950x3d2-dual-edition.html',
+      label: { es: 'Ficha oficial de AMD', en: 'Official AMD specifications' },
+    },
+  },
+  {
+    id: 'board',
+    label: { es: 'Placa base objetivo', en: 'Target motherboard' },
+    model: 'MSI MEG X870E GODLIKE MAX',
+    metric: 'X870E · AM5',
+    summary: {
+      es: 'La base soñada para la plataforma: conectividad de primer nivel, amplia expansión PCIe 5.0 y margen para evolucionar el equipo.',
+      en: 'The dream foundation for the platform: flagship connectivity, broad PCIe 5.0 expansion and room for the build to evolve.',
+    },
+    details: {
+      es: ['Hasta 256 GB DDR5', '7 ranuras M.2', 'Wi-Fi 7 · USB4 40 Gbps', 'LAN 10 Gb + 5 Gb'],
+      en: ['Up to 256 GB DDR5', '7 M.2 slots', 'Wi-Fi 7 · USB4 40 Gbps', '10 Gb + 5 Gb LAN'],
+    },
+    source: {
+      href: 'https://www.msi.com/Motherboard/MEG-X870E-GODLIKE-MAX/Specification',
+      label: { es: 'Especificaciones oficiales de MSI', en: 'Official MSI specifications' },
+    },
+  },
+  {
+    id: 'memory',
+    label: { es: 'Memoria objetivo', en: 'Target memory' },
+    model: 'Corsair Dominator Titanium RGB',
+    metric: '96 GB · 6000',
+    summary: {
+      es: 'Un kit premium de dos módulos para ganar capacidad sin cargar cuatro ranuras, manteniendo una configuración DDR5 rápida y de baja latencia.',
+      en: 'A premium two-module kit that adds capacity without loading all four slots, while keeping a fast, low-latency DDR5 configuration.',
+    },
+    details: {
+      es: ['96 GB · 2 × 48 GB', 'DDR5-6000 · CL30', 'AMD EXPO + Intel XMP', 'Disipadores de aluminio'],
+      en: ['96 GB · 2 × 48 GB', 'DDR5-6000 · CL30', 'AMD EXPO + Intel XMP', 'Aluminium heat spreaders'],
+    },
+    source: {
+      href: 'https://www.corsair.com/us/en/p/memory/cmp96gx5m2b6000z30/dominator-titanium-rgb-96gb-2x48gb-ddr5-dram-6000mt-s-cl30-amd-expo-intel-xmp-memory-kit-grey-cmp96gx5m2b6000z30',
+      label: { es: 'Ficha oficial de Corsair', en: 'Official Corsair specifications' },
+    },
+  },
+  {
+    id: 'storage',
+    label: { es: 'Almacenamiento objetivo', en: 'Target storage' },
+    model: 'Samsung 9100 PRO 8 TB',
+    metric: '14,8 GB/s',
+    summary: {
+      es: 'Almacenamiento PCIe 5.0 de gran capacidad para biblioteca, proyectos y edición, con velocidades de referencia de nueva generación.',
+      en: 'High-capacity PCIe 5.0 storage for the library, projects and editing, with next-generation reference speeds.',
+    },
+    details: {
+      es: ['8 TB · NVMe 2.0', 'Lectura hasta 14.800 MB/s', 'Escritura hasta 13.400 MB/s', '4.800 TBW'],
+      en: ['8 TB · NVMe 2.0', 'Up to 14,800 MB/s read', 'Up to 13,400 MB/s write', '4,800 TBW'],
+    },
+    source: {
+      href: 'https://download.semiconductor.samsung.com/resources/data-sheet/Samsung_NVMe_SSD_9100_PRO_Datasheet_Rev.2.0.pdf',
+      label: { es: 'Ficha técnica oficial de Samsung', en: 'Official Samsung data sheet' },
+    },
+  },
+  {
+    id: 'power',
+    label: { es: 'Fuente objetivo', en: 'Target power supply' },
+    model: 'Corsair HX1500i',
+    metric: '1500 W',
+    summary: {
+      es: 'La fuente prevista para alimentar el conjunto con margen, conectividad nativa para GPU de nueva generación y una plataforma ATX actual.',
+      en: 'The planned power supply for comfortable headroom, native next-generation GPU connectivity and a modern ATX platform.',
+    },
+    details: {
+      es: ['1500 W · 80 PLUS Platinum', 'ATX 3.1 · PCIe 5.1', 'Doble cable 12V-2x6', 'Garantía de 10 años'],
+      en: ['1500 W · 80 PLUS Platinum', 'ATX 3.1 · PCIe 5.1', 'Dual 12V-2x6 cables', '10-year warranty'],
+    },
+    source: {
+      href: 'https://www.corsair.com/us/en/p/psu/cp-9020309-na/hx1500i-fully-modular-ultra-low-noise-platinum-atx-1500-watt-pc-power-supply-cp-9020309-na',
+      label: { es: 'Ficha oficial de Corsair', en: 'Official Corsair specifications' },
     },
   },
 ]

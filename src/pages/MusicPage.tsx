@@ -1,53 +1,14 @@
-import { useEffect, useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { Activity, ArrowDown, ArrowUpRight, Disc3, Music2, Radio, ShieldCheck, Wifi } from 'lucide-react'
 import type { Locale, SiteCopy } from '../content'
 import { ContactSection } from '../components/ContactSection'
+import { SpotifyEmbed } from '../components/SpotifyEmbed'
+import { formatLanyardTime, useLanyardPresence } from '../hooks/useLanyardPresence'
 import './MusicPage.css'
-
-const discordUserId = '633600812970541056'
-const lanyardRestUrl = `https://api.lanyard.rest/v1/users/${discordUserId}`
-const lanyardSocketUrl = 'wss://api.lanyard.rest/socket'
-
-type SpotifyPresence = {
-  album: string
-  album_art_url: string
-  artist: string
-  song: string
-  track_id: string
-  timestamps: {
-    start: number
-    end: number
-  }
-}
-
-type LanyardPresence = {
-  discord_status: 'online' | 'idle' | 'dnd' | 'offline'
-  listening_to_spotify: boolean
-  spotify: SpotifyPresence | null
-}
-
-type ConnectionPhase = 'connecting' | 'ready' | 'unmonitored' | 'error'
-
-type LanyardEnvelope = {
-  op: number
-  t?: 'INIT_STATE' | 'PRESENCE_UPDATE'
-  d?: LanyardPresence | { heartbeat_interval?: number }
-}
-
-function formatTime(milliseconds: number) {
-  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000))
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
-}
 
 export function MusicPage({ content, locale }: { content: SiteCopy; locale: Locale }) {
   const reduceMotion = useReducedMotion()
-  const [phase, setPhase] = useState<ConnectionPhase>('connecting')
-  const [presence, setPresence] = useState<LanyardPresence | null>(null)
-  const [clock, setClock] = useState(0)
-  const [socketLive, setSocketLive] = useState(false)
+  const { phase, progress, socketLive, track } = useLanyardPresence()
 
   const labels = locale === 'es' ? {
     eyebrow: 'Spotify · Presencia · En vivo',
@@ -61,19 +22,21 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
     ready: 'Integración preparada',
     readySignal: 'READY SIGNAL',
     connecting: 'Conectando con la presencia pública…',
-    waitingTitle: 'La conexión está preparada.',
-    waitingBody: 'Mi usuario todavía no está monitorizado por Lanyard. Al unirme voluntariamente a su servidor y mantener visible Spotify en Discord, esta tarjeta empezará a actualizarse sola, sin volver a desplegar la web.',
-    activate: 'Activar mediante Lanyard',
-    privacy: 'La activación hace pública mi presencia de Discord y la canción que escucho. No concede acceso a mensajes ni a la cuenta de Spotify.',
+    waitingTitle: 'Esperando la confirmación de Lanyard.',
+    waitingBody: 'Ya me he unido a la comunidad, pero Lanyard todavía no reconoce este ID público. La web comprueba el estado cada 15 segundos y se activará sola en cuanto la cuenta quede monitorizada.',
+    activate: 'Ver comunidad de Lanyard',
+    privacy: 'Los visitantes no tienen que registrarse. La integración solo lee mi presencia pública y nunca accede a mensajes ni credenciales.',
     idleTitle: 'Nada público sonando ahora.',
     idleBody: 'La conexión está activa. Cuando Spotify aparezca en mi perfil de Discord, la canción se mostrará aquí automáticamente.',
     errorTitle: 'No se ha podido abrir la conexión.',
     errorBody: 'La página seguirá reintentando en segundo plano. La integración no bloquea el resto del portfolio.',
     album: 'Álbum',
     openSpotify: 'Abrir en Spotify',
+    playerTitle: 'Reproductor oficial de Spotify',
+    playerNote: 'Pulsa play en el reproductor oficial. Spotify gestiona el audio; el volumen se ajusta desde el dispositivo o el navegador.',
     sourceEyebrow: 'Cómo funciona',
     sourceTitle: 'En vivo, privado por diseño.',
-    sourceBody: 'La interfaz se suscribe únicamente a la presencia pública asociada a PapiGEGamer. No almacena historial, no controla la reproducción y no expone credenciales. Si Spotify deja de estar visible en Discord, la tarjeta vuelve al estado de reposo.',
+    sourceBody: 'La interfaz se suscribe únicamente a mi presencia pública. No almacena historial ni controla mi cuenta; el audio se ofrece mediante el reproductor oficial de Spotify. Si la actividad deja de ser visible en Discord, la tarjeta vuelve al reposo.',
     signals: ['WebSocket en vivo', 'Sin historial', 'Solo actividad pública'],
   } : {
     eyebrow: 'Spotify · Presence · Live',
@@ -87,109 +50,23 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
     ready: 'Integration ready',
     readySignal: 'READY SIGNAL',
     connecting: 'Connecting to public presence…',
-    waitingTitle: 'The connection is ready.',
-    waitingBody: 'My user is not monitored by Lanyard yet. Once I voluntarily join its server and keep Spotify visible on Discord, this card will start updating automatically without another deployment.',
-    activate: 'Activate through Lanyard',
-    privacy: 'Activation makes my Discord presence and current song public. It does not grant access to messages or my Spotify account.',
+    waitingTitle: 'Waiting for Lanyard confirmation.',
+    waitingBody: 'I have joined the community, but Lanyard does not recognise this public ID yet. The site checks every 15 seconds and will activate automatically once the account is monitored.',
+    activate: 'View the Lanyard community',
+    privacy: 'Visitors never need to register. The integration only reads my public presence and never accesses messages or credentials.',
     idleTitle: 'Nothing public is playing now.',
     idleBody: 'The connection is active. When Spotify appears on my Discord profile, the track will show here automatically.',
     errorTitle: 'The live connection could not be opened.',
     errorBody: 'The page will keep retrying in the background. The integration never blocks the rest of the portfolio.',
     album: 'Album',
     openSpotify: 'Open in Spotify',
+    playerTitle: 'Official Spotify player',
+    playerNote: 'Press play in the official player. Spotify manages playback; volume is adjusted through the device or browser.',
     sourceEyebrow: 'How it works',
     sourceTitle: 'Live, private by design.',
-    sourceBody: 'The interface subscribes only to the public presence associated with PapiGEGamer. It stores no listening history, cannot control playback and exposes no credentials. If Spotify is no longer visible on Discord, the card returns to its idle state.',
+    sourceBody: 'The interface subscribes only to my public presence. It stores no history and cannot control my account; audio is provided through Spotify’s official player. If activity is no longer visible on Discord, the card returns to idle.',
     signals: ['Live WebSocket', 'No history', 'Public activity only'],
   }
-
-  useEffect(() => {
-    let stopped = false
-    let socket: WebSocket | null = null
-    let heartbeat: number | null = null
-
-    const clearHeartbeat = () => {
-      if (heartbeat !== null) window.clearInterval(heartbeat)
-      heartbeat = null
-    }
-
-    const connectSocket = () => {
-      if (stopped || socket) return
-      socket = new WebSocket(lanyardSocketUrl)
-
-      socket.addEventListener('message', (event) => {
-        try {
-          const payload = JSON.parse(String(event.data)) as LanyardEnvelope
-          if (payload.op === 1) {
-            const hello = payload.d as { heartbeat_interval?: number }
-            const interval = Math.max(1_000, hello?.heartbeat_interval ?? 30_000)
-            socket?.send(JSON.stringify({ op: 2, d: { subscribe_to_id: discordUserId } }))
-            clearHeartbeat()
-            heartbeat = window.setInterval(() => socket?.send(JSON.stringify({ op: 3 })), interval)
-          }
-
-          if (payload.op === 0 && (payload.t === 'INIT_STATE' || payload.t === 'PRESENCE_UPDATE')) {
-            setPresence(payload.d as LanyardPresence)
-            setClock(Date.now())
-            setPhase('ready')
-            setSocketLive(true)
-          }
-        } catch {
-          // A malformed third-party event is ignored; the REST fallback keeps running.
-        }
-      })
-
-      socket.addEventListener('close', () => {
-        clearHeartbeat()
-        setSocketLive(false)
-        socket = null
-      })
-    }
-
-    const refresh = async () => {
-      try {
-        const response = await fetch(lanyardRestUrl, { headers: { Accept: 'application/json' } })
-        if (response.status === 404) {
-          if (!stopped) setPhase('unmonitored')
-          return
-        }
-        if (!response.ok) throw new Error('lanyard_unavailable')
-        const payload = await response.json() as { success: boolean; data?: LanyardPresence }
-        if (!stopped && payload.success && payload.data) {
-          setPresence(payload.data)
-          setClock(Date.now())
-          setPhase('ready')
-          connectSocket()
-        }
-      } catch {
-        if (!stopped) setPhase((current) => current === 'ready' ? current : 'error')
-      }
-    }
-
-    void refresh()
-    const restFallback = window.setInterval(() => void refresh(), 15_000)
-
-    return () => {
-      stopped = true
-      window.clearInterval(restFallback)
-      clearHeartbeat()
-      socket?.close()
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!presence?.spotify) return undefined
-    const timer = window.setInterval(() => setClock(Date.now()), 1_000)
-    return () => window.clearInterval(timer)
-  }, [presence?.spotify])
-
-  const progress = useMemo(() => {
-    const track = presence?.spotify
-    if (!track) return { elapsed: 0, duration: 0, percent: 0 }
-    const duration = Math.max(1, track.timestamps.end - track.timestamps.start)
-    const elapsed = Math.min(duration, Math.max(0, clock - track.timestamps.start))
-    return { elapsed, duration, percent: (elapsed / duration) * 100 }
-  }, [clock, presence?.spotify])
 
   const reveal = {
     initial: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 26 },
@@ -198,7 +75,6 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
     transition: { duration: reduceMotion ? 0 : 0.7, ease: [0.16, 1, 0.3, 1] as const },
   }
 
-  const track = presence?.spotify ?? null
   const isLive = phase === 'ready'
   const connectionLabel = isLive ? (socketLive ? labels.live : labels.polling) : phase === 'unmonitored' ? labels.ready : labels.connecting
 
@@ -280,12 +156,16 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
                 <h3>{track.song}</h3>
                 <p>{track.artist}</p>
                 <small>{labels.album} · {track.album}</small>
-                <div className="now-playing__progress" aria-label={`${formatTime(progress.elapsed)} / ${formatTime(progress.duration)}`}>
+                <div className="now-playing__progress" aria-label={`${formatLanyardTime(progress.elapsed)} / ${formatLanyardTime(progress.duration)}`}>
                   <span><i style={{ width: `${progress.percent}%` }} /></span>
-                  <small>{formatTime(progress.elapsed)}</small>
-                  <small>{formatTime(progress.duration)}</small>
+                  <small>{formatLanyardTime(progress.elapsed)}</small>
+                  <small>{formatLanyardTime(progress.duration)}</small>
                 </div>
                 <a href={`https://open.spotify.com/track/${track.track_id}`} target="_blank" rel="noreferrer">{labels.openSpotify}<ArrowUpRight size={16} aria-hidden="true" /></a>
+                <div className="now-playing__embed">
+                  <SpotifyEmbed trackId={track.track_id} title={`${labels.playerTitle}: ${track.song}`} compact />
+                  <small>{labels.playerNote}</small>
+                </div>
               </div>
             </div>
           )}

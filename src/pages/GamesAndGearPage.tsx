@@ -11,15 +11,17 @@ import {
   Monitor,
   SlidersHorizontal,
   Sparkles,
+  Zap,
   X,
   type LucideIcon,
 } from 'lucide-react'
 import type { Locale, SiteCopy } from '../content'
-import { games, hardware, type Game, type HardwareItem } from '../data/gamesAndGear'
+import { dreamHardware, games, hardware, type Game, type HardwareItem } from '../data/gamesAndGear'
 import { ContactSection } from '../components/ContactSection'
 import './GamesAndGearPage.css'
 
 type GameFilter = 'all' | 'competitive' | 'coop' | 'open-world' | 'story' | 'survival' | 'creative'
+type HardwareMode = 'current' | 'dream'
 
 const hardwareIcons: Record<HardwareItem['id'], LucideIcon> = {
   cpu: Cpu,
@@ -27,6 +29,7 @@ const hardwareIcons: Record<HardwareItem['id'], LucideIcon> = {
   memory: MemoryStick,
   board: CircuitBoard,
   storage: HardDrive,
+  power: Zap,
 }
 
 function GameCover({ game, eager = false }: { game: Game; eager?: boolean }) {
@@ -48,12 +51,14 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
   const reduceMotion = useReducedMotion()
   const [filter, setFilter] = useState<GameFilter>('all')
   const [selectedGame, setSelectedGame] = useState<Game | null>(null)
+  const [hardwareMode, setHardwareMode] = useState<HardwareMode>('current')
   const [activeHardwareId, setActiveHardwareId] = useState<HardwareItem['id']>('gpu')
   const dialogRef = useRef<HTMLElement | null>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
   const featuredGames = games.filter((game) => game.status !== 'library')
   const libraryGames = games.filter((game) => game.status === 'library' || game.id === 'arc-raiders')
-  const activeHardware = hardware.find((item) => item.id === activeHardwareId) ?? hardware[0]
+  const hardwareItems = hardwareMode === 'current' ? hardware : dreamHardware
+  const activeHardware = hardwareItems.find((item) => item.id === activeHardwareId) ?? hardwareItems[0]
 
   const labels = locale === 'es' ? {
     eyebrow: 'Gaming · Hardware · Perfil',
@@ -75,10 +80,17 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
     details: 'Abrir ficha',
     visit: 'Ver página oficial',
     close: 'Cerrar ficha',
-    setupEyebrow: 'Setup · Detectado localmente',
-    setupTitle: 'El equipo detrás de cada partida.',
-    setupIntro: 'Selecciona un componente para recorrer la configuración. Solo se muestran modelos y capacidades técnicas; no se publican números de serie.',
+    setupEyebrow: 'Hardware · Actual + objetivo',
+    setupTitle: 'Equipo actual. Próximo nivel.',
+    setupIntro: 'Alterna entre la configuración detectada en este ordenador y un setup objetivo de gama extrema. Son dos inventarios separados y nunca se publican números de serie.',
+    currentSetup: 'Equipo actual',
+    currentHint: 'Detectado en este ordenador',
+    dreamSetup: 'Setup objetivo',
+    dreamHint: 'Aspiracional · No adquirido',
     detected: 'Configuración verificada',
+    aspirational: 'Objetivo aspiracional · No es el equipo actual',
+    currentDisclosure: 'Hardware instalado y detectado localmente. Esta vista representa el equipo que utilizo ahora.',
+    dreamDisclosure: 'Configuración de referencia que me gustaría construir. Los componentes se basan en fichas oficiales, pero no forman parte de mi equipo actual.',
   } : {
     eyebrow: 'Gaming · Hardware · Profile',
     title: 'What I play.\nThe machine behind it.',
@@ -99,10 +111,17 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
     details: 'Open details',
     visit: 'View official page',
     close: 'Close details',
-    setupEyebrow: 'Setup · Locally detected',
-    setupTitle: 'The machine behind every session.',
-    setupIntro: 'Select a component to explore the build. Only technical models and capacities are shown; serial numbers are never published.',
+    setupEyebrow: 'Hardware · Current + target',
+    setupTitle: 'Current machine. Next level.',
+    setupIntro: 'Switch between the configuration detected on this computer and an extreme target setup. They are separate inventories and serial numbers are never published.',
+    currentSetup: 'Current machine',
+    currentHint: 'Detected on this computer',
+    dreamSetup: 'Target setup',
+    dreamHint: 'Aspirational · Not acquired',
     detected: 'Verified configuration',
+    aspirational: 'Aspirational target · Not the current machine',
+    currentDisclosure: 'Locally installed and detected hardware. This view represents the machine I use today.',
+    dreamDisclosure: 'A reference configuration I would like to build. Components are based on official specifications, but they are not part of my current machine.',
   }
 
   const filteredGames = useMemo(
@@ -117,6 +136,14 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
 
   const closeGame = () => setSelectedGame(null)
 
+  const selectHardwareMode = (mode: HardwareMode) => {
+    const nextItems = mode === 'current' ? hardware : dreamHardware
+    setHardwareMode(mode)
+    if (!nextItems.some((item) => item.id === activeHardwareId)) {
+      setActiveHardwareId(nextItems[0].id)
+    }
+  }
+
   const handleHardwareKey = (event: ReactKeyboardEvent<HTMLButtonElement>, index: number) => {
     const keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End']
     if (!keys.includes(event.key)) return
@@ -125,11 +152,11 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
     const nextIndex = event.key === 'Home'
       ? 0
       : event.key === 'End'
-        ? hardware.length - 1
-        : (index + offset + hardware.length) % hardware.length
-    const nextItem = hardware[nextIndex]
+        ? hardwareItems.length - 1
+        : (index + offset + hardwareItems.length) % hardwareItems.length
+    const nextItem = hardwareItems[nextIndex]
     setActiveHardwareId(nextItem.id)
-    window.requestAnimationFrame(() => document.getElementById(`hardware-tab-${nextItem.id}`)?.focus())
+    window.requestAnimationFrame(() => document.getElementById(`hardware-tab-${hardwareMode}-${nextItem.id}`)?.focus())
   }
 
   useEffect(() => {
@@ -306,14 +333,32 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
           <p className="section-heading__intro">{labels.setupIntro}</p>
         </motion.div>
 
-        <div className="setup-console">
+        <div className={`setup-mode-switch setup-mode-switch--${hardwareMode}`} role="group" aria-label={locale === 'es' ? 'Seleccionar configuración' : 'Select setup'}>
+          <button type="button" aria-pressed={hardwareMode === 'current'} onClick={() => selectHardwareMode('current')}>
+            <span aria-hidden="true">01</span>
+            <strong>{labels.currentSetup}</strong>
+            <small>{labels.currentHint}</small>
+          </button>
+          <button type="button" aria-pressed={hardwareMode === 'dream'} onClick={() => selectHardwareMode('dream')}>
+            <span aria-hidden="true">02</span>
+            <strong>{labels.dreamSetup}</strong>
+            <small>{labels.dreamHint}</small>
+          </button>
+        </div>
+
+        <p className={`setup-disclosure setup-disclosure--${hardwareMode}`}>
+          <span className="status-dot" aria-hidden="true" />
+          {hardwareMode === 'current' ? labels.currentDisclosure : labels.dreamDisclosure}
+        </p>
+
+        <div className={`setup-console setup-console--${hardwareMode}`}>
           <div className="setup-console__rail" role="tablist" aria-label={locale === 'es' ? 'Componentes del ordenador' : 'Computer components'}>
-            {hardware.map((item, index) => {
+            {hardwareItems.map((item, index) => {
               const Icon = hardwareIcons[item.id]
               const selected = item.id === activeHardware.id
               return (
                 <button
-                  id={`hardware-tab-${item.id}`}
+                  id={`hardware-tab-${hardwareMode}-${item.id}`}
                   type="button"
                   role="tab"
                   aria-selected={selected}
@@ -337,15 +382,16 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
               className="setup-console__detail"
               id="hardware-panel"
               role="tabpanel"
-              aria-labelledby={`hardware-tab-${activeHardware.id}`}
-              key={activeHardware.id}
+              aria-labelledby={`hardware-tab-${hardwareMode}-${activeHardware.id}`}
+              aria-live="polite"
+              key={`${hardwareMode}-${activeHardware.id}`}
               initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -14 }}
               transition={{ duration: reduceMotion ? 0 : 0.32 }}
             >
               <header>
-                <span><span className="status-dot" aria-hidden="true" />{labels.detected}</span>
+                <span><span className="status-dot" aria-hidden="true" />{hardwareMode === 'current' ? labels.detected : labels.aspirational}</span>
                 <strong>{activeHardware.metric}</strong>
               </header>
               <div className="setup-console__icon">
@@ -360,6 +406,12 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
               <ul>
                 {activeHardware.details[locale].map((detail) => <li key={detail}>{detail}</li>)}
               </ul>
+              {activeHardware.source && (
+                <a className="setup-console__source" href={activeHardware.source.href} target="_blank" rel="noreferrer">
+                  {activeHardware.source.label[locale]}
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </a>
+              )}
             </motion.article>
           </AnimatePresence>
         </div>

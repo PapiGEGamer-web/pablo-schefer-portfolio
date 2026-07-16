@@ -1,5 +1,12 @@
 export type CommunityKey = 'fnlb' | 'nate' | 'edgar' | 'gw2' | 'valorant'
 
+type CommunityVisual = {
+  logo: string
+  cover: string
+  alt: { es: string; en: string }
+  focus?: string
+}
+
 export type Community = {
   id: CommunityKey
   name: string
@@ -12,6 +19,7 @@ export type Community = {
   membersApprox?: number
   onlineApprox?: number
   accent: 'amber' | 'cyan' | 'violet'
+  visual: CommunityVisual
 }
 
 export const communities: Community[] = [
@@ -26,6 +34,12 @@ export const communities: Community[] = [
     membersApprox: 59_999,
     onlineApprox: 8_422,
     accent: 'amber',
+    visual: {
+      logo: '/communities/fnlb-logo.webp',
+      cover: '/communities/fnlb-cover.webp',
+      alt: { es: 'Identidad visual de FNLB', en: 'FNLB visual identity' },
+      focus: 'center',
+    },
   },
   {
     id: 'nate',
@@ -36,6 +50,12 @@ export const communities: Community[] = [
     current: true,
     metric: 'TECH',
     accent: 'cyan',
+    visual: {
+      logo: '/communities/nate-logo.webp',
+      cover: '/communities/nate-cover.webp',
+      alt: { es: 'Identidad visual de la comunidad de Nate Gentile', en: 'Nate Gentile community visual identity' },
+      focus: 'center 42%',
+    },
   },
   {
     id: 'edgar',
@@ -47,6 +67,12 @@ export const communities: Community[] = [
     current: true,
     metric: 'LIVE',
     accent: 'violet',
+    visual: {
+      logo: '/communities/edgar-logo.webp',
+      cover: '/communities/edgar-pons.webp',
+      alt: { es: 'Identidad visual de la comunidad de Edgar Pons', en: 'Edgar Pons community visual identity' },
+      focus: 'center',
+    },
   },
   {
     id: 'gw2',
@@ -59,6 +85,12 @@ export const communities: Community[] = [
     membersApprox: 103_192,
     onlineApprox: 18_510,
     accent: 'cyan',
+    visual: {
+      logo: '/communities/gw2.webp',
+      cover: '/communities/gw2.webp',
+      alt: { es: 'Identidad visual de GW2, Gatitos 2', en: 'GW2, Gatitos 2 visual identity' },
+      focus: 'center',
+    },
   },
   {
     id: 'valorant',
@@ -69,6 +101,12 @@ export const communities: Community[] = [
     current: false,
     metric: '98K+',
     accent: 'amber',
+    visual: {
+      logo: '/communities/valorant-es.webp',
+      cover: '/communities/valorant-es.webp',
+      alt: { es: 'Identidad visual de VALORANT ESP', en: 'VALORANT ESP visual identity' },
+      focus: 'center',
+    },
   },
 ]
 

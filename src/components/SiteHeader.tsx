@@ -21,8 +21,10 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
+    document.body.classList.toggle('mobile-nav-open', menuOpen)
     return () => {
       document.body.style.overflow = ''
+      document.body.classList.remove('mobile-nav-open')
     }
   }, [menuOpen])
 
@@ -68,7 +70,9 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
     <>
       <header className="site-header" ref={headerRef}>
         <Link className="brand" to="/" aria-label={content.common.homeLabel} onClick={closeNavigation}>
-          <span className="brand__mark">P</span>
+          <span className="brand__mark" aria-hidden="true">
+            <img src="/media/profile/pablo-schefer-avatar.webp" alt="" width="64" height="64" />
+          </span>
           <span className="brand__name">Pablo Schefer</span>
         </Link>
 

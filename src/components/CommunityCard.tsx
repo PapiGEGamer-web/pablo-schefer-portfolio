@@ -37,6 +37,29 @@ export function CommunityCard({ community, content, locale, index = 0, compact =
         </span>
         {community.id === 'edgar' ? <Radio size={17} aria-hidden="true" /> : <ArrowUpRight size={17} aria-hidden="true" />}
       </div>
+      <figure className="community-card__visual">
+        <img
+          className="community-card__cover"
+          src={community.visual.cover}
+          alt=""
+          width="1280"
+          height="720"
+          loading="lazy"
+          decoding="async"
+          style={{ objectPosition: community.visual.focus ?? 'center' }}
+        />
+        <span className="community-card__visual-shade" aria-hidden="true" />
+        <span className="community-card__logo">
+          <img
+            src={community.visual.logo}
+            alt={community.visual.alt[locale]}
+            width="200"
+            height="200"
+            loading="lazy"
+            decoding="async"
+          />
+        </span>
+      </figure>
       <strong>{community.metric}</strong>
       <h3>{community.shortName}</h3>
       <p>{copy.text}</p>

@@ -16,9 +16,9 @@ const signalItems = [
   'EDGAR / LIVE',
   'GW2 / 100K',
   'GAMES / 20',
-  'RTX / 5070',
+  'DREAM / 5090',
   'RYZEN / X3D',
-  'SPOTIFY / READY',
+  'SPOTIFY / PUBLIC',
 ]
 
 export function HomePage({ content, locale }: { content: SiteCopy; locale: Locale }) {
@@ -155,6 +155,8 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
           {home.proof.map((item, index) => {
             const card = (
               <>
+                {item.image && <img className="proof-card__media" src={item.image} alt={item.imageAlt ?? ''} width="1200" height="675" loading="lazy" decoding="async" />}
+                <span className="proof-card__media-overlay" aria-hidden="true" />
                 <div className="proof-card__meta">
                   <span>{item.type}</span>
                   <ArrowUpRight size={17} strokeWidth={1.6} aria-hidden="true" />

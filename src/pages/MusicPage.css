@@ -229,6 +229,31 @@
 .now-playing__copy > p { color: #d1d4d3; font-size: clamp(1.05rem, 1.7vw, 1.4rem); }
 .now-playing__copy > small { margin-top: 0.45rem; color: var(--dim); }
 
+.now-playing__embed {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.now-playing__embed > small {
+  max-width: 620px;
+  color: var(--dim);
+  font-size: 0.58rem;
+  line-height: 1.55;
+}
+
+.spotify-embed {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 18px;
+  color-scheme: normal;
+}
+
+.spotify-embed--compact {
+  height: 152px;
+}
+
 .now-playing__progress {
   display: grid;
   grid-template-columns: 1fr auto;
