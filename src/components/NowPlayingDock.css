@@ -18,7 +18,7 @@
 .now-dock[data-corner='top-right'] { top: 118px; right: 20px; bottom: auto; left: auto; }
 .now-dock[data-corner='bottom-left'] { top: auto; right: auto; bottom: 20px; left: 20px; }
 .now-dock[data-corner='bottom-right'] { top: auto; right: 20px; bottom: 20px; left: auto; }
-.now-dock.is-dragging { transition: none; cursor: grabbing; }
+.now-dock.is-dragging { cursor: grabbing; transition: left 0.16s cubic-bezier(0.22, 1, 0.36, 1), top 0.16s cubic-bezier(0.22, 1, 0.36, 1); }
 
 .mobile-nav-open .now-dock {
   visibility: hidden;

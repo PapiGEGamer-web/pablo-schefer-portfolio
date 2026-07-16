@@ -38,7 +38,7 @@ export function useDockPosition(storageKey: string, defaultCorner: DockCorner) {
   }, [dragPoint])
 
   const style = dragPoint
-    ? { left: `${Math.max(8, Math.min(window.innerWidth - 380, dragPoint.x - 180))}px`, top: `${Math.max(8, Math.min(window.innerHeight - 130, dragPoint.y - 20))}px` }
+    ? { left: `${Math.max(8, Math.min(window.innerWidth - 380, dragPoint.x - 180))}px`, top: `${Math.max(8, Math.min(window.innerHeight - 130, dragPoint.y - 20))}px`, right: 'auto', bottom: 'auto' }
     : undefined
 
   return {
