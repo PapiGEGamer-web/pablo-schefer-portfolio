@@ -9,8 +9,9 @@ type AuthContextValue = {
   session: Session | null
   user: User | null
   sendRegistrationCode: (email: string) => Promise<void>
-  completeRegistration: (email: string, code: string, password: string) => Promise<void>
+  completeRegistration: (email: string, code: string, password: string, username: string) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
+  updateProfile: (username: string) => Promise<void>
   signOut: () => Promise<void>
 }
 
@@ -50,15 +51,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       if (error) throw error
     },
-    completeRegistration: async (email, code, password) => {
+    completeRegistration: async (email, code, password, username) => {
       const client = requireClient()
       const { error: verifyError } = await client.auth.verifyOtp({ email, token: code, type: 'email' })
       if (verifyError) throw verifyError
-      const { error: passwordError } = await client.auth.updateUser({ password })
+      const cleanUsername = username.normalize('NFKC').trim().slice(0, 32)
+      const { error: passwordError } = await client.auth.updateUser({
+        password,
+        data: {
+          display_name: cleanUsername,
+          username: cleanUsername,
+        },
+      })
       if (passwordError) throw passwordError
     },
     signIn: async (email, password) => {
       const { error } = await requireClient().auth.signInWithPassword({ email, password })
+      if (error) throw error
+    },
+    updateProfile: async (username) => {
+      const cleanUsername = username.normalize('NFKC').trim().slice(0, 32)
+      if (!cleanUsername) throw new Error('missing_username')
+      const { error } = await requireClient().auth.updateUser({
+        data: {
+          display_name: cleanUsername,
+          username: cleanUsername,
+        },
+      })
       if (error) throw error
     },
     signOut: async () => {

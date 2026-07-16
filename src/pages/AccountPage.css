@@ -25,7 +25,11 @@
 .account-panel__missing, .account-panel__profile { display: grid; min-height: 500px; align-content: center; justify-items: start; gap: 1rem; }
 .account-panel__missing > svg, .account-avatar { display: grid; width: 70px; aspect-ratio: 1; place-items: center; color: #171311; background: var(--amber); border-radius: 21px; }
 .account-panel__missing h2, .account-panel__profile h2 { margin: 0; font-size: clamp(2rem, 4vw, 3.8rem); font-weight: 540; line-height: 0.95; letter-spacing: -0.06em; overflow-wrap: anywhere; }
+.account-panel__email { max-width: 100%; margin: -0.45rem 0 0; color: var(--dim); font-size: 0.72rem; line-height: 1.35; overflow-wrap: anywhere; }
 .account-panel__missing p { max-width: 470px; margin: 0; color: var(--muted); line-height: 1.7; }
+.account-username-form { display: grid; width: 100%; gap: 0.85rem; padding: 1rem; background: rgba(255, 255, 255, 0.032); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; }
+.account-panel .account-username-form { padding-top: 1rem; }
+.account-username-form .account-submit { margin-top: 0; }
 .account-panel__facts { display: grid; gap: 0.55rem; margin: 0.5rem 0 1rem; }
 .account-panel__facts span { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.7rem; }
 .account-panel__profile > button { padding: 0 1.2rem; }
