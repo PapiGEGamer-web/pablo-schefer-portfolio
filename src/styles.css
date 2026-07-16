@@ -25,6 +25,12 @@ html {
   scrollbar-color: #353a3a #0b0c0d;
 }
 
+html[data-mobile-platform='ios'],
+html[data-mobile-platform='android'],
+html[data-mobile-platform='mobile'] {
+  scroll-padding-top: calc(92px + env(safe-area-inset-top, 0px));
+}
+
 body {
   min-width: 320px;
   margin: 0;
@@ -33,6 +39,14 @@ body {
     radial-gradient(circle at 12% 4%, rgba(240, 162, 74, 0.055), transparent 30rem),
     radial-gradient(circle at 88% 18%, rgba(129, 216, 204, 0.045), transparent 28rem),
     var(--surface);
+}
+
+html[data-mobile-platform='ios'] body,
+html[data-mobile-platform='android'] body,
+html[data-mobile-platform='mobile'] body {
+  min-height: var(--app-height, 100svh);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body::before {
@@ -3238,6 +3252,244 @@ h3 {
   .discord-live__controls > span { margin-left: 0; }
   .discord-live__source { grid-template-columns: 1fr; }
   .discord-orbit { width: min(84vw, 360px); }
+}
+
+@media (max-width: 480px), (max-width: 860px) and (pointer: coarse) {
+  .site-shell {
+    overflow-x: clip;
+  }
+
+  .site-header {
+    top: max(8px, env(safe-area-inset-top, 0px));
+    width: calc(100% - 16px);
+    height: 60px;
+    padding-inline: 0.55rem;
+    border-radius: 16px;
+  }
+
+  .brand__mark {
+    width: 40px;
+  }
+
+  .account-trigger,
+  .language-picker__trigger,
+  .menu-trigger {
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .language-picker__trigger {
+    padding-inline: 0.55rem;
+    font-size: 0.62rem;
+  }
+
+  .mobile-menu {
+    min-height: var(--app-height, 100svh);
+    padding: calc(86px + env(safe-area-inset-top, 0px)) 0.9rem calc(1.4rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-menu > a,
+  .mobile-menu__group > button {
+    min-height: 62px;
+    padding: 0.75rem 0.7rem;
+    font-size: clamp(1.72rem, 10.8vw, 2.72rem);
+    line-height: 0.98;
+  }
+
+  .mobile-menu__submenu {
+    padding-left: 1.2rem;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: calc(94px + env(safe-area-inset-top, 0px)) 16px 56px;
+  }
+
+  .hero__status {
+    margin-bottom: 2rem;
+    font-size: 0.58rem;
+  }
+
+  .hero__visual {
+    width: min(72vw, 300px);
+  }
+
+  .hero__title {
+    font-size: clamp(3rem, 17vw, 4.55rem);
+    line-height: 0.92;
+  }
+
+  .hero__intro-wrap {
+    gap: 1.3rem;
+  }
+
+  .hero__intro {
+    font-size: 0.92rem;
+    line-height: 1.72;
+  }
+
+  .section {
+    width: calc(100% - 24px);
+    padding-block: 5.3rem;
+  }
+
+  .section-heading {
+    gap: 1.2rem;
+    margin-bottom: 2.6rem;
+  }
+
+  .section-heading h2,
+  .profile h2,
+  .contact h2 {
+    font-size: clamp(2.7rem, 14.5vw, 4.25rem);
+    line-height: 0.96;
+  }
+
+  .capability-card,
+  .proof-card,
+  .community-card {
+    min-height: auto;
+    border-radius: 24px;
+  }
+
+  .capability-card__top {
+    margin-bottom: 3.3rem;
+  }
+
+  .method-list article {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 0.9rem;
+  }
+
+  .method-list p,
+  .method-list h3 {
+    grid-column: 2;
+  }
+
+  .method-list__signal {
+    display: none;
+  }
+
+  .bridge-statement,
+  .contact,
+  .community-philosophy,
+  .edgar-integration {
+    width: calc(100% - 12px);
+    border-radius: 24px;
+  }
+
+  .bridge-statement {
+    min-height: auto;
+    padding: 5.5rem 18px;
+  }
+
+  .bridge-statement p {
+    font-size: clamp(2.65rem, 15vw, 4.3rem);
+  }
+
+  .profile {
+    gap: 3rem;
+    padding-inline: 16px;
+  }
+
+  .profile__portrait {
+    border-radius: 26px;
+  }
+
+  .profile__discord {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .profile__discord-copy strong,
+  .profile__discord-copy small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact {
+    min-height: auto;
+    padding: 5.5rem 18px;
+  }
+
+  .contact__form input,
+  .contact__form textarea {
+    font-size: 16px;
+  }
+
+  .site-footer {
+    width: calc(100% - 24px);
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+  }
+
+  .site-footer > a:last-child {
+    justify-self: center;
+  }
+
+  .page-hero {
+    width: calc(100% - 24px);
+    min-height: auto;
+    gap: 2.4rem;
+    padding: calc(98px + env(safe-area-inset-top, 0px)) 0 68px;
+  }
+
+  .page-hero__copy h1 {
+    font-size: clamp(3rem, 16vw, 4.85rem);
+    line-height: 0.94;
+    overflow-wrap: anywhere;
+  }
+
+  .page-hero__copy > p:last-of-type {
+    font-size: 0.95rem;
+    line-height: 1.72;
+  }
+
+  .page-hero__scroll {
+    display: none;
+  }
+
+  .profile-stats {
+    gap: 0.75rem;
+  }
+
+  .profile-stats article {
+    min-height: 126px;
+    padding: 1rem;
+  }
+
+  .community-card__link {
+    padding: 1rem;
+  }
+
+  .community-card__visual {
+    height: 150px;
+  }
+
+  .community-card > .community-card__link > strong {
+    font-size: clamp(3rem, 18vw, 4.8rem);
+  }
+
+  .community-card h3 {
+    font-size: clamp(1.45rem, 8vw, 2.05rem);
+  }
+
+  .community-card__numbers {
+    grid-template-columns: 1fr;
+  }
+
+  .discord-live,
+  .edgar-integration__diagram article,
+  .community-philosophy__principles article {
+    border-radius: 20px;
+  }
+
+  .discord-live__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

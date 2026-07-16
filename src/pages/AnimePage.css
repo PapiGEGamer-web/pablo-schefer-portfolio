@@ -1054,6 +1054,28 @@
   }
 }
 
+@media (max-width: 480px), (max-width: 860px) and (pointer: coarse) {
+  .anime-hero__visual { width: min(72vw, 300px); }
+  .anime-integration,
+  .anime-now,
+  .anime-history { border-radius: 24px; }
+  .anime-integration { width: calc(100% - 12px); padding: 4.8rem 18px; }
+  .anime-live { padding-top: 5rem; }
+  .anime-now { width: calc(100% - 12px); min-height: 0; padding: 1rem; }
+  .anime-now__content > .anime-poster,
+  .anime-now__content--idle > .anime-poster { width: min(62vw, 190px); }
+  .anime-now h3,
+  .anime-history__intro h2,
+  .anime-integration__copy h2 { font-size: clamp(2.55rem, 14vw, 4.5rem); }
+  .anime-now__facts { grid-template-columns: 1fr; }
+  .anime-history { width: calc(100% - 12px); padding: 5rem 0; }
+  .anime-history__intro { padding-inline: 18px; }
+  .anime-card { border-radius: 18px; }
+  .anime-poster__shine { display: none; }
+  .anime-dialog > article { width: 100%; min-height: var(--app-height, 100dvh); max-height: var(--app-height, 100dvh); }
+  .anime-dialog__body > .anime-poster { width: min(60vw, 210px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .anime-hero__rings,
   .anime-hero__screen::after,

@@ -338,6 +338,22 @@
   .music-source { width: calc(100% - 16px); padding-inline: 24px; border-radius: 30px; }
 }
 
+@media (max-width: 480px), (max-width: 860px) and (pointer: coarse) {
+  .music-hero__visual { width: min(72vw, 300px); }
+  .now-playing,
+  .spotify-embed-card,
+  .music-source { border-radius: 24px; }
+  .now-playing { width: calc(100% - 12px); padding: 1rem; }
+  .now-playing__state { min-height: 420px; }
+  .now-playing__state h3,
+  .now-playing__copy h3,
+  .music-source__copy h2 { font-size: clamp(2.55rem, 14vw, 4.5rem); }
+  .spotify-embed-card { padding: 1rem; }
+  .music-source { width: calc(100% - 12px); padding: 4.8rem 18px; }
+  .music-source__signals article { grid-template-columns: 38px minmax(0, 1fr); }
+  .music-source__signals article > span:last-child { grid-column: 2; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .music-hero__disc,
   .music-orbit,

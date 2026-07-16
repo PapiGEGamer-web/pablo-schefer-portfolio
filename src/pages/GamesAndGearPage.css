@@ -767,6 +767,28 @@
   .game-dialog__copy { padding: 1.5rem; }
 }
 
+@media (max-width: 480px), (max-width: 860px) and (pointer: coarse) {
+  .games-hero__stack { width: min(76vw, 320px); }
+  .game-live-card,
+  .games-library,
+  .setup-console {
+    border-radius: 24px;
+  }
+  .game-live-card { padding: 1rem; }
+  .game-live-card__content > .game-cover { width: min(62vw, 190px); }
+  .game-live-card__actions { flex-direction: column; }
+  .game-live-card__actions button,
+  .game-live-card__actions a { width: 100%; }
+  .game-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+  .game-card { border-radius: 16px; }
+  .game-cover__shine { display: none; }
+  .game-card strong { font-size: 0.7rem; }
+  .setup-console__detail { min-height: 0; }
+  .setup-console__rail button { flex-basis: 96px; }
+  .game-dialog > article { width: calc(100vw - 12px); max-height: calc(var(--app-height, 100svh) - 12px); }
+  .game-dialog__copy h2 { font-size: clamp(2.35rem, 14vw, 4.2rem); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .game-cover__shine { display: none; }
   .game-live-card--active .game-cover img { animation: none; }

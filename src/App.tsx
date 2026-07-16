@@ -67,6 +67,33 @@ function App() {
   }, [locale])
 
   useEffect(() => {
+    const updateDevice = () => {
+      const userAgent = navigator.userAgent.toLowerCase()
+      const coarsePointer = window.matchMedia('(pointer: coarse)').matches
+      const narrowViewport = window.matchMedia('(max-width: 820px)').matches
+      const platform = /android/.test(userAgent)
+        ? 'android'
+        : /iphone|ipad|ipod/.test(userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+          ? 'ios'
+          : coarsePointer && narrowViewport
+            ? 'mobile'
+            : 'desktop'
+      const height = window.visualViewport?.height ?? window.innerHeight
+
+      document.documentElement.dataset.mobilePlatform = platform
+      document.documentElement.style.setProperty('--app-height', `${height}px`)
+    }
+
+    updateDevice()
+    window.addEventListener('resize', updateDevice, { passive: true })
+    window.visualViewport?.addEventListener('resize', updateDevice)
+    return () => {
+      window.removeEventListener('resize', updateDevice)
+      window.visualViewport?.removeEventListener('resize', updateDevice)
+    }
+  }, [])
+
+  useEffect(() => {
     const seo = getSeo(content, location.pathname)
     const canonicalUrl = `${productionOrigin}${location.pathname === '/' ? '/' : location.pathname}`
     document.title = seo.title

@@ -37,4 +37,23 @@
 @keyframes accountSpin { to { transform: rotate(360deg); } }
 @media (max-width: 900px) { .account-page { padding-top: 120px; } .account-hero { grid-template-columns: 1fr; gap: 3rem; } .account-panel { min-height: 0; } }
 @media (max-width: 600px) { .account-page { padding-inline: 8px; } .account-hero__copy { padding-inline: 16px; } .account-panel { padding: 1rem; border-radius: 24px; } .account-panel__missing, .account-panel__profile { min-height: 430px; } }
+@media (max-width: 480px), (max-width: 860px) and (pointer: coarse) {
+  .account-page { min-height: var(--app-height, 100svh); padding: calc(94px + env(safe-area-inset-top, 0px)) 10px calc(54px + env(safe-area-inset-bottom, 0px)); }
+  .account-hero { min-height: 0; gap: 2rem; }
+  .account-hero__copy { padding-inline: 6px; }
+  .account-hero__copy h1 { font-size: clamp(3rem, 16vw, 4.9rem); line-height: 0.92; }
+  .account-hero__copy > p:last-child { font-size: 0.94rem; line-height: 1.7; }
+  .account-panel { padding: 0.9rem; border-radius: 22px; }
+  .account-tabs button { min-height: 46px; }
+  .account-panel form { padding-top: 1.4rem; }
+  .account-panel form h2 { font-size: clamp(2rem, 11vw, 3.2rem); }
+  .account-panel input { min-height: 52px; font-size: 16px; }
+  .account-panel .account-code { font-size: 1.25rem; letter-spacing: 0.25em; }
+  .account-panel__missing,
+  .account-panel__profile { min-height: 0; padding-block: 2.5rem; }
+  .account-panel__missing h2,
+  .account-panel__profile h2 { font-size: clamp(2.1rem, 12vw, 3.5rem); }
+  .account-submit,
+  .account-panel__profile > button { width: 100%; min-height: 52px; }
+}
 @media (prefers-reduced-motion: reduce) { .account-loader { animation: none; } }
