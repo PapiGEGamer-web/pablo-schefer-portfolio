@@ -4,6 +4,9 @@ export const discordUserId = '1179009666110476328'
 
 const lanyardRestUrl = `https://api.lanyard.rest/v1/users/${discordUserId}`
 const lanyardSocketUrl = 'wss://api.lanyard.rest/socket'
+const defaultHeartbeatInterval = 30_000
+const minimumHeartbeatInterval = 5_000
+const maximumHeartbeatInterval = 120_000
 
 export type SpotifyPresence = {
   album: string
@@ -58,6 +61,11 @@ export function formatLanyardTime(milliseconds: number) {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
+function safeHeartbeatInterval(value: unknown) {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return defaultHeartbeatInterval
+  return Math.min(maximumHeartbeatInterval, Math.max(minimumHeartbeatInterval, Math.round(value)))
+}
+
 function useLanyardPresenceSource() {
   const [phase, setPhase] = useState<LanyardConnectionPhase>('connecting')
   const [presence, setPresence] = useState<LanyardPresence | null>(null)
@@ -85,7 +93,7 @@ function useLanyardPresenceSource() {
 
           if (payload.op === 1) {
             const hello = payload.d as { heartbeat_interval?: number }
-            const interval = Math.max(1_000, hello?.heartbeat_interval ?? 30_000)
+            const interval = safeHeartbeatInterval(hello?.heartbeat_interval)
             socket?.send(JSON.stringify({ op: 2, d: { subscribe_to_id: discordUserId } }))
             clearHeartbeat()
             heartbeat = window.setInterval(() => socket?.send(JSON.stringify({ op: 3 })), interval)
