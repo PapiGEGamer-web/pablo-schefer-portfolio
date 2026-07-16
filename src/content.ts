@@ -149,6 +149,16 @@ export type SiteCopy = {
     title: string
     body: string
     cta: string
+    nameLabel: string
+    namePlaceholder: string
+    emailLabel: string
+    emailPlaceholder: string
+    messageLabel: string
+    messagePlaceholder: string
+    submit: string
+    sending: string
+    success: string
+    error: string
   }
   footer: string
   notFound: { eyebrow: string; title: string; body: string; cta: string }
@@ -387,9 +397,19 @@ export const copy: Record<Locale, SiteCopy> = {
     },
     contact: {
       eyebrow: 'Contacto',
-      title: '¿Creamos la siguiente versión?',
-      body: 'Si estás construyendo una comunidad, una experiencia digital o un proyecto colaborativo, hablemos.',
+      title: 'Escríbeme directo.',
+      body: 'Deja tu correo y el mensaje. Me llega automáticamente al email y puedo responderte desde ahí.',
       cta: 'Abrir Discord',
+      nameLabel: 'Nombre',
+      namePlaceholder: 'Tu nombre o nick',
+      emailLabel: 'Tu correo',
+      emailPlaceholder: 'tu@email.com',
+      messageLabel: 'Mensaje',
+      messagePlaceholder: 'Cuéntame qué quieres proponer, preguntar o construir.',
+      submit: 'Enviar mensaje',
+      sending: 'Enviando',
+      success: 'Mensaje enviado. Me llegará directo al correo.',
+      error: 'No se ha podido enviar ahora mismo. Prueba otra vez en unos segundos.',
     },
     footer: 'Construido entre comunidad, código e iteración.',
     notFound: { eyebrow: '404 — Fuera de ruta', title: 'Esta página no existe.', body: 'La navegación sigue viva; solo has llegado a una ruta que todavía no forma parte del mapa.', cta: 'Volver al inicio' },
@@ -556,9 +576,19 @@ export const copy: Record<Locale, SiteCopy> = {
     },
     contact: {
       eyebrow: 'Contact',
-      title: 'Shall we build the next version?',
-      body: 'If you are building a community, a digital experience or a collaborative project, let’s talk.',
+      title: 'Send me a direct note.',
+      body: 'Leave your email and message. It lands straight in my inbox so I can reply from there.',
       cta: 'Open Discord',
+      nameLabel: 'Name',
+      namePlaceholder: 'Your name or handle',
+      emailLabel: 'Your email',
+      emailPlaceholder: 'you@email.com',
+      messageLabel: 'Message',
+      messagePlaceholder: 'Tell me what you want to ask, propose or build.',
+      submit: 'Send message',
+      sending: 'Sending',
+      success: 'Message sent. It will land straight in my inbox.',
+      error: 'The message could not be sent right now. Try again in a few seconds.',
     },
     footer: 'Built through community, code and iteration.',
     notFound: { eyebrow: '404 — Off route', title: 'This page does not exist.', body: 'The navigation is still alive—you have simply reached a route that is not part of the map yet.', cta: 'Back home' },

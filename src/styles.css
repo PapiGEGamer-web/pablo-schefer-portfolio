@@ -1265,6 +1265,125 @@ h3 {
   line-height: 1.7;
 }
 
+.contact__form {
+  display: grid;
+  width: min(100%, 760px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.contact__form label {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.contact__form label span {
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.contact__form input,
+.contact__form textarea {
+  width: 100%;
+  color: var(--text);
+  background: rgba(233, 230, 223, 0.045);
+  border: 1px solid rgba(233, 230, 223, 0.12);
+  border-radius: 18px;
+  outline: 0;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact__form input {
+  height: 58px;
+  padding: 0 1.1rem;
+}
+
+.contact__form textarea {
+  min-height: 150px;
+  padding: 1rem 1.1rem;
+  resize: vertical;
+}
+
+.contact__form input::placeholder,
+.contact__form textarea::placeholder {
+  color: rgba(181, 176, 165, 0.58);
+}
+
+.contact__form input:focus,
+.contact__form textarea:focus {
+  background: rgba(233, 230, 223, 0.07);
+  border-color: rgba(199, 113, 12, 0.85);
+  box-shadow: 0 0 0 4px rgba(199, 113, 12, 0.12);
+}
+
+.contact__message,
+.contact__actions,
+.contact__status {
+  grid-column: 1 / -1;
+}
+
+.contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+.contact__submit {
+  display: inline-flex;
+  min-width: 230px;
+  height: 58px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 0 1.4rem;
+  color: #171411;
+  font-weight: 760;
+  background: var(--amber);
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+}
+
+.contact__submit:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+}
+
+.contact__submit:disabled {
+  cursor: wait;
+  opacity: 0.68;
+  transform: none;
+}
+
+.contact__status {
+  min-height: 1.3rem;
+  margin: 0.2rem 0 0;
+  color: var(--dim);
+  font-size: 0.82rem;
+}
+
+.contact__status--sent {
+  color: var(--cyan);
+}
+
+.contact__status--error {
+  color: #ffb39d;
+}
+
+.contact__trap {
+  position: absolute;
+  left: -100vw;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .contact__button {
   min-width: 230px;
 }
@@ -1407,6 +1526,9 @@ h3 {
   .profile__discord-action { display: none; }
   .contact { padding-inline: 20px; }
   .contact h2 { font-size: clamp(3.3rem, 15vw, 5.4rem); }
+  .contact__form { grid-template-columns: 1fr; }
+  .contact__actions { align-items: stretch; flex-direction: column; }
+  .contact__submit { width: 100%; }
   .contact__orb { display: none; }
 }
 
