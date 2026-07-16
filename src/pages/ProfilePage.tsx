@@ -5,7 +5,7 @@ import { communities } from '../data/communities'
 import { CommunityCard } from '../components/CommunityCard'
 import { ContactSection } from '../components/ContactSection'
 
-const discordProfileUrl = 'https://discord.com/users/633600812970541056'
+const discordProfileUrl = 'https://discord.com/users/1179009666110476328'
 
 export function ProfilePage({ content, locale }: { content: SiteCopy; locale: Locale }) {
   const reduceMotion = useReducedMotion()

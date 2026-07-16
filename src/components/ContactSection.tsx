@@ -3,7 +3,7 @@ import { ArrowUpRight } from 'lucide-react'
 import type { SiteCopy } from '../content'
 import { MagneticLink } from './MagneticLink'
 
-const discordProfileUrl = 'https://discord.com/users/633600812970541056'
+const discordProfileUrl = 'https://discord.com/users/1179009666110476328'
 const socialLinks = [
   { label: 'Discord', href: discordProfileUrl },
   { label: 'GitHub', href: 'https://github.com/PapiGEGamer-web' },

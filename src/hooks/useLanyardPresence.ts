@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-export const discordUserId = '633600812970541056'
+export const discordUserId = '1179009666110476328'
 
 const lanyardRestUrl = `https://api.lanyard.rest/v1/users/${discordUserId}`
 const lanyardSocketUrl = 'wss://api.lanyard.rest/socket'
