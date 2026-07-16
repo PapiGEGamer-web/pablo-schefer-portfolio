@@ -3,7 +3,7 @@ import edgarPonsCover from '../assets/communities/edgar-pons.webp'
 import fnlbCover from '../assets/communities/fnlb-cover.webp'
 import fnlbLogo from '../assets/communities/fnlb-logo.webp'
 import gw2Visual from '../assets/communities/gw2.webp'
-import nateCover from '../assets/communities/nate-cover.webp'
+import nateCover from '../assets/communities/nate-cover.jpg'
 import nateLogo from '../assets/communities/nate-logo.webp'
 import valorantEsVisual from '../assets/communities/valorant-es.webp'
 
