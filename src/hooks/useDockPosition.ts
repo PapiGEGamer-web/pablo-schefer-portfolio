@@ -20,6 +20,7 @@ export function useDockPosition(storageKey: string, defaultCorner: DockCorner, i
   const [corner, setCorner] = useState<DockCorner>(stored ?? defaultCorner)
   const [isDragging, setIsDragging] = useState(false)
   const pointerOffset = useRef({ x: 0, y: 0 })
+  const snapTimeout = useRef<number | null>(null)
   const targetX = useMotionValue(0)
   const targetY = useMotionValue(0)
   const smoothX = useSpring(targetX, { stiffness: 235, damping: 29, mass: 0.78 })
@@ -46,20 +47,58 @@ export function useDockPosition(storageKey: string, defaultCorner: DockCorner, i
     if (!manualRef.current) setCorner(defaultCorner)
   }, [defaultCorner])
 
+  useEffect(() => () => {
+    if (snapTimeout.current !== null) window.clearTimeout(snapTimeout.current)
+  }, [])
+
+  const fixedPosition = useCallback((nextCorner: DockCorner, bounds: DOMRect) => {
+    const mobile = window.innerWidth <= 700
+    const edge = mobile ? 8 : 20
+    const topOffset = mobile ? 92 : 118
+    const stackGap = mobile ? 190 : 330
+    const stackIndex = dockOrder.filter((dockId) => dockRegistry.get(dockId) === nextCorner && dockOrder.indexOf(dockId) < dockOrder.indexOf(id)).length
+    const left = nextCorner.endsWith('left') ? edge : window.innerWidth - bounds.width - edge
+    const top = nextCorner.startsWith('top')
+      ? topOffset + (stackIndex * stackGap)
+      : window.innerHeight - bounds.height - edge - (stackIndex * stackGap)
+    return { left: Math.max(8, left), top: Math.max(8, top) }
+  }, [id])
+
   const finishDrag = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (!isDragging) return
-    const nextCorner: DockCorner = `${event.clientY < window.innerHeight / 2 ? 'top' : 'bottom'}-${event.clientX < window.innerWidth / 2 ? 'left' : 'right'}`
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const centerX = bounds.left + (bounds.width / 2)
+    const centerY = bounds.top + (bounds.height / 2)
+    const corners: DockCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+    const nextCorner = corners.reduce((closest, candidate) => {
+      const target = fixedPosition(candidate, bounds)
+      const targetCenterX = target.left + (bounds.width / 2)
+      const targetCenterY = target.top + (bounds.height / 2)
+      const distance = ((targetCenterX - centerX) ** 2) + ((targetCenterY - centerY) ** 2)
+      return distance < closest.distance ? { corner: candidate, distance } : closest
+    }, { corner: corners[0], distance: Number.POSITIVE_INFINITY }).corner
+    const target = fixedPosition(nextCorner, bounds)
     manualRef.current = true
-    setCorner(nextCorner)
-    window.localStorage.setItem(storageKey, nextCorner)
-    setIsDragging(false)
+    targetX.set(target.left)
+    targetY.set(target.top)
+    if (snapTimeout.current !== null) window.clearTimeout(snapTimeout.current)
+    snapTimeout.current = window.setTimeout(() => {
+      setCorner(nextCorner)
+      window.localStorage.setItem(storageKey, nextCorner)
+      setIsDragging(false)
+      snapTimeout.current = null
+    }, 720)
     event.currentTarget.releasePointerCapture?.(event.pointerId)
-  }, [isDragging, storageKey])
+  }, [fixedPosition, isDragging, storageKey, targetX, targetY])
 
   const onPointerDown = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (event.pointerType === 'mouse' && event.button !== 0) return
     const target = event.target
     if (target instanceof Element && target.closest('button, a, input, textarea, select')) return
+    if (snapTimeout.current !== null) {
+      window.clearTimeout(snapTimeout.current)
+      snapTimeout.current = null
+    }
     const card = event.currentTarget.closest<HTMLElement>('.now-dock, .anime-dock')
     const bounds = card?.getBoundingClientRect()
     if (!bounds) return
