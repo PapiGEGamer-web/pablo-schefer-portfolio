@@ -367,9 +367,9 @@ h3 {
 
 .hero__layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(360px, 0.75fr);
+  grid-template-columns: minmax(0, 1.42fr) minmax(420px, 0.9fr);
   align-items: center;
-  gap: clamp(2rem, 6vw, 8rem);
+  gap: clamp(2.5rem, 5vw, 7rem);
   width: min(100%, 1440px);
   margin: 2rem auto 0;
 }
@@ -387,18 +387,19 @@ h3 {
 }
 
 .hero__title {
-  max-width: 900px;
-  margin-bottom: 2.6rem;
-  font-size: clamp(4.25rem, 7.9vw, 8.7rem);
+  max-width: 980px;
+  margin-bottom: 2.3rem;
+  font-size: clamp(4.25rem, 7.55vw, 8.45rem);
   font-weight: 515;
-  line-height: 0.84;
-  letter-spacing: -0.087em;
+  line-height: 0.86;
+  letter-spacing: -0.078em;
 }
 
 .hero__title > span {
   display: block;
   overflow: hidden;
-  padding: 0.04em 0.09em 0.08em 0;
+  padding: 0.05em 0.11em 0.25em 0.01em;
+  margin-bottom: -0.14em;
 }
 
 .hero__title > span > span {
@@ -492,7 +493,8 @@ h3 {
   display: grid;
   aspect-ratio: 1;
   place-items: center;
-  max-width: 500px;
+  width: min(100%, 570px);
+  max-width: 570px;
   justify-self: end;
 }
 
@@ -519,6 +521,12 @@ h3 {
   animation: orbitSpin 45s linear infinite;
 }
 
+.monogram__orbit--wide {
+  stroke: rgba(240, 162, 74, 0.13);
+  stroke-dasharray: 1 14;
+  animation: orbitSpin 64s linear infinite reverse;
+}
+
 .monogram__orbit--inner {
   stroke: url(#orbit);
   stroke-width: 1.3;
@@ -526,11 +534,22 @@ h3 {
   animation: orbitSpin 24s linear infinite reverse;
 }
 
+.monogram__orbit--tight {
+  stroke: rgba(129, 216, 204, 0.16);
+  stroke-dasharray: 18 24 3 18;
+  animation: orbitSpin 31s linear infinite;
+}
+
 .monogram__arc {
   fill: none;
   stroke: rgba(129, 216, 204, 0.25);
   stroke-width: 1;
   stroke-dasharray: 4 6;
+}
+
+.monogram__arc--lower {
+  stroke: rgba(240, 162, 74, 0.18);
+  stroke-dasharray: 18 18 2 14;
 }
 
 .monogram__portrait-backdrop {
@@ -568,6 +587,8 @@ h3 {
 
 .monogram__node--two { fill: var(--cyan); animation-delay: -1s; }
 .monogram__node--three { animation-delay: -2s; }
+.monogram__node--four { fill: var(--cyan); opacity: 0.8; animation-delay: -1.55s; }
+.monogram__node--five { opacity: 0.72; animation-delay: -2.35s; }
 
 .monogram__code {
   position: absolute;
