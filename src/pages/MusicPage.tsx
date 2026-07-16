@@ -1,14 +1,16 @@
-import { motion, useReducedMotion } from 'motion/react'
+import { useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { Activity, ArrowDown, ArrowUpRight, Disc3, Music2, Radio, ShieldCheck, Wifi } from 'lucide-react'
 import type { Locale, SiteCopy } from '../content'
 import { ContactSection } from '../components/ContactSection'
 import { SpotifyEmbed } from '../components/SpotifyEmbed'
-import { formatLanyardTime, useLanyardPresence } from '../hooks/useLanyardPresence'
+import { formatLanyardTime, useLanyardPresence, useSpotifyProgress } from '../hooks/useLanyardPresence'
 import './MusicPage.css'
 
 export function MusicPage({ content, locale }: { content: SiteCopy; locale: Locale }) {
   const reduceMotion = useReducedMotion()
-  const { phase, progress, socketLive, track } = useLanyardPresence()
+  const { phase, socketLive, track } = useLanyardPresence()
+  const progress = useSpotifyProgress(track)
 
   const labels = locale === 'es' ? {
     eyebrow: 'Spotify · Presencia · En vivo',
@@ -81,32 +83,32 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
   return (
     <div className="music-page">
       <section className="page-hero music-hero">
-        <motion.div className="page-hero__copy" initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.16, 1, 0.3, 1] }}>
+        <m.div className="page-hero__copy" initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.16, 1, 0.3, 1] }}>
           <p className="eyebrow">{isLive ? labels.eyebrow : labels.eyebrowReady}</p>
           <h1>{labels.title.split('\n').map((line) => <span key={line}>{line}</span>)}</h1>
           <p>{labels.intro}</p>
-        </motion.div>
+        </m.div>
 
-        <motion.div className="music-hero__visual" initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: reduceMotion ? 0 : 0.14, duration: reduceMotion ? 0 : 0.82, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
+        <m.div className="music-hero__visual" initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: reduceMotion ? 0 : 0.14, duration: reduceMotion ? 0 : 0.82, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
           <div className="music-orbit music-orbit--outer" />
           <div className="music-orbit music-orbit--inner" />
           <div className="music-hero__disc"><Disc3 size={88} /></div>
           <span><Activity size={15} />{isLive ? 'LIVE SIGNAL' : labels.readySignal}</span>
-        </motion.div>
+        </m.div>
 
         <a className="page-hero__scroll" href="#reproductor"><ArrowDown size={15} aria-hidden="true" />{labels.jump}</a>
       </section>
 
       <section className="section music-live-section" id="reproductor">
-        <motion.div className="section-heading section-heading--split" {...reveal}>
+        <m.div className="section-heading section-heading--split" {...reveal}>
           <div>
             <p className="eyebrow">Spotify · PapiGEGamer</p>
             <h2>{labels.now}</h2>
           </div>
           <p className="section-heading__intro">{labels.sourceBody}</p>
-        </motion.div>
+        </m.div>
 
-        <motion.div className={`now-playing now-playing--${phase} ${track ? 'now-playing--active' : ''}`} {...reveal}>
+        <m.div className={`now-playing now-playing--${phase} ${track ? 'now-playing--active' : ''}`} {...reveal}>
           <header className="now-playing__header">
             <span><span className="status-dot" aria-hidden="true" />{connectionLabel}</span>
             <span><Wifi size={14} aria-hidden="true" />LANYARD / DISCORD</span>
@@ -169,20 +171,20 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
               </div>
             </div>
           )}
-        </motion.div>
+        </m.div>
       </section>
 
       <section className="music-source">
-        <motion.div className="music-source__copy" {...reveal}>
+        <m.div className="music-source__copy" {...reveal}>
           <p className="eyebrow">{labels.sourceEyebrow}</p>
           <h2>{labels.sourceTitle}</h2>
           <p>{labels.sourceBody}</p>
-        </motion.div>
-        <motion.div className="music-source__signals" {...reveal}>
+        </m.div>
+        <m.div className="music-source__signals" {...reveal}>
           {labels.signals.map((signal, index) => (
             <article key={signal}><span>{String(index + 1).padStart(2, '0')}</span><strong>{signal}</strong><i /></article>
           ))}
-        </motion.div>
+        </m.div>
       </section>
 
       <ContactSection content={content} />

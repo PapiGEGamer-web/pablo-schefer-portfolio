@@ -5,6 +5,17 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.tr
 
 export const authConfigured = Boolean(supabaseUrl && supabasePublishableKey)
 
+export function hasStoredAuthSession() {
+  if (!authConfigured) return false
+
+  try {
+    const projectRef = new URL(supabaseUrl!).hostname.split('.')[0]
+    return Boolean(window.localStorage.getItem(`sb-${projectRef}-auth-token`))
+  } catch {
+    return false
+  }
+}
+
 let clientPromise: Promise<SupabaseClient | null> | null = null
 
 export function getSupabase() {

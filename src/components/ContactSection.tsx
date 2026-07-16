@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'motion/react'
+import { useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ArrowUpRight, Send } from 'lucide-react'
 import { type FormEvent, useEffect, useRef, useState } from 'react'
 import type { SiteCopy } from '../content'
@@ -62,7 +63,7 @@ export function ContactSection({ content }: { content: SiteCopy }) {
 
   return (
     <section className="contact" id="contacto">
-      <motion.div className="contact__inner" {...reveal}>
+      <m.div className="contact__inner" {...reveal}>
         <p className="eyebrow">{content.contact.eyebrow}</p>
         <h2>{content.contact.title}</h2>
         <p>{content.contact.body}</p>
@@ -103,7 +104,7 @@ export function ContactSection({ content }: { content: SiteCopy }) {
             </a>
           ))}
         </div>
-      </motion.div>
+      </m.div>
       <div className="contact__orb" aria-hidden="true"><span>PS/O</span></div>
     </section>
   )

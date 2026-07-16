@@ -1,16 +1,18 @@
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { AnimatePresence, useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ChevronDown, ExternalLink, Music2, Volume2, X } from 'lucide-react'
 import { useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
-import { useLanyardPresence } from '../hooks/useLanyardPresence'
+import { useLanyardPresence, useSpotifyProgress } from '../hooks/useLanyardPresence'
 import { useDockPosition } from '../hooks/useDockPosition'
 import { SpotifyEmbed } from './SpotifyEmbed'
 import './NowPlayingDock.css'
 
 export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale: Locale; placement?: 'bottom-right' | 'top-left' }) {
   const reduceMotion = useReducedMotion()
-  const { phase, progress, socketLive, track } = useLanyardPresence()
+  const { phase, socketLive, track } = useLanyardPresence()
+  const progress = useSpotifyProgress(track)
   const [expanded, setExpanded] = useState(true)
   const [visible, setVisible] = useState(true)
   const dock = useDockPosition('pablo-portfolio-spotify-dock-position', placement, 'spotify', Boolean(track))
@@ -56,7 +58,7 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
           : labels.idle
 
   return (
-    <motion.aside
+    <m.aside
       className={`now-dock${track ? ' now-dock--active' : ''}${dock.isDragging ? ' is-dragging' : ''}`}
       data-corner={dock.corner}
       style={{ ...dock.style, '--dock-stack-index': dock.stackIndex } as CSSProperties}
@@ -99,7 +101,7 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
 
       <AnimatePresence initial={false}>
         {expanded && track && (
-          <motion.div
+          <m.div
             className="now-dock__player"
             initial={reduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -111,9 +113,9 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
               <span><Volume2 size={13} aria-hidden="true" />{labels.volume}</span>
               <Link to="/musica">{labels.details}<ExternalLink size={12} aria-hidden="true" /></Link>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.aside>
+    </m.aside>
   )
 }

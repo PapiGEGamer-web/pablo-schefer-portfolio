@@ -1,11 +1,10 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'motion/react'
+import { AnimatePresence, useReducedMotion, useScroll, useSpring } from 'motion/react'
+import * as m from 'motion/react-m'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { AmbientField } from './components/AmbientField'
 import { SiteFooter } from './components/SiteFooter'
 import { SiteHeader } from './components/SiteHeader'
-import { NowPlayingDock } from './components/NowPlayingDock'
-import { AnimeNowDock } from './components/AnimeNowDock'
 import { EasterEggs } from './components/EasterEggs'
 import { copy, type Locale, type SiteCopy } from './content'
 import { HomePage } from './pages/HomePage'
@@ -18,6 +17,8 @@ const MusicPage = lazy(() => import('./pages/MusicPage').then((module) => ({ def
 const AnimePage = lazy(() => import('./pages/AnimePage').then((module) => ({ default: module.AnimePage })))
 const AccountPage = lazy(() => import('./pages/AccountPage').then((module) => ({ default: module.AccountPage })))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })))
+const NowPlayingDock = lazy(() => import('./components/NowPlayingDock').then((module) => ({ default: module.NowPlayingDock })))
+const AnimeNowDock = lazy(() => import('./components/AnimeNowDock').then((module) => ({ default: module.AnimeNowDock })))
 
 const productionOrigin = 'https://pablo-schefer.vercel.app'
 
@@ -56,12 +57,18 @@ function App() {
     const stored = window.localStorage.getItem('pablo-portfolio-locale')
     return stored === 'en' ? 'en' : 'es'
   })
+  const [liveUiReady, setLiveUiReady] = useState(false)
   const content = copy[locale]
   const location = useLocation()
   const reduceMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 130, damping: 28, mass: 0.25 })
   const pointerFrame = useRef(0)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setLiveUiReady(true), 650)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     document.documentElement.lang = locale
@@ -131,12 +138,12 @@ function App() {
       <AmbientField />
       <EasterEggs />
       <div className="pointer-glow" aria-hidden="true" />
-      <motion.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />
+      <m.div className="scroll-progress" style={{ scaleX }} aria-hidden="true" />
       <SiteHeader content={content} locale={locale} onLocaleChange={setLocale} />
       <ScrollManager />
 
       <AnimatePresence mode="wait" initial={false}>
-        <motion.main
+        <m.main
           id="main"
           className="route-stage"
           key={location.pathname}
@@ -158,14 +165,14 @@ function App() {
               <Route path="*" element={<NotFoundPage content={content} />} />
             </Routes>
           </Suspense>
-        </motion.main>
+        </m.main>
       </AnimatePresence>
 
-      {!['/musica', '/anime'].includes(location.pathname) && (
-        <>
+      {liveUiReady && !['/musica', '/anime'].includes(location.pathname) && (
+        <Suspense fallback={null}>
           <NowPlayingDock locale={locale} placement={location.pathname === '/perfil' ? 'top-left' : 'bottom-right'} />
           <AnimeNowDock locale={locale} />
-        </>
+        </Suspense>
       )}
       <SiteFooter content={content} />
     </div>

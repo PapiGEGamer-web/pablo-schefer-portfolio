@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'motion/react'
+import { useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ArrowDown, Radio } from 'lucide-react'
 import type { Locale, SiteCopy } from '../content'
 import { communities } from '../data/communities'
@@ -18,16 +19,16 @@ export function CommunitiesPage({ content, locale }: { content: SiteCopy; locale
   return (
     <>
       <section className="page-hero page-hero--communities">
-        <motion.div className="page-hero__copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}>
+        <m.div className="page-hero__copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}>
           <p className="eyebrow">{page.eyebrow}</p>
           <h1>{page.title}</h1>
           <p>{page.intro}</p>
-        </motion.div>
-        <motion.div className="community-page__counter" initial={{ opacity: 0, scale: 0.88, rotate: -5 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.18, duration: 0.8, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
+        </m.div>
+        <m.div className="community-page__counter" initial={{ opacity: 0, scale: 0.88, rotate: -5 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.18, duration: 0.8, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
           <Radio size={24} />
           <strong>06+</strong>
           <span>{locale === 'es' ? 'Experiencias destacadas' : 'Featured experiences'}</span>
-        </motion.div>
+        </m.div>
         <a className="page-hero__scroll" href="#recorrido"><ArrowDown size={15} aria-hidden="true" />{locale === 'es' ? 'Mapa de comunidades' : 'Community map'}</a>
       </section>
 
@@ -41,14 +42,14 @@ export function CommunitiesPage({ content, locale }: { content: SiteCopy; locale
       </section>
 
       <section className="community-philosophy">
-        <motion.div className="community-philosophy__intro" {...reveal}>
+        <m.div className="community-philosophy__intro" {...reveal}>
           <p className="eyebrow">{page.philosophyEyebrow}</p>
           <h2>{page.philosophyTitle}</h2>
           <p>{page.philosophyBody}</p>
-        </motion.div>
+        </m.div>
         <div className="community-philosophy__principles">
           {page.principles.map((principle, index) => (
-            <motion.article
+            <m.article
               key={principle.title}
               initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -58,7 +59,7 @@ export function CommunitiesPage({ content, locale }: { content: SiteCopy; locale
               <span>{principle.index}</span>
               <h3>{principle.title}</h3>
               <p>{principle.text}</p>
-            </motion.article>
+            </m.article>
           ))}
         </div>
       </section>

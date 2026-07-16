@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'motion/react'
+import { useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
@@ -42,36 +43,36 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
 
         <div className="hero__layout">
           <div className="hero__copy">
-            <motion.p className="eyebrow hero__eyebrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15, duration: 0.8 }}>
+            <m.p className="eyebrow hero__eyebrow" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15, duration: 0.8 }}>
               {home.eyebrow}
-            </motion.p>
+            </m.p>
             <h1 className="hero__title" aria-label={home.heroTitle.join(' ')}>
               {home.heroTitle.map((line, index) => (
                 <span className={index === 1 || index === 3 ? 'accent-word' : ''} key={line}>
-                  <motion.span
+                  <m.span
                     initial={reduceMotion ? { opacity: 1 } : { y: '110%', rotate: 2 }}
                     animate={{ y: 0, rotate: 0 }}
                     transition={{ delay: 0.08 + index * 0.08, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                   >
                     {line}
-                  </motion.span>
+                  </m.span>
                 </span>
               ))}
             </h1>
-            <motion.div className="hero__intro-wrap" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.75 }}>
+            <m.div className="hero__intro-wrap" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.75 }}>
               <p className="hero__intro">{home.heroIntro}</p>
               <div className="hero__actions">
                 <MagneticLink href="/comunidades">{home.primaryCta}</MagneticLink>
                 <MagneticLink href="/perfil" variant="ghost">{home.secondaryCta}</MagneticLink>
               </div>
-            </motion.div>
+            </m.div>
           </div>
 
-          <motion.div className="hero__visual" initial={{ opacity: 0, scale: 0.9, rotate: -4 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.25, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}>
+          <m.div className="hero__visual" initial={{ opacity: 0, scale: 0.9, rotate: -4 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.25, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}>
             <Monogram />
             <div className="orbit-copy">{home.orbitLabel}</div>
             <div className="visual-coordinates">SPAIN / UTC+02</div>
-          </motion.div>
+          </m.div>
         </div>
 
         <Link className="scroll-cue" to="/#capacidades">
@@ -93,15 +94,15 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
       </div>
 
       <section className="section capabilities" id="capacidades">
-        <motion.div className="section-heading" {...reveal}>
+        <m.div className="section-heading" {...reveal}>
           <p className="eyebrow">{home.expertiseEyebrow}</p>
           <h2>{home.expertiseTitle}</h2>
           <p className="section-heading__intro">{home.expertiseIntro}</p>
-        </motion.div>
+        </m.div>
 
         <div className="capability-grid">
           {home.capabilities.map((capability, index) => (
-            <motion.article
+            <m.article
               className="capability-card"
               key={capability.title}
               initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 28 }}
@@ -119,13 +120,13 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
                 {capability.tags.map((tag) => <li key={tag}>{tag}</li>)}
               </ul>
               <div className="capability-card__scan" aria-hidden="true" />
-            </motion.article>
+            </m.article>
           ))}
         </div>
       </section>
 
       <section className="section community-preview" id="comunidades">
-        <motion.div className="section-heading section-heading--split" {...reveal}>
+        <m.div className="section-heading section-heading--split" {...reveal}>
           <div>
             <p className="eyebrow">{home.communityEyebrow}</p>
             <h2>{home.communityTitle}</h2>
@@ -134,7 +135,7 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
             <p className="section-heading__intro">{home.communityIntro}</p>
             <MagneticLink href="/comunidades" variant="ghost">{home.communityCta}</MagneticLink>
           </div>
-        </motion.div>
+        </m.div>
         <div className="community-grid community-grid--preview">
           {featuredCommunities.map((community, index) => (
             <CommunityCard key={community.id} community={community} content={content} locale={locale} index={index} compact />
@@ -144,13 +145,13 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
       </section>
 
       <section className="section proof" id="evidencia">
-        <motion.div className="section-heading section-heading--split" {...reveal}>
+        <m.div className="section-heading section-heading--split" {...reveal}>
           <div>
             <p className="eyebrow">{home.proofEyebrow}</p>
             <h2>{home.proofTitle}</h2>
           </div>
           <p className="section-heading__intro">{home.proofIntro}</p>
-        </motion.div>
+        </m.div>
         <div className="proof-grid">
           {home.proof.map((item, index) => {
             const card = (
@@ -169,7 +170,7 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
             )
             const id = item.title === 'FNLB' ? 'fnlb' : item.title === 'KernelOS' ? 'kernelos' : undefined
             return (
-              <motion.article
+              <m.article
                 className="proof-card-shell"
                 id={id}
                 key={item.title}
@@ -183,31 +184,31 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
                 ) : (
                   <a className="proof-card" href={item.link} target="_blank" rel="noreferrer">{card}</a>
                 )}
-              </motion.article>
+              </m.article>
             )
           })}
         </div>
       </section>
 
       <section className="bridge-statement" aria-label={home.bridgeLead}>
-        <motion.p {...reveal}>
+        <m.p {...reveal}>
           <span>{home.bridgeLead}</span>
           {home.bridgeText}
-        </motion.p>
+        </m.p>
         <div className="bridge-line" aria-hidden="true"><i /><i /><i /></div>
       </section>
 
       <section className="section method" id="metodo">
-        <motion.div className="section-heading section-heading--split" {...reveal}>
+        <m.div className="section-heading section-heading--split" {...reveal}>
           <div>
             <p className="eyebrow">{home.methodEyebrow}</p>
             <h2>{home.methodTitle}</h2>
           </div>
           <p className="section-heading__intro">{home.methodIntro}</p>
-        </motion.div>
+        </m.div>
         <div className="method-list">
           {home.method.map((item, index) => (
-            <motion.article
+            <m.article
               key={item.title}
               initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -18 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -218,7 +219,7 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
               <h3>{item.title}</h3>
               <p>{item.text}</p>
               <span className="method-list__signal" aria-hidden="true" />
-            </motion.article>
+            </m.article>
           ))}
         </div>
       </section>

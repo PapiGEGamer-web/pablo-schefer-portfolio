@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { AnimatePresence, useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import {
   Activity,
   ArrowDown,
@@ -297,34 +298,34 @@ const connectionLabel = phase === 'ready'
   return (
     <div className="games-page">
       <section className="page-hero games-hero">
-        <motion.div className="page-hero__copy" initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.16, 1, 0.3, 1] }}>
+        <m.div className="page-hero__copy" initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.16, 1, 0.3, 1] }}>
           <p className="eyebrow">{labels.eyebrow}</p>
           <h1>{labels.title.split('\n').map((line) => <span key={line}>{line}</span>)}</h1>
           <p>{labels.intro}</p>
-        </motion.div>
+        </m.div>
 
-        <motion.div className="games-hero__stack" initial={reduceMotion ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.92, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: reduceMotion ? 0 : 0.12, duration: reduceMotion ? 0 : 0.8, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
+        <m.div className="games-hero__stack" initial={reduceMotion ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.92, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: reduceMotion ? 0 : 0.12, duration: reduceMotion ? 0 : 0.8, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
           {featuredGames.map((game, index) => (
             <div className={`games-hero__cover games-hero__cover--${index + 1}`} key={game.id}>
               <GameCover game={game} eager />
             </div>
           ))}
           <span className="games-hero__count"><strong>20+</strong>{locale === 'es' ? 'mundos' : 'worlds'}</span>
-        </motion.div>
+        </m.div>
 
         <a className="page-hero__scroll" href="#seleccion"><ArrowDown size={15} aria-hidden="true" />{labels.explore}</a>
       </section>
 
       <section className="section games-live" id="juego-en-directo">
-        <motion.div className="section-heading section-heading--split" {...reveal}>
+        <m.div className="section-heading section-heading--split" {...reveal}>
           <div>
             <p className="eyebrow">{labels.liveEyebrow}</p>
             <h2>{labels.liveTitle}</h2>
           </div>
           <p className="section-heading__intro">{labels.liveIntro}</p>
-        </motion.div>
+        </m.div>
 
-        <motion.article
+        <m.article
           className={`game-live-card${liveGame ? ' game-live-card--active' : ''}`}
           style={{ '--game-accent': liveGame?.accent ?? '#f0a24a' } as CSSProperties}
           aria-live="polite"
@@ -363,21 +364,21 @@ const connectionLabel = phase === 'ready'
               </div>
             </div>
           )}
-        </motion.article>
+        </m.article>
       </section>
 
       <section className="section games-featured" id="seleccion">
-        <motion.div className="section-heading section-heading--split" {...reveal}>
+        <m.div className="section-heading section-heading--split" {...reveal}>
           <div>
             <p className="eyebrow">{labels.featuredEyebrow}</p>
             <h2>{labels.featuredTitle}</h2>
           </div>
           <p className="section-heading__intro">{labels.featuredIntro}</p>
-        </motion.div>
+        </m.div>
 
         <div className="featured-game-grid">
           {featuredGames.map((game, index) => (
-            <motion.button
+            <m.button
               className={`featured-game featured-game--${game.status}`}
               type="button"
               key={game.id}
@@ -396,20 +397,20 @@ const connectionLabel = phase === 'ready'
                 <span>{game.description[locale]}</span>
                 <span className="game-tags">{game.tags[locale].map((tag) => <i key={tag}>{tag}</i>)}</span>
               </span>
-            </motion.button>
+            </m.button>
           ))}
         </div>
       </section>
 
       <section className="games-library" id="biblioteca">
         <div className="games-library__inner">
-          <motion.div className="section-heading section-heading--split" {...reveal}>
+          <m.div className="section-heading section-heading--split" {...reveal}>
             <div>
               <p className="eyebrow">{labels.libraryEyebrow}</p>
               <h2>{labels.libraryTitle}</h2>
             </div>
             <p className="section-heading__intro">{labels.libraryIntro}</p>
-          </motion.div>
+          </m.div>
 
           <div className="game-filters" aria-label={locale === 'es' ? 'Filtros de juegos' : 'Game filters'}>
             <span><SlidersHorizontal size={15} aria-hidden="true" /></span>
@@ -421,14 +422,13 @@ const connectionLabel = phase === 'ready'
             <small>{filteredGames.length} {labels.results}</small>
           </div>
 
-          <motion.div className="game-grid" layout>
+          <m.div className="game-grid">
             <AnimatePresence mode="popLayout">
               {filteredGames.map((game) => (
-                <motion.button
+                <m.button
                   className="game-card"
                   type="button"
                   key={game.id}
-                  layout
                   initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.94 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
@@ -442,21 +442,21 @@ const connectionLabel = phase === 'ready'
                     <strong>{game.title}</strong>
                     <small>{game.tags[locale].slice(0, 2).join(' · ')}</small>
                   </span>
-                </motion.button>
+                </m.button>
               ))}
             </AnimatePresence>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       <section className="section setup-section" id="equipo">
-        <motion.div className="section-heading section-heading--split" {...reveal}>
+        <m.div className="section-heading section-heading--split" {...reveal}>
           <div>
             <p className="eyebrow">{labels.setupEyebrow}</p>
             <h2>{labels.setupTitle}</h2>
           </div>
           <p className="section-heading__intro">{labels.setupIntro}</p>
-        </motion.div>
+        </m.div>
 
         <div className={`setup-mode-switch setup-mode-switch--${hardwareMode}`} role="group" aria-label={locale === 'es' ? 'Seleccionar configuración' : 'Select setup'}>
           <button type="button" aria-pressed={hardwareMode === 'current'} onClick={() => selectHardwareMode('current')}>
@@ -503,7 +503,7 @@ const connectionLabel = phase === 'ready'
           </div>
 
           <AnimatePresence mode="wait">
-            <motion.article
+            <m.article
               className="setup-console__detail"
               id="hardware-panel"
               role="tabpanel"
@@ -537,7 +537,7 @@ const connectionLabel = phase === 'ready'
                   <ArrowUpRight size={16} aria-hidden="true" />
                 </a>
               )}
-            </motion.article>
+            </m.article>
           </AnimatePresence>
         </div>
       </section>
@@ -546,8 +546,8 @@ const connectionLabel = phase === 'ready'
 
       <AnimatePresence>
         {selectedGame && (
-          <motion.div className="game-dialog" initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }} animate={{ opacity: 1 }} exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }} onClick={closeGame}>
-            <motion.article
+          <m.div className="game-dialog" initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }} animate={{ opacity: 1 }} exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }} onClick={closeGame}>
+            <m.article
               ref={dialogRef}
               role="dialog"
               aria-modal="true"
@@ -569,8 +569,8 @@ const connectionLabel = phase === 'ready'
                 <div className="game-tags">{selectedGame.tags[locale].map((tag) => <i key={tag}>{tag}</i>)}</div>
                 <a href={selectedGame.href} target="_blank" rel="noreferrer">{labels.visit}<ArrowUpRight size={16} aria-hidden="true" /></a>
               </div>
-            </motion.article>
-          </motion.div>
+            </m.article>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

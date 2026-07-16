@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ArrowRight, CheckCircle2, KeyRound, LogOut, Mail, ShieldCheck, UserRound } from 'lucide-react'
 import { useEffect, useState, type FormEvent } from 'react'
 import type { Locale } from '../content'
@@ -98,10 +98,10 @@ export function AccountPage({ locale }: { locale: Locale }) {
   return (
     <div className="account-page">
       <section className="account-hero">
-        <motion.div className="account-hero__copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
+        <m.div className="account-hero__copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
           <p className="eyebrow">{labels.eyebrow}</p><h1>{labels.title}</h1><p>{labels.intro}</p>
-        </motion.div>
-        <motion.div className="account-panel" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}>
+        </m.div>
+        <m.div className="account-panel" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}>
           {!auth.configured ? (
             <div className="account-panel__missing"><ShieldCheck size={36} /><h2>{labels.missing}</h2><p>{labels.missingBody}</p></div>
           ) : auth.loading ? (
@@ -139,7 +139,7 @@ export function AccountPage({ locale }: { locale: Locale }) {
               </form>
             </>
           )}
-        </motion.div>
+        </m.div>
       </section>
     </div>
   )

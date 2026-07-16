@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'motion/react'
+import { useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ArrowUpRight, Tv, X } from 'lucide-react'
 import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
@@ -64,7 +65,7 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
     : { live: 'Anime live', source: 'Crunchyroll · Discord', details: 'View anime', close: 'Close anime card', score: 'Rating' }
 
   return (
-    <motion.aside
+    <m.aside
       className={`anime-dock${dock.isDragging ? ' is-dragging' : ''}`}
       data-corner={dock.corner}
       style={{ ...dock.style, '--dock-stack-index': dock.stackIndex } as CSSProperties}
@@ -89,6 +90,6 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
         </div>
         <Link to="/anime" className="anime-dock__link" aria-label={labels.details}><ArrowUpRight size={17} aria-hidden="true" /></Link>
       </div>
-    </motion.aside>
+    </m.aside>
   )
 }

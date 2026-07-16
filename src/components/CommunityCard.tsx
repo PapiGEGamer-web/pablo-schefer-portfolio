@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import { useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ArrowUpRight, Radio } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
@@ -79,7 +80,7 @@ export function CommunityCard({ community, content, locale, index = 0, compact =
   )
 
   return (
-    <motion.article
+    <m.article
       className={`community-card community-card--${community.accent} ${compact ? 'community-card--compact' : ''}`}
       initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -96,6 +97,6 @@ export function CommunityCard({ community, content, locale, index = 0, compact =
       ) : (
         <a className="community-card__link" href={community.href} target="_blank" rel="noreferrer">{cardContent}</a>
       )}
-    </motion.article>
+    </m.article>
   )
 }

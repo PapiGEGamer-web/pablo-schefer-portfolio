@@ -61,7 +61,6 @@ export function formatLanyardTime(milliseconds: number) {
 function useLanyardPresenceSource() {
   const [phase, setPhase] = useState<LanyardConnectionPhase>('connecting')
   const [presence, setPresence] = useState<LanyardPresence | null>(null)
-  const [clock, setClock] = useState(0)
   const [socketLive, setSocketLive] = useState(false)
 
   useEffect(() => {
@@ -94,7 +93,6 @@ function useLanyardPresenceSource() {
 
           if (payload.op === 0 && (payload.t === 'INIT_STATE' || payload.t === 'PRESENCE_UPDATE')) {
             setPresence(payload.d as LanyardPresence)
-            setClock(Date.now())
             setPhase('ready')
             setSocketLive(true)
           }
@@ -135,7 +133,6 @@ function useLanyardPresenceSource() {
 
         if (!stopped && payload.success && payload.data) {
           setPresence(payload.data)
-          setClock(Date.now())
           setPhase('ready')
           connectSocket()
         }
@@ -144,7 +141,7 @@ function useLanyardPresenceSource() {
       }
     }
 
-    void refresh()
+    const initialRefresh = window.setTimeout(() => void refresh(), 450)
     const restFallback = window.setInterval(() => {
       if (!document.hidden) void refresh()
     }, 30_000)
@@ -155,6 +152,7 @@ function useLanyardPresenceSource() {
 
     return () => {
       stopped = true
+      window.clearTimeout(initialRefresh)
       window.clearInterval(restFallback)
       document.removeEventListener('visibilitychange', refreshWhenVisible)
       clearHeartbeat()
@@ -162,28 +160,34 @@ function useLanyardPresenceSource() {
     }
   }, [])
 
-  useEffect(() => {
-    if (!presence?.spotify) return undefined
-    const timer = window.setInterval(() => setClock(Date.now()), 1_000)
-    return () => window.clearInterval(timer)
-  }, [presence?.spotify])
-
-  const progress = useMemo(() => {
-    const track = presence?.spotify
-    if (!track) return { elapsed: 0, duration: 0, percent: 0 }
-    const duration = Math.max(1, track.timestamps.end - track.timestamps.start)
-    const elapsed = Math.min(duration, Math.max(0, clock - track.timestamps.start))
-    return { elapsed, duration, percent: (elapsed / duration) * 100 }
-  }, [clock, presence?.spotify])
-
   return {
     phase,
     presence,
     activities: presence?.activities ?? [],
-    progress,
     socketLive,
     track: presence?.spotify ?? null,
   }
+}
+
+export function useSpotifyProgress(track: SpotifyPresence | null) {
+  const [clock, setClock] = useState(() => Date.now())
+
+  useEffect(() => {
+    if (!track) return undefined
+    const update = () => {
+      if (!document.hidden) setClock(Date.now())
+    }
+    update()
+    const timer = window.setInterval(update, 1_000)
+    return () => window.clearInterval(timer)
+  }, [track])
+
+  return useMemo(() => {
+    if (!track) return { elapsed: 0, duration: 0, percent: 0 }
+    const duration = Math.max(1, track.timestamps.end - track.timestamps.start)
+    const elapsed = Math.min(duration, Math.max(0, clock - track.timestamps.start))
+    return { elapsed, duration, percent: (elapsed / duration) * 100 }
+  }, [clock, track])
 }
 
 type LanyardContextValue = ReturnType<typeof useLanyardPresenceSource>

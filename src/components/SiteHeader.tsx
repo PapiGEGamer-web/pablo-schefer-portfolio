@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ChevronDown, Gamepad2, Menu, Music2, Radio, Tv, UserRound, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
@@ -94,7 +95,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
             </button>
             <AnimatePresence>
               {dropdown === 'communities' && (
-                <motion.div
+                <m.div
                   className="nav-dropdown__menu"
                   role="menu"
                   initial={{ opacity: 0, y: -8, scale: 0.98 }}
@@ -110,7 +111,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                     <span>{content.nav.edgarLive}</span>
                     <small className="nav-live"><Radio size={11} aria-hidden="true" /> Live</small>
                   </Link>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>
@@ -127,7 +128,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
             </button>
             <AnimatePresence>
               {dropdown === 'projects' && (
-                <motion.div
+                <m.div
                   className="nav-dropdown__menu"
                   role="menu"
                   initial={{ opacity: 0, y: -8, scale: 0.98 }}
@@ -137,7 +138,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                 >
                   <Link to="/#fnlb" role="menuitem" onClick={closeNavigation}><span>{content.nav.fnlb}</span><small>{locale === 'es' ? 'Comunidad' : 'Community'}</small></Link>
                   <Link to="/#kernelos" role="menuitem" onClick={closeNavigation}><span>{content.nav.kernelos}</span><small>{locale === 'es' ? 'Comunidad · CustomOS' : 'Community · Custom OS'}</small></Link>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>
@@ -154,7 +155,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
             </button>
             <AnimatePresence>
               {dropdown === 'personal' && (
-                <motion.div
+                <m.div
                   className="nav-dropdown__menu"
                   role="menu"
                   initial={{ opacity: 0, y: -8, scale: 0.98 }}
@@ -174,7 +175,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                     <span>{content.nav.anime}</span>
                     <small className="nav-live"><Tv size={11} aria-hidden="true" /> Lanyard</small>
                   </Link>
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>
@@ -202,7 +203,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
             </button>
             <AnimatePresence>
               {languageOpen && (
-                <motion.div
+                <m.div
                   className="language-picker__menu"
                   role="listbox"
                   aria-label={content.common.language}
@@ -226,7 +227,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                       <span>{option.toUpperCase()}</span>
                     </button>
                   ))}
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>
@@ -245,7 +246,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
 
       <AnimatePresence>
         {menuOpen && (
-          <motion.nav
+          <m.nav
             className="mobile-menu"
             aria-label={content.common.mobileNavigationLabel}
             initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
@@ -263,10 +264,10 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
               </button>
               <AnimatePresence initial={false}>
                 {mobileGroup === 'communities' && (
-                  <motion.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                  <m.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                     <Link to="/comunidades" onClick={closeNavigation}>{content.nav.allCommunities}</Link>
                     <Link to="/comunidades/edgar-pons" onClick={closeNavigation}>{content.nav.edgarLive}</Link>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </div>
@@ -277,10 +278,10 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
               </button>
               <AnimatePresence initial={false}>
                 {mobileGroup === 'projects' && (
-                  <motion.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                  <m.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                     <Link to="/#fnlb" onClick={closeNavigation}>{content.nav.fnlb}</Link>
                     <Link to="/#kernelos" onClick={closeNavigation}>{content.nav.kernelos}</Link>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </div>
@@ -291,15 +292,15 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
               </button>
               <AnimatePresence initial={false}>
                 {mobileGroup === 'personal' && (
-                  <motion.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                  <m.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                     <Link to="/juegos-y-equipo" onClick={closeNavigation}>{content.nav.gamesGear}</Link>
                     <Link to="/musica" onClick={closeNavigation}>{content.nav.music}</Link>
                     <Link to="/anime" onClick={closeNavigation}>{content.nav.anime}</Link>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </div>
-          </motion.nav>
+          </m.nav>
         )}
       </AnimatePresence>
     </>

@@ -29,7 +29,7 @@ export function AmbientField() {
     let lastDraw = 0
 
     const createPoints = () => {
-      const maximum = lowPower ? 34 : 52
+      const maximum = lowPower ? 30 : 46
       const minimum = lowPower ? 16 : 22
       const count = Math.min(maximum, Math.max(minimum, Math.floor((width * height) / (lowPower ? 38_000 : 28_000))))
       points = Array.from({ length: count }, (_, index) => ({
@@ -60,7 +60,8 @@ export function AmbientField() {
     }
 
     const draw = (time = 0) => {
-      if (!reduceMotion && lowPower && time - lastDraw < 32) {
+      const minimumFrameDuration = lowPower ? 32 : 20
+      if (!reduceMotion && time - lastDraw < minimumFrameDuration) {
         frame = window.requestAnimationFrame(draw)
         return
       }

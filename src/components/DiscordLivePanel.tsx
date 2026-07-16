@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { AnimatePresence } from 'motion/react'
+import * as m from 'motion/react-m'
 import { ArrowUpRight, ChevronDown, Clock3, Eye, Headphones, Radio, RefreshCw, Users } from 'lucide-react'
 import type { Locale, SiteCopy } from '../content'
 
@@ -57,7 +58,6 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
   const [error, setError] = useState(false)
   const [activeOnly, setActiveOnly] = useState(false)
   const [expandedChannels, setExpandedChannels] = useState<Set<string>>(new Set())
-  const [secondsUntilRefresh, setSecondsUntilRefresh] = useState(pollSeconds)
   const [lastChangeAt, setLastChangeAt] = useState<string | null>(null)
   const [requestVersion, setRequestVersion] = useState(0)
   const signatureRef = useRef<string | null>(null)
@@ -129,7 +129,6 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
         setError(false)
         setLoading(false)
         setRefreshing(false)
-        setSecondsUntilRefresh(pollSeconds)
       } catch (fetchError) {
         if (active && !(fetchError instanceof DOMException && fetchError.name === 'AbortError')) {
           setError(true)
@@ -143,9 +142,6 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
     const poll = window.setInterval(() => {
       if (!document.hidden) void load()
     }, pollSeconds * 1_000)
-    const countdown = window.setInterval(() => {
-      if (!document.hidden) setSecondsUntilRefresh((seconds) => seconds <= 1 ? pollSeconds : seconds - 1)
-    }, 1_000)
     const onVisibilityChange = () => {
       if (!document.hidden) void load()
     }
@@ -155,7 +151,6 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
       active = false
       controller?.abort()
       window.clearInterval(poll)
-      window.clearInterval(countdown)
       document.removeEventListener('visibilitychange', onVisibilityChange)
     }
   }, [requestVersion])
@@ -218,7 +213,7 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
       )}
 
       {data && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
+        <m.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
           <div className="discord-live__controls">
             <button type="button" onClick={() => setRequestVersion((version) => version + 1)} disabled={refreshing}>
               <RefreshCw className={refreshing ? 'is-spinning' : ''} size={15} aria-hidden="true" />{ui.refresh}
@@ -226,10 +221,10 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
             <button type="button" className={activeOnly ? 'is-active' : ''} onClick={() => setActiveOnly((activeState) => !activeState)} aria-pressed={activeOnly}>
               <Eye size={15} aria-hidden="true" />{activeOnly ? ui.allChannels : ui.activeOnly}
             </button>
-            <span><Clock3 size={14} aria-hidden="true" />{ui.nextCheck} · {secondsUntilRefresh}s</span>
+            <span><Clock3 size={14} aria-hidden="true" />{ui.nextCheck} · {pollSeconds}s</span>
           </div>
 
-          <div className="discord-live__poll-progress" aria-hidden="true"><i style={{ transform: `scaleX(${1 - secondsUntilRefresh / pollSeconds})` }} /></div>
+          <div className="discord-live__poll-progress" key={data.updatedAt} aria-hidden="true"><i /></div>
 
           <div className="discord-live__stats">
             <article>
@@ -263,10 +258,9 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
                 {visibleChannels.map((channel, channelIndex) => {
                   const expanded = expandedChannels.has(channel.id)
                   return (
-                    <motion.article
+                    <m.article
                       className={channel.members.length ? 'voice-channel voice-channel--active' : 'voice-channel'}
                       key={channel.id}
-                      layout
                       initial={{ opacity: 0, y: 14 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: channelIndex * 0.035, duration: 0.3 }}
@@ -278,7 +272,7 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
                       </button>
                       <AnimatePresence initial={false}>
                         {expanded && channel.members.length > 0 && (
-                          <motion.ul initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
+                          <m.ul initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                             {channel.members.map((member, memberIndex) => (
                               <li key={`${channel.id}-${member.id}-${memberIndex}`}>
                                 <span className={`voice-member__status voice-member__status--${member.status}`} aria-hidden="true" />
@@ -299,11 +293,11 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
                                 <span>{member.username}</span>
                               </li>
                             ))}
-                          </motion.ul>
+                          </m.ul>
                         )}
                       </AnimatePresence>
                       {channel.members.length === 0 && <p>{labels.emptyVoice}</p>}
-                    </motion.article>
+                    </m.article>
                   )
                 })}
               </div>
@@ -326,7 +320,7 @@ export function DiscordLivePanel({ content, locale }: { content: SiteCopy; local
             )}
           </div>
           {error && <p className="discord-live__stale">{labels.error}</p>}
-        </motion.div>
+        </m.div>
       )}
     </section>
   )

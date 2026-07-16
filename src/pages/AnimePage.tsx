@@ -5,7 +5,8 @@ import {
   useState,
   type CSSProperties,
 } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { AnimatePresence, useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 import {
   Activity,
   ArrowDown,
@@ -424,25 +425,25 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
   return (
     <div className="anime-page">
       <section className="page-hero anime-hero">
-        <motion.div className="page-hero__copy" initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.16, 1, 0.3, 1] }}>
+        <m.div className="page-hero__copy" initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: reduceMotion ? 0 : 0.75, ease: [0.16, 1, 0.3, 1] }}>
           <p className="eyebrow">{labels.eyebrow}</p>
           <h1>{labels.title.split('\n').map((line) => <span key={line}>{line}</span>)}</h1>
           <p>{labels.intro}</p>
-        </motion.div>
+        </m.div>
 
-        <motion.div className="anime-hero__visual" initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: reduceMotion ? 0 : 0.14, duration: reduceMotion ? 0 : 0.82, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
+        <m.div className="anime-hero__visual" initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: reduceMotion ? 0 : 0.14, duration: reduceMotion ? 0 : 0.82, ease: [0.16, 1, 0.3, 1] }} aria-hidden="true">
           <div className="anime-hero__rings" />
           <div className="anime-hero__screen">
             {heroMetadata?.coverImage ? <img src={heroMetadata.coverImage} alt="" /> : <Tv size={72} />}
           </div>
           <span><Activity size={15} />{phase === 'ready' ? 'LANYARD LIVE' : 'LANYARD READY'}</span>
-        </motion.div>
+        </m.div>
 
         <a className="page-hero__scroll" href="#anime-directo"><ArrowDown size={15} aria-hidden="true" />{labels.jump}</a>
       </section>
 
       <section className="anime-integration" aria-label={labels.integrationEyebrow}>
-        <motion.div {...reveal}>
+        <m.div {...reveal}>
           <span className="anime-integration__logo"><img src={crunchyrollIcon} alt="Logo de Crunchyroll" /><strong>crunchyroll</strong></span>
           <div>
             <p className="eyebrow">{labels.integrationEyebrow}</p>
@@ -450,19 +451,19 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
             <p>{labels.integrationBody}</p>
           </div>
           <span className="anime-integration__flow">{labels.integrationFlow}</span>
-        </motion.div>
+        </m.div>
       </section>
 
       <section className="section anime-live" id="anime-directo">
-        <motion.div className="section-heading section-heading--split" {...reveal}>
+        <m.div className="section-heading section-heading--split" {...reveal}>
           <div>
             <p className="eyebrow">Discord · Rich Presence</p>
             <h2>{labels.activeTitle}</h2>
           </div>
           <p className="section-heading__intro">{labels.liveIntro}</p>
-        </motion.div>
+        </m.div>
 
-        <motion.article className={`anime-now anime-now--${liveEntry ? 'active' : phase}`} style={liveStyle} {...reveal}>
+        <m.article className={`anime-now anime-now--${liveEntry ? 'active' : phase}`} style={liveStyle} {...reveal}>
           <header>
             <span><span className="status-dot" aria-hidden="true" />{connectionLabel}</span>
             <span><Radio size={14} aria-hidden="true" />LANYARD / DISCORD</span>
@@ -499,11 +500,11 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
               </div>
             </div>
           )}
-        </motion.article>
+        </m.article>
       </section>
 
       <section className="anime-history" id="anime-historial">
-        <motion.div className="anime-history__heading" {...reveal}>
+        <m.div className="anime-history__heading" {...reveal}>
           <div>
             <p className="eyebrow">{labels.detected}</p>
             <h2>{labels.historyTitle}</h2>
@@ -514,18 +515,18 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
               {labels.clear}
             </button>
           )}
-        </motion.div>
+        </m.div>
 
         <div className="anime-history__grid">
           {history.length === 0 ? (
-            <motion.article className="anime-history__empty" {...reveal}>
+            <m.article className="anime-history__empty" {...reveal}>
               <History size={28} aria-hidden="true" />
               <p>{labels.emptyHistory}</p>
-            </motion.article>
+            </m.article>
           ) : history.map((entry, index) => {
             const entryMetadata = metadataFor(entry)
             return (
-              <motion.button
+              <m.button
                 className="anime-card"
                 type="button"
                 key={entry.id}
@@ -546,7 +547,7 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
                   <span className="anime-tags">{entryMetadata?.genres.slice(0, 3).map((genre) => <i key={genre}>{genre}</i>)}</span>
                   <span className="anime-card__footer"><span><CalendarDays size={14} aria-hidden="true" />{formatDate(entry.lastSeen, locale)}</span><span>{labels.details}<ArrowUpRight size={14} aria-hidden="true" /></span></span>
                 </span>
-              </motion.button>
+              </m.button>
             )
           })}
         </div>
@@ -556,8 +557,8 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
 
       <AnimatePresence>
         {selectedEntry && (
-          <motion.div className="anime-dialog" initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }} animate={{ opacity: 1 }} exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }} onClick={() => setSelectedEntry(null)}>
-            <motion.article
+          <m.div className="anime-dialog" initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }} animate={{ opacity: 1 }} exit={reduceMotion ? { opacity: 1 } : { opacity: 0 }} onClick={() => setSelectedEntry(null)}>
+            <m.article
               ref={dialogRef}
               role="dialog"
               aria-modal="true"
@@ -595,8 +596,8 @@ export function AnimePage({ content, locale }: { content: SiteCopy; locale: Loca
                   </div>
                 </div>
               </div>
-            </motion.article>
-          </motion.div>
+            </m.article>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

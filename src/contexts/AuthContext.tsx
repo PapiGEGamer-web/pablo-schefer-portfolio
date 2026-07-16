@@ -1,7 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
-import { authConfigured, getSupabase } from '../lib/supabase'
+import { useLocation } from 'react-router-dom'
+import { authConfigured, getSupabase, hasStoredAuthSession } from '../lib/supabase'
 
 type AuthContextValue = {
   configured: boolean
@@ -41,15 +42,19 @@ function cleanUsername(value: string) {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const location = useLocation()
+  const [hadStoredSession] = useState(hasStoredAuthSession)
   const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(authConfigured)
+  const [loading, setLoading] = useState(() => authConfigured && (location.pathname === '/cuenta' || hadStoredSession))
+  const authRequested = location.pathname === '/cuenta' || hadStoredSession || Boolean(session)
 
   useEffect(() => {
-    if (!authConfigured) return undefined
+    if (!authConfigured || !authRequested) return undefined
+
     let disposed = false
     let unsubscribe: (() => void) | undefined
 
-    const timer = window.setTimeout(() => {
+    const initialize = () => {
       void getSupabase().then(async (client) => {
         if (!client || disposed) return
         const { data } = await client.auth.getSession()
@@ -64,14 +69,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }).catch(() => {
         if (!disposed) setLoading(false)
       })
-    }, 250)
+    }
+
+    const timer = window.setTimeout(initialize, 0)
 
     return () => {
       disposed = true
       window.clearTimeout(timer)
       unsubscribe?.()
     }
-  }, [])
+  }, [authRequested])
 
   const value = useMemo<AuthContextValue>(() => ({
     configured: authConfigured,
