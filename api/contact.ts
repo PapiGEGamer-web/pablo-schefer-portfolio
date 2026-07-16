@@ -23,6 +23,20 @@ function isValidEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(value) && value.length <= maxEmailLength
 }
 
+function hasInvalidControlCharacters(value: string) {
+  return Array.from(value).some((character) => {
+    const code = character.charCodeAt(0)
+    return (code < 32 && character !== '\n' && character !== '\t') || code === 127
+  })
+}
+
+async function idempotencyKey(email: string, message: string, startedAt: number) {
+  const payload = new TextEncoder().encode(`${email}\u0000${message}\u0000${startedAt}`)
+  const digest = await crypto.subtle.digest('SHA-256', payload)
+  const hash = Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('')
+  return `portfolio-contact/${hash}`
+}
+
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => {
     const entities: Record<string, string> = {
@@ -64,6 +78,9 @@ export async function POST(request: Request) {
 
   if (!email || !isValidEmail(email)) return jsonResponse({ error: 'invalid_email' }, 400)
   if (!message || message.length < 12) return jsonResponse({ error: 'invalid_message' }, 400)
+  if ([email, name, message].some((value) => value && hasInvalidControlCharacters(value))) {
+    return jsonResponse({ error: 'invalid_characters' }, 400)
+  }
   if (!startedAt || Date.now() - startedAt < 1_000 || Date.now() - startedAt > 2 * 60 * 60_000) {
     return jsonResponse({ error: 'invalid_form_timing' }, 400)
   }
@@ -73,6 +90,7 @@ export async function POST(request: Request) {
   const safeEmail = escapeHtml(email)
   const safeMessage = escapeHtml(message).replace(/\n/g, '<br />')
   const subject = `Nuevo mensaje desde pablo-schefer.vercel.app - ${displayName}`.slice(0, 150)
+  const requestIdempotencyKey = await idempotencyKey(email, message, startedAt)
 
   let resendResponse: Response
   try {
@@ -82,6 +100,7 @@ export async function POST(request: Request) {
         Accept: 'application/json',
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
+        'Idempotency-Key': requestIdempotencyKey,
       },
       body: JSON.stringify({
         from: fromEmail,

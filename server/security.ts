@@ -14,20 +14,40 @@ type RateBucket = {
 }
 
 const rateBuckets = new Map<string, RateBucket>()
-const trustedOrigins = new Set([
+const configuredOrigins = [
   'https://pablo-schefer.vercel.app',
+  'https://pabloschefer.vercel.app',
+  'https://pablo-schefer-portfolio.vercel.app',
   'https://pabloschefer.es',
   'https://www.pabloschefer.es',
-  'https://pabloschefer.com',
-  'https://www.pabloschefer.com',
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '',
+  process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '',
   ...(process.env.SITE_ORIGIN ?? '').split(',').map((origin) => origin.trim()).filter(Boolean),
-])
+]
+
+const trustedOrigins = new Set(configuredOrigins.flatMap((origin) => {
+  if (!origin) return []
+  try {
+    const parsed = new URL(origin)
+    const isLocalDevelopment = parsed.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(parsed.hostname)
+    return parsed.protocol === 'https:' || isLocalDevelopment ? [parsed.origin] : []
+  } catch {
+    return []
+  }
+}))
 
 export const apiSecurityHeaders = {
   'Content-Type': 'application/json; charset=utf-8',
+  'Content-Security-Policy': "default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'; sandbox",
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
+  'X-XSS-Protection': '0',
+  'Referrer-Policy': 'no-referrer',
+  'Permissions-Policy': 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()',
+  'Cross-Origin-Opener-Policy': 'same-origin',
   'Cross-Origin-Resource-Policy': 'same-origin',
+  'Origin-Agent-Cluster': '?1',
+  'X-Permitted-Cross-Domain-Policies': 'none',
   'X-Robots-Tag': 'noindex, nofollow, noarchive',
 } as const
 
@@ -86,7 +106,13 @@ export function enforceRateLimit(request: Request, options: RateLimitOptions) {
 
 export function hasTrustedOrigin(request: Request) {
   const origin = request.headers.get('origin')
-  return Boolean(origin && trustedOrigins.has(origin))
+  if (!origin || !trustedOrigins.has(origin)) return false
+
+  const fetchSite = request.headers.get('sec-fetch-site')
+  if (fetchSite && fetchSite !== 'same-origin') return false
+
+  const fetchMode = request.headers.get('sec-fetch-mode')
+  return !fetchMode || fetchMode === 'cors' || fetchMode === 'same-origin'
 }
 
 export async function readJsonBody(request: Request, maxBytes: number) {

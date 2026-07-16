@@ -76,14 +76,29 @@ export function AccountPage({ locale }: { locale: Locale }) {
 
   const submit = (event: FormEvent) => {
     event.preventDefault()
-    if (mode === 'login') void run(() => auth.signIn(email.trim(), password))
+    if (mode === 'login') void run(async () => {
+      await auth.signIn(email.trim(), password)
+      setPassword('')
+    })
     if (mode === 'register') void run(async () => {
       if (password.length < 12) throw new Error(locale === 'es' ? 'La contraseña debe tener al menos 12 caracteres.' : 'Password must be at least 12 characters.')
       if (cleanUsername(username).length < 3) throw new Error(labels.usernameRequired)
       await auth.sendRegistrationCode(email.trim())
       setMode('verify'); setNotice(labels.sent)
     })
-    if (mode === 'verify') void run(() => auth.completeRegistration(email.trim(), code, password, cleanUsername(username)))
+    if (mode === 'verify') void run(async () => {
+      await auth.completeRegistration(email.trim(), code, password, cleanUsername(username))
+      setPassword('')
+      setCode('')
+    })
+  }
+
+  const switchMode = () => {
+    setMode(mode === 'login' ? 'register' : 'login')
+    setPassword('')
+    setCode('')
+    setNotice(null)
+    setError(null)
   }
 
   const saveUsername = (event: FormEvent) => {
@@ -129,13 +144,13 @@ export function AccountPage({ locale }: { locale: Locale }) {
               <form onSubmit={submit}>
                 <h2>{mode === 'login' ? labels.login : mode === 'register' ? labels.register : labels.verify}</h2>
                 {mode !== 'login' && <label><span><UserRound size={15} />{labels.username}</span><input autoComplete="nickname" minLength={3} maxLength={32} required value={username} onChange={(event) => setUsername(event.target.value)} placeholder={labels.usernamePlaceholder} readOnly={mode === 'verify'} /></label>}
-                <label><span><Mail size={15} />{labels.email}</span><input type="email" autoComplete="email" required value={email} onChange={(event) => setEmail(event.target.value)} readOnly={mode === 'verify'} /></label>
-                {mode !== 'verify' && <label><span><KeyRound size={15} />{labels.password}</span><input type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} minLength={mode === 'register' ? 12 : 8} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>}
+                <label><span><Mail size={15} />{labels.email}</span><input type="email" autoComplete="email" maxLength={254} required value={email} onChange={(event) => setEmail(event.target.value)} readOnly={mode === 'verify'} /></label>
+                {mode !== 'verify' && <label><span><KeyRound size={15} />{labels.password}</span><input type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} minLength={mode === 'register' ? 12 : 8} maxLength={128} required value={password} onChange={(event) => setPassword(event.target.value)} /></label>}
                 {mode === 'verify' && <label><span><ShieldCheck size={15} />{labels.code}</span><input className="account-code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{8}" minLength={8} maxLength={8} required value={code} onChange={(event) => setCode(event.target.value.replace(/\D/g, '').slice(0, 8))} /></label>}
                 {notice && <p className="account-notice">{notice}</p>}{error && <p className="account-error">{error}</p>}
                 <button className="account-submit" type="submit" disabled={busy}>{busy ? '…' : mode === 'login' ? labels.enter : mode === 'register' ? labels.send : labels.confirm}<ArrowRight size={17} /></button>
                 {mode === 'verify' && <button className="account-resend" type="button" disabled={busy} onClick={() => void run(async () => { await auth.sendRegistrationCode(email.trim()); setNotice(labels.sent) })}>{labels.resend}</button>}
-                <button className="account-switch" type="button" onClick={() => setMode(mode === 'login' ? 'register' : 'login')}>{mode === 'login' ? labels.switchRegister : labels.switchLogin}</button>
+                <button className="account-switch" type="button" onClick={switchMode}>{mode === 'login' ? labels.switchRegister : labels.switchLogin}</button>
               </form>
             </>
           )}

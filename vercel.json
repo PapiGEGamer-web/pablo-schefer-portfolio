@@ -20,15 +20,19 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://i.scdn.co https://s4.anilist.co https://cdn.discordapp.com https://media.discordapp.net; font-src 'self'; connect-src 'self' https://api.lanyard.rest wss://api.lanyard.rest https://*.supabase.co wss://*.supabase.co; frame-src https://open.spotify.com; media-src 'self' blob:; manifest-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests"
+          "value": "default-src 'none'; script-src 'self'; script-src-elem 'self'; script-src-attr 'none'; style-src 'self'; style-src-elem 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https://i.scdn.co https://s4.anilist.co https://cdn.discordapp.com https://media.discordapp.net; font-src 'self'; connect-src 'self' https://api.lanyard.rest wss://api.lanyard.rest https://*.supabase.co wss://*.supabase.co; frame-src https://open.spotify.com; media-src 'self' blob:; manifest-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content"
         },
         {
           "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
+          "value": "no-referrer"
         },
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "0"
         },
         {
           "key": "X-Frame-Options",
@@ -36,11 +40,11 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "accelerometer=(), bluetooth=(), browsing-topics=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), serial=(), usb=()"
+          "value": "accelerometer=(), attribution-reporting=(), autoplay=(self \"https://open.spotify.com\"), bluetooth=(), browsing-topics=(), camera=(), clipboard-read=(), clipboard-write=(self \"https://open.spotify.com\"), compute-pressure=(), display-capture=(), encrypted-media=(self \"https://open.spotify.com\"), fullscreen=(self \"https://open.spotify.com\"), gamepad=(), geolocation=(), gyroscope=(), hid=(), idle-detection=(), local-fonts=(), magnetometer=(), microphone=(), midi=(), otp-credentials=(self), payment=(), picture-in-picture=(self \"https://open.spotify.com\"), publickey-credentials-create=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), speaker-selection=(), storage-access=(self \"https://open.spotify.com\"), usb=(), web-share=(self), window-management=(), xr-spatial-tracking=()"
         },
         {
           "key": "Cross-Origin-Opener-Policy",
-          "value": "same-origin-allow-popups"
+          "value": "same-origin"
         },
         {
           "key": "Cross-Origin-Resource-Policy",
@@ -61,6 +65,19 @@
         {
           "key": "Strict-Transport-Security",
           "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/security.txt",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        },
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
         }
       ]
     },

@@ -96,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     completeRegistration: async (email, code, password, username) => {
       const client = await requireClient()
       if (!/^\d{8}$/.test(code)) throw new Error('invalid_token')
-      if (password.length < 12) throw new Error('weak_password')
+      if (password.length < 12 || password.length > 128) throw new Error('weak_password')
       const { error: verifyError } = await client.auth.verifyOtp({ email: cleanEmail(email), token: code, type: 'email' })
       if (verifyError) throw verifyError
       const normalizedUsername = cleanUsername(username)
@@ -111,6 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     signIn: async (email, password) => {
       const client = await requireClient()
+      if (password.length < 8 || password.length > 128) throw new Error('Invalid login credentials')
       const { error } = await client.auth.signInWithPassword({ email: cleanEmail(email), password })
       if (error) throw error
     },
