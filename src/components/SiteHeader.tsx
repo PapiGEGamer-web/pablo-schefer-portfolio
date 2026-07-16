@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { ChevronDown, Gamepad2, Menu, Music2, Radio, X } from 'lucide-react'
+import { ChevronDown, Gamepad2, Menu, Music2, Radio, Tv, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
 
@@ -168,6 +168,10 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                     <span>{content.nav.music}</span>
                     <small className="nav-live"><Music2 size={11} aria-hidden="true" /> Ready</small>
                   </Link>
+                  <Link to="/anime" role="menuitem" onClick={closeNavigation}>
+                    <span>{content.nav.anime}</span>
+                    <small className="nav-live"><Tv size={11} aria-hidden="true" /> Lanyard</small>
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -283,6 +287,7 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                   <motion.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
                     <Link to="/juegos-y-equipo" onClick={closeNavigation}>{content.nav.gamesGear}</Link>
                     <Link to="/musica" onClick={closeNavigation}>{content.nav.music}</Link>
+                    <Link to="/anime" onClick={closeNavigation}>{content.nav.anime}</Link>
                   </motion.div>
                 )}
               </AnimatePresence>

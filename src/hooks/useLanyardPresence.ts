@@ -17,7 +17,27 @@ export type SpotifyPresence = {
   }
 }
 
+export type LanyardActivity = {
+  id?: string
+  name: string
+  type: number
+  details?: string
+  state?: string
+  application_id?: string
+  timestamps?: {
+    start?: number
+    end?: number
+  }
+  assets?: {
+    large_image?: string
+    large_text?: string
+    small_image?: string
+    small_text?: string
+  }
+}
+
 export type LanyardPresence = {
+  activities?: LanyardActivity[]
   discord_status: 'online' | 'idle' | 'dnd' | 'offline'
   listening_to_spotify: boolean
   spotify: SpotifyPresence | null
@@ -150,6 +170,7 @@ export function useLanyardPresence() {
   return {
     phase,
     presence,
+    activities: presence?.activities ?? [],
     progress,
     socketLive,
     track: presence?.spotify ?? null,

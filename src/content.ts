@@ -27,6 +27,7 @@ export type SiteCopy = {
     personal: string
     gamesGear: string
     music: string
+    anime: string
     fnlb: string
     kernelos: string
     contact: string
@@ -56,6 +57,7 @@ export type SiteCopy = {
     edgar: SeoCopy
     gamesGear: SeoCopy
     music: SeoCopy
+    anime: SeoCopy
     notFound: SeoCopy
   }
   home: {
@@ -164,6 +166,7 @@ export const copy: Record<Locale, SiteCopy> = {
       personal: 'Personal',
       gamesGear: 'Juegos y equipo',
       music: 'Música',
+      anime: 'Anime',
       fnlb: 'FNLB',
       kernelos: 'KernelOS',
       contact: 'Contacto',
@@ -210,6 +213,10 @@ export const copy: Record<Locale, SiteCopy> = {
       music: {
         title: 'Música y Spotify — Pablo Schefer',
         description: 'Monitor musical de Pablo Schefer, preparado para mostrar su reproducción pública de Spotify mediante la presencia de Discord.',
+      },
+      anime: {
+        title: 'Anime en directo — Pablo Schefer',
+        description: 'Historial local y monitor en tiempo real de actividades públicas de anime detectadas mediante Lanyard y Discord.',
       },
       notFound: { title: 'Página no encontrada — Pablo Schefer', description: 'La página solicitada no existe.' },
     },
@@ -398,6 +405,7 @@ export const copy: Record<Locale, SiteCopy> = {
       personal: 'Personal',
       gamesGear: 'Games & gear',
       music: 'Music',
+      anime: 'Anime',
       fnlb: 'FNLB',
       kernelos: 'KernelOS',
       contact: 'Contact',
@@ -427,6 +435,7 @@ export const copy: Record<Locale, SiteCopy> = {
       edgar: { title: 'Edgar Pons Community — Discord Status', description: 'A near-real-time public panel for the Edgar Pons Discord community and Pablo Schefer’s moderation work.' },
       gamesGear: { title: 'Games & gear — Pablo Schefer', description: 'Current games, real hardware and an extreme RTX 5090 target setup in a visual, interactive library.' },
       music: { title: 'Music & Spotify — Pablo Schefer', description: 'Pablo Schefer’s music monitor, ready to show public Spotify playback through his Discord presence.' },
+      anime: { title: 'Live Anime — Pablo Schefer', description: 'Local history and real-time monitor for public anime activities detected through Lanyard and Discord.' },
       notFound: { title: 'Page not found — Pablo Schefer', description: 'The requested page does not exist.' },
     },
     home: {
