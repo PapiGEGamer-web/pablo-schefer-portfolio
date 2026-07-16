@@ -1,7 +1,7 @@
 import { useReducedMotion } from 'motion/react'
 import * as m from 'motion/react-m'
 import { ArrowUpRight, Tv, X } from 'lucide-react'
-import { useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
 import { type LanyardActivity, useLanyardPresence } from '../hooks/useLanyardPresence'
@@ -45,7 +45,7 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
   const [metadata, setMetadata] = useState<ResolvedAnimeMetadata | null>(null)
   const [visible, setVisible] = useState(true)
   const activity = useMemo(() => activities.find(isAnimeActivity) ?? null, [activities])
-  const dock = useDockPosition('pablo-portfolio-anime-dock-position', 'bottom-left', 'anime', Boolean(activity))
+  const { bindDock, corner, dragHandlers, isDragging, style } = useDockPosition('pablo-portfolio-anime-dock-position', 'bottom-left', 'anime', Boolean(activity))
   const title = useMemo(() => activity ? cleanTitle(activity.details) || cleanTitle(activity.assets?.large_text) || cleanTitle(activity.state) || activity.name : '', [activity])
   const image = activity ? resolveImage(activity) : undefined
 
@@ -68,11 +68,12 @@ export function AnimeNowDock({ locale }: { locale: Locale }) {
 
   return (
     <m.aside
-      className={`anime-dock${dock.isDragging ? ' is-dragging' : ''}`}
-      data-corner={dock.corner}
-      style={{ ...dock.style, '--dock-stack-index': dock.stackIndex } as CSSProperties}
+      ref={bindDock}
+      className={`anime-dock${isDragging ? ' is-dragging' : ''}`}
+      data-corner={corner}
+      style={style}
       aria-live="polite"
-      {...dock.dragHandlers}
+      {...dragHandlers}
       initial={reduceMotion ? false : { opacity: 0, x: -18, y: 18 }}
       animate={{ opacity: 1, x: 0, y: 0 }}
       transition={{ duration: reduceMotion ? 0 : 0.42, ease: [0.16, 1, 0.3, 1] }}

@@ -1,7 +1,7 @@
 import { AnimatePresence, useReducedMotion } from 'motion/react'
 import * as m from 'motion/react-m'
 import { ChevronDown, ExternalLink, Music2, Volume2, X } from 'lucide-react'
-import { useState, type CSSProperties } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
 import { useLanyardPresence, useSpotifyProgress } from '../hooks/useLanyardPresence'
@@ -15,7 +15,7 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
   const progress = useSpotifyProgress(track)
   const [expanded, setExpanded] = useState(true)
   const [visible, setVisible] = useState(true)
-  const dock = useDockPosition('pablo-portfolio-spotify-dock-position', placement, 'spotify', Boolean(track))
+  const { bindDock, corner, dragHandlers, isDragging, style } = useDockPosition('pablo-portfolio-spotify-dock-position', placement, 'spotify', Boolean(track))
 
   const labels = locale === 'es' ? {
     connecting: 'Conectando Spotify',
@@ -59,12 +59,13 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
 
   return (
     <m.aside
-      className={`now-dock${track ? ' now-dock--active' : ''}${dock.isDragging ? ' is-dragging' : ''}`}
-      data-corner={dock.corner}
-      style={{ ...dock.style, '--dock-stack-index': dock.stackIndex } as CSSProperties}
+      ref={bindDock}
+      className={`now-dock${track ? ' now-dock--active' : ''}${isDragging ? ' is-dragging' : ''}`}
+      data-corner={corner}
+      style={style}
       data-placement={placement}
       aria-live="polite"
-      {...dock.dragHandlers}
+      {...dragHandlers}
       initial={reduceMotion ? false : { opacity: 0, y: 22, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: reduceMotion ? 0 : 0.7, duration: reduceMotion ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
