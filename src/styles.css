@@ -2184,6 +2184,16 @@ h3 {
   letter-spacing: -0.08em;
 }
 
+.community-card__metric-label {
+  display: block;
+  margin: -0.3rem 0 1.1rem;
+  color: var(--dim);
+  font-family: ui-monospace, 'Cascadia Code', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .community-card--cyan > .community-card__link > strong {
   color: var(--cyan);
 }

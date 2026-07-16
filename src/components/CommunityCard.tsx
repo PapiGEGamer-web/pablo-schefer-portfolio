@@ -61,6 +61,7 @@ export function CommunityCard({ community, content, locale, index = 0, compact =
         </span>
       </figure>
       <strong>{community.metric}</strong>
+      {community.metricLabel && <span className="community-card__metric-label">{community.metricLabel[locale]}</span>}
       <h3>{community.shortName}</h3>
       <p>{copy.text}</p>
       {(community.membersApprox || community.onlineApprox) && (

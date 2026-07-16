@@ -18,6 +18,7 @@ export type Community = {
   internal?: boolean
   current: boolean
   metric: string
+  metricLabel?: { es: string; en: string }
   membersApprox?: number
   onlineApprox?: number
   accent: 'amber' | 'blue' | 'cyan' | 'green' | 'red' | 'violet'
@@ -50,8 +51,10 @@ export const communities: Community[] = [
     guildId: '1044520223648256011',
     href: 'https://www.nategentile.com/',
     current: true,
-    metric: '50K+',
-    membersApprox: 50_000,
+    metric: '3.16M',
+    metricLabel: { es: 'YouTube · suscriptores', en: 'YouTube · subscribers' },
+    membersApprox: 1_612,
+    onlineApprox: 207,
     accent: 'green',
     visual: {
       logo: communityAssets.nateLogo,
@@ -68,8 +71,10 @@ export const communities: Community[] = [
     href: '/comunidades/edgar-pons',
     internal: true,
     current: true,
-    metric: '30K+',
-    membersApprox: 30_000,
+    metric: '446K',
+    metricLabel: { es: 'Instagram · seguidores', en: 'Instagram · followers' },
+    membersApprox: 793,
+    onlineApprox: 50,
     accent: 'blue',
     visual: {
       logo: communityAssets.edgarLogo,
