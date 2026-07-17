@@ -21,6 +21,7 @@ import {
 import type { Locale, SiteCopy } from '../content'
 import { dreamHardware, games, hardware, type Game, type HardwareItem } from '../data/gamesAndGear'
 import { type LanyardActivity, useLanyardPresence } from '../hooks/useLanyardPresence'
+import { useHardwareTelemetry } from '../hooks/useHardwareTelemetry'
 import { ContactSection } from '../components/ContactSection'
 import './GamesAndGearPage.css'
 
@@ -73,6 +74,17 @@ function normalizeActivityTitle(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
 }
 
+function formatBytes(value: number) {
+  if (!Number.isFinite(value) || value <= 0) return '0 B'
+  const units = ['B', 'KB', 'MB', 'GB', 'TB']
+  const exponent = Math.min(Math.floor(Math.log(value) / Math.log(1024)), units.length - 1)
+  return `${(value / 1024 ** exponent).toFixed(exponent > 1 ? 1 : 0)} ${units[exponent]}`
+}
+
+function formatRate(value: number) {
+  return `${formatBytes(value)}/s`
+}
+
 function gameFromActivity(activity: LanyardActivity): Game | null {
   if (activity.type !== 0) return null
   const normalized = normalizeActivityTitle(activityText(activity))
@@ -104,6 +116,7 @@ function gameFromActivity(activity: LanyardActivity): Game | null {
 export function GamesAndGearPage({ content, locale }: { content: SiteCopy; locale: Locale }) {
   const reduceMotion = useReducedMotion()
   const { activities, phase, socketLive } = useLanyardPresence()
+  const telemetry = useHardwareTelemetry()
   const [filter, setFilter] = useState<GameFilter>('all')
   const [selectedGame, setSelectedGame] = useState<Game | null>(null)
   const [hardwareMode, setHardwareMode] = useState<HardwareMode>('current')
@@ -153,6 +166,13 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
     idleBody: 'Cuando Discord detecte un juego abierto, esta tarjeta se actualizará automáticamente.',
     liveBadge: 'EN DIRECTO',
     connection: 'Conexión Lanyard',
+    telemetry: 'Monitor local · 5 s',
+    telemetryReady: 'Lectura en directo',
+    telemetryOffline: 'Monitor local apagado',
+    utilization: 'Uso actual',
+    unavailable: 'Sin lectura',
+    temperature: 'Temperatura',
+    network: 'Red',
   } : {
     eyebrow: 'Gaming · Hardware · Profile',
     title: 'What I play.\nThe machine behind it.',
@@ -191,7 +211,28 @@ export function GamesAndGearPage({ content, locale }: { content: SiteCopy; local
     idleBody: 'As soon as Discord detects an open game, this card updates automatically.',
     liveBadge: 'LIVE',
     connection: 'Lanyard connection',
+    telemetry: 'Local monitor · 5 s',
+    telemetryReady: 'Live reading',
+    telemetryOffline: 'Local monitor offline',
+    utilization: 'Current use',
+    unavailable: 'No reading',
+    temperature: 'Temperature',
+    network: 'Network',
   }
+
+  const liveUsage = useMemo(() => {
+    if (hardwareMode !== 'current' || !telemetry.metrics) return null
+    const metric = telemetry.metrics
+    const map: Record<HardwareItem['id'], { percent: number | null; detail: string | null }> = {
+      cpu: { percent: metric.cpu.percent, detail: metric.cpu.temperature == null ? null : `${Math.round(metric.cpu.temperature)} °C` },
+      gpu: { percent: metric.gpu.percent, detail: metric.gpu.temperature == null ? metric.gpu.name : `${Math.round(metric.gpu.temperature)} °C` },
+      memory: { percent: metric.memory.percent, detail: `${formatBytes(metric.memory.used)} / ${formatBytes(metric.memory.total)}` },
+      storage: { percent: metric.storage.percent, detail: `${formatBytes(metric.storage.used)} / ${formatBytes(metric.storage.total)}` },
+      board: { percent: null, detail: null },
+      power: { percent: null, detail: `${formatRate(metric.network.receivedPerSecond)} ↓ · ${formatRate(metric.network.sentPerSecond)} ↑` },
+    }
+    return map[activeHardware.id]
+  }, [activeHardware.id, hardwareMode, telemetry.metrics])
 
   const liveActivity = useMemo(() => activities.find((activity) => gameFromActivity(activity) !== null) ?? null, [activities])
   const liveGame = useMemo(() => liveActivity ? gameFromActivity(liveActivity) : null, [liveActivity])
@@ -519,6 +560,20 @@ const connectionLabel = phase === 'ready'
                 <span><span className="status-dot" aria-hidden="true" />{hardwareMode === 'current' ? labels.detected : labels.aspirational}</span>
                 <strong>{activeHardware.metric}</strong>
               </header>
+              {hardwareMode === 'current' && (
+                <div className={`setup-console__telemetry setup-console__telemetry--${telemetry.status}`}>
+                  <div>
+                    <span>{labels.telemetry}</span>
+                    <strong>{telemetry.status === 'ready' ? labels.telemetryReady : labels.telemetryOffline}</strong>
+                  </div>
+                  <div className="setup-console__telemetry-value">
+                    <span>{labels.utilization}</span>
+                    <strong>{liveUsage?.percent == null ? labels.unavailable : `${Math.round(liveUsage.percent)}%`}</strong>
+                    {liveUsage?.detail && <small>{activeHardware.id === 'power' ? labels.network : labels.temperature} · {liveUsage.detail}</small>}
+                  </div>
+                  <span className="setup-console__meter" aria-hidden="true"><i style={{ width: `${Math.max(0, Math.min(100, liveUsage?.percent ?? 0))}%` }} /></span>
+                </div>
+              )}
               <div className="setup-console__icon">
                 {(() => {
                   const Icon = hardwareIcons[activeHardware.id]

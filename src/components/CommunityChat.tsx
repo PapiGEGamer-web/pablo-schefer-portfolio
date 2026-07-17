@@ -1,7 +1,7 @@
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
 import { ArrowUpRight, LockKeyhole, MessageCircle, Send, X } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
 import { useAuth } from '../contexts/AuthContext'
@@ -19,13 +19,13 @@ type ChatMessage = {
 
 type CommunityChatProps = {
   locale: Locale
-  mode?: 'widget' | 'page'
+  mode?: 'widget' | 'inline'
+  onOpen?: () => void
 }
 
-export function CommunityChat({ locale, mode = 'page' }: CommunityChatProps) {
+export function CommunityChat({ locale, mode = 'widget', onOpen }: CommunityChatProps) {
   const auth = useAuth()
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [open, setOpen] = useState(mode === 'page')
   const [body, setBody] = useState('')
   const [loading, setLoading] = useState(false)
   const [sending, setSending] = useState(false)
@@ -105,9 +105,8 @@ export function CommunityChat({ locale, mode = 'page' }: CommunityChatProps) {
   }, [auth.user, loadMessages, mode])
 
   useEffect(() => {
-    if (!open && mode === 'widget') return
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages, open, mode])
+  }, [messages, mode])
 
   const sendMessage = async (event: FormEvent) => {
     event.preventDefault()
@@ -123,14 +122,24 @@ export function CommunityChat({ locale, mode = 'page' }: CommunityChatProps) {
         display_name: username,
       })
       : { error: new Error('not_configured') }
-    if (insertError) setError(labels.error)
+    if (insertError) {
+      console.error('Community chat send failed:', insertError)
+      const errorCode = 'code' in insertError ? insertError.code : undefined
+      setError(errorCode === '42501' ? labels.error : (locale === 'es' ? 'El chat rechazó el mensaje. Vuelve a iniciar sesión e inténtalo otra vez.' : 'The chat rejected the message. Sign in again and try once more.'))
+    }
     else setBody('')
     setSending(false)
   }
 
-  if (mode === 'widget' && !open) {
+  const handleMessageKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing) return
+    event.preventDefault()
+    event.currentTarget.form?.requestSubmit()
+  }
+
+  if (mode === 'widget') {
     return (
-      <button className="chat-launcher" type="button" onClick={() => setOpen(true)} aria-label={labels.open}>
+      <button className="chat-launcher" type="button" onClick={onOpen} aria-label={labels.open}>
         <span><MessageCircle size={17} aria-hidden="true" /><i /></span>
         <span><strong>{labels.title}</strong><small>{labels.live}</small></span>
         <ArrowUpRight size={16} aria-hidden="true" />
@@ -142,7 +151,7 @@ export function CommunityChat({ locale, mode = 'page' }: CommunityChatProps) {
     <AnimatePresence initial={false}>
       <m.section
         className={`community-chat community-chat--${mode}`}
-        initial={mode === 'widget' ? { opacity: 0, y: 12, scale: 0.97 } : false}
+        initial={{ opacity: 0, y: 12, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 8, scale: 0.97 }}
         transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
@@ -150,8 +159,7 @@ export function CommunityChat({ locale, mode = 'page' }: CommunityChatProps) {
         <header className="community-chat__header">
           <span><MessageCircle size={17} aria-hidden="true" /><i /></span>
           <div><strong>{labels.title}</strong><small>{labels.live}</small></div>
-          {mode === 'widget' && <Link to="/chat" aria-label={labels.page}><ArrowUpRight size={15} aria-hidden="true" /></Link>}
-          {mode === 'widget' && <button type="button" onClick={() => setOpen(false)} aria-label={labels.close}><X size={15} aria-hidden="true" /></button>}
+          <button type="button" onClick={onOpen} aria-label={labels.close}><X size={15} aria-hidden="true" /></button>
         </header>
 
         {!auth.user ? (
@@ -180,7 +188,7 @@ export function CommunityChat({ locale, mode = 'page' }: CommunityChatProps) {
             </div>
             <form className="community-chat__form" onSubmit={sendMessage}>
               <label className="sr-only" htmlFor={`chat-message-${mode}`}>{labels.placeholder}</label>
-              <textarea id={`chat-message-${mode}`} value={body} onChange={(event) => setBody(event.target.value)} maxLength={600} rows={mode === 'widget' ? 1 : 2} placeholder={labels.placeholder} />
+              <textarea id={`chat-message-${mode}`} value={body} onChange={(event) => setBody(event.target.value)} onKeyDown={handleMessageKeyDown} maxLength={600} rows={2} placeholder={labels.placeholder} />
               <button type="submit" disabled={sending || !body.trim()} aria-label={labels.send}><Send size={16} aria-hidden="true" /></button>
             </form>
           </>

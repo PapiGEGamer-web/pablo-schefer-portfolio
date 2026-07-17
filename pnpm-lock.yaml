@@ -14,9 +14,6 @@ importers:
       '@supabase/supabase-js':
         specifier: 2.110.6
         version: 2.110.6
-      chess.js:
-        specifier: 1.4.0
-        version: 1.4.0
       lucide-react:
         specifier: 1.24.0
         version: 1.24.0(react@19.2.7)
@@ -32,6 +29,9 @@ importers:
       react-router-dom:
         specifier: 7.18.1
         version: 7.18.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      systeminformation:
+        specifier: 5.27.13
+        version: 5.27.13
     devDependencies:
       '@eslint/js':
         specifier: 10.0.1
@@ -483,9 +483,6 @@ packages:
   caniuse-lite@1.0.30001805:
     resolution: {integrity: sha512-52noaS3DubycKSXaU30TwPGIp+POyQSUVa5jBEq3vkRkY0kjyb3LQgvhU6WGyCcyXqVLWO0Cw0Q6BSdD0kUfVA==}
 
-  chess.js@1.4.0:
-    resolution: {integrity: sha512-BBJgrrtKQOzFLonR0l+k64A98NLemPwNsCskwb+29bRwobUa4iTm51E1kwGPbWXAcfdDa18nad6vpPPKPWarqw==}
-
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
@@ -923,6 +920,12 @@ packages:
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
+
+  systeminformation@5.27.13:
+    resolution: {integrity: sha512-geeE/7eNDoOhdc9j+qCsLlwbcyh0HnqhOZzmfNK4WBioWGUZbhwYrg+YZsZ3UJh4tmybQsnDuqzr3UoumMifew==}
+    engines: {node: '>=8.0.0'}
+    os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
+    hasBin: true
 
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
@@ -1464,8 +1467,6 @@ snapshots:
 
   caniuse-lite@1.0.30001805: {}
 
-  chess.js@1.4.0: {}
-
   convert-source-map@2.0.0: {}
 
   cookie@1.1.1: {}
@@ -1839,6 +1840,8 @@ snapshots:
   shebang-regex@3.0.0: {}
 
   source-map-js@1.2.1: {}
+
+  systeminformation@5.27.13: {}
 
   tinyglobby@0.2.17:
     dependencies:

@@ -42,8 +42,7 @@
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38);
 }
 
-.community-chat--widget { width: min(370px, 100%); }
-.community-chat--page { width: min(100%, 980px); margin-inline: auto; }
+.community-chat--inline { width: min(370px, 100%); }
 
 .community-chat__header {
   display: grid;
@@ -80,7 +79,7 @@
   overscroll-behavior: contain;
   scrollbar-width: thin;
 }
-.community-chat--page .community-chat__messages { min-height: 440px; max-height: 58svh; padding: 1rem; }
+.community-chat--inline .community-chat__messages { min-height: 300px; max-height: 390px; padding: 0.9rem; }
 .community-chat__messages article { display: grid; grid-template-columns: 30px minmax(0, 1fr); align-items: start; gap: 0.55rem; }
 .community-chat__messages article.is-own { padding-left: 2.2rem; }
 .community-chat__avatar { display: grid; width: 30px; aspect-ratio: 1; place-items: center; color: #111; font-size: 0.64rem; font-weight: 800; background: var(--cyan); border-radius: 50%; }
@@ -108,6 +107,6 @@
 
 @media (max-width: 600px) {
   .community-chat { border-radius: 20px; }
-  .community-chat--page .community-chat__messages { min-height: 52svh; max-height: 58svh; }
+  .community-chat--inline .community-chat__messages { min-height: min(44svh, 330px); max-height: 46svh; }
   .community-chat__messages article.is-own { padding-left: 0.8rem; }
 }

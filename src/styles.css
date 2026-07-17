@@ -523,7 +523,6 @@ h3 {
   justify-items: end;
 }
 
-.hero__visual-stack > .community-chat,
 .hero__visual-stack > .chat-launcher {
   position: absolute;
   z-index: 4;

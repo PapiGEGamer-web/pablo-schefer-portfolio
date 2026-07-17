@@ -575,6 +575,30 @@
   letter-spacing: 0.12em;
 }
 
+.setup-console__telemetry {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.65rem 1rem;
+  max-width: 620px;
+  margin: -3.3rem 0 2.2rem;
+  padding: 0.8rem 0.9rem;
+  background: rgba(5, 6, 7, 0.35);
+  border: 1px solid color-mix(in srgb, var(--setup-accent) 18%, transparent);
+  border-radius: 16px;
+}
+
+.setup-console__telemetry > div { display: grid; gap: 0.18rem; }
+.setup-console__telemetry span,
+.setup-console__telemetry small { color: var(--dim); font: 0.5rem ui-monospace, 'Cascadia Code', monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+.setup-console__telemetry strong { color: var(--ink); font-size: 0.65rem; }
+.setup-console__telemetry-value { text-align: right; }
+.setup-console__telemetry-value > strong { color: var(--setup-accent); font-size: 1.18rem; line-height: 1; }
+.setup-console__meter { grid-column: 1 / -1; height: 3px; overflow: hidden; background: rgba(255, 255, 255, 0.09); border-radius: 999px; }
+.setup-console__meter i { display: block; height: 100%; background: var(--setup-accent); border-radius: inherit; transition: width 0.75s ease; }
+.setup-console__telemetry--offline { border-color: var(--line); }
+
 .setup-console__icon {
   position: absolute;
   top: 24%;

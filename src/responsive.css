@@ -110,7 +110,6 @@
     order: initial;
   }
 
-  .hero__visual-stack > .community-chat,
   .hero__visual-stack > .chat-launcher {
     position: static;
     width: 100%;

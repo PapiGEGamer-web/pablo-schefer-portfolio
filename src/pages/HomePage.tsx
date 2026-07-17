@@ -1,6 +1,7 @@
 import { useReducedMotion } from 'motion/react'
 import * as m from 'motion/react-m'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
 import { communities } from '../data/communities'
@@ -26,6 +27,7 @@ const signalItems = [
 
 export function HomePage({ content, locale }: { content: SiteCopy; locale: Locale }) {
   const reduceMotion = useReducedMotion()
+  const [chatOpen, setChatOpen] = useState(false)
   const home = content.home
   const featuredCommunities = communities.filter((community) => ['fnlb', 'nate', 'edgar', 'gw2'].includes(community.id))
   const reveal = {
@@ -68,6 +70,7 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
                 <MagneticLink href="/perfil" variant="ghost">{home.secondaryCta}</MagneticLink>
               </div>
             </m.div>
+            {chatOpen && <CommunityChat locale={locale} mode="inline" onOpen={() => setChatOpen(false)} />}
           </div>
 
           <div className="hero__visual-stack">
@@ -76,7 +79,7 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
               <div className="orbit-copy">{home.orbitLabel}</div>
               <div className="visual-coordinates">SPAIN / UTC+02</div>
             </m.div>
-            <CommunityChat locale={locale} mode="widget" />
+            <CommunityChat locale={locale} mode="widget" onOpen={() => setChatOpen(true)} />
           </div>
         </div>
 

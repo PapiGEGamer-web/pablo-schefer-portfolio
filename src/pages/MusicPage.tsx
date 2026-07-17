@@ -40,6 +40,10 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
     sourceTitle: 'En vivo, privado por diseño.',
     sourceBody: 'La interfaz se suscribe únicamente a mi presencia pública. No almacena historial ni controla mi cuenta; el audio se ofrece mediante el reproductor oficial de Spotify. Si la actividad deja de ser visible en Discord, la tarjeta vuelve al reposo.',
     signals: ['WebSocket en vivo', 'Sin historial', 'Solo actividad pública'],
+    favoriteEyebrow: 'Favorito personal',
+    favoriteTitle: 'Bad Bunny',
+    favoriteBody: 'El artista que más acompaña mi rotación: energía, detalle y una identidad imposible de confundir.',
+    favoriteLink: 'Escuchar en Spotify',
   } : {
     eyebrow: 'Spotify · Presence · Live',
     eyebrowReady: 'Spotify · Presence · Ready',
@@ -68,6 +72,10 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
     sourceTitle: 'Live, private by design.',
     sourceBody: 'The interface subscribes only to my public presence. It stores no history and cannot control my account; audio is provided through Spotify’s official player. If activity is no longer visible on Discord, the card returns to idle.',
     signals: ['Live WebSocket', 'No history', 'Public activity only'],
+    favoriteEyebrow: 'Personal favourite',
+    favoriteTitle: 'Bad Bunny',
+    favoriteBody: 'The artist that most often accompanies my rotation: energy, detail and an unmistakable identity.',
+    favoriteLink: 'Listen on Spotify',
   }
 
   const reveal = {
@@ -98,6 +106,17 @@ export function MusicPage({ content, locale }: { content: SiteCopy; locale: Loca
 
         <a className="page-hero__scroll" href="#reproductor"><ArrowDown size={15} aria-hidden="true" />{labels.jump}</a>
       </section>
+
+      <m.aside className="music-favorite" {...reveal}>
+        <img src="/media/music/bad-bunny.jpg" alt="Bad Bunny" width="720" height="1088" loading="lazy" decoding="async" />
+        <div>
+          <p className="eyebrow">{labels.favoriteEyebrow}</p>
+          <h2>{labels.favoriteTitle}</h2>
+          <p>{labels.favoriteBody}</p>
+          <a href="https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X" target="_blank" rel="noreferrer">{labels.favoriteLink}<ArrowUpRight size={16} aria-hidden="true" /></a>
+          <small>Foto: Glenn Francis · CC BY-SA 4.0</small>
+        </div>
+      </m.aside>
 
       <section className="section music-live-section" id="reproductor">
         <m.div className="section-heading section-heading--split" {...reveal}>

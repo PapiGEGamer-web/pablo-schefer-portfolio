@@ -36,12 +36,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://pablo-schefer.vercel.app/chat</loc>
-    <lastmod>2026-07-17</lastmod>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://pablo-schefer.vercel.app/minijuegos</loc>
+    <loc>https://pablo-schefer.vercel.app/experimentos</loc>
     <lastmod>2026-07-17</lastmod>
     <priority>0.8</priority>
   </url>

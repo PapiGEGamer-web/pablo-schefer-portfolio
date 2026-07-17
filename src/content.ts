@@ -28,8 +28,7 @@ export type SiteCopy = {
     gamesGear: string
     music: string
     anime: string
-    chat: string
-    minigames: string
+    experiments: string
     fnlb: string
     kernelos: string
     contact: string
@@ -60,6 +59,7 @@ export type SiteCopy = {
     gamesGear: SeoCopy
     music: SeoCopy
     anime: SeoCopy
+    experiments: SeoCopy
     notFound: SeoCopy
   }
   home: {
@@ -179,8 +179,7 @@ export const copy: Record<Locale, SiteCopy> = {
       gamesGear: 'Juegos y equipo',
       music: 'Música',
       anime: 'Anime',
-      chat: 'Chat',
-      minigames: 'Minijuegos',
+      experiments: 'Experimentos',
       fnlb: 'FNLB',
       kernelos: 'KernelOS',
       contact: 'Contacto',
@@ -231,6 +230,10 @@ export const copy: Record<Locale, SiteCopy> = {
       anime: {
         title: 'Anime en directo — Pablo Schefer',
         description: 'Historial local y monitor en tiempo real de actividades públicas de anime detectadas mediante Lanyard y Discord.',
+      },
+      experiments: {
+        title: 'Experimentos — Pablo Schefer',
+        description: 'Experimentos interactivos de Pablo Schefer: visualización cuántica, modelos generativos y código creativo en tiempo real.',
       },
       notFound: { title: 'Página no encontrada — Pablo Schefer', description: 'La página solicitada no existe.' },
     },
@@ -432,8 +435,7 @@ export const copy: Record<Locale, SiteCopy> = {
       gamesGear: 'Games & gear',
       music: 'Music',
       anime: 'Anime',
-      chat: 'Chat',
-      minigames: 'Minigames',
+      experiments: 'Experiments',
       fnlb: 'FNLB',
       kernelos: 'KernelOS',
       contact: 'Contact',
@@ -464,6 +466,7 @@ export const copy: Record<Locale, SiteCopy> = {
       gamesGear: { title: 'Games & gear — Pablo Schefer', description: 'Current games, real hardware and an extreme RTX 5090 target setup in a visual, interactive library.' },
       music: { title: 'Music & Spotify — Pablo Schefer', description: 'Pablo Schefer’s music monitor, ready to show public Spotify playback through his Discord presence.' },
       anime: { title: 'Live Anime — Pablo Schefer', description: 'Local history and real-time monitor for public anime activities detected through Lanyard and Discord.' },
+      experiments: { title: 'Experiments — Pablo Schefer', description: 'Interactive experiments by Pablo Schefer: quantum visualization, generative models and real-time creative code.' },
       notFound: { title: 'Page not found — Pablo Schefer', description: 'The requested page does not exist.' },
     },
     home: {
