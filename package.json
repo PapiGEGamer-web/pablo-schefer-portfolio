@@ -17,13 +17,13 @@
   },
   "dependencies": {
     "@fontsource-variable/manrope": "5.2.8",
-    "@supabase/supabase-js": "2.110.6",
-    "lucide-react": "1.24.0",
+    "@supabase/supabase-js": "2.110.7",
+    "lucide-react": "1.25.0",
     "motion": "12.42.2",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-router-dom": "7.18.1",
-    "systeminformation": "5.27.13"
+    "systeminformation": "5.31.17"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
