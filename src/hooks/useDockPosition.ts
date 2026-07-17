@@ -251,11 +251,15 @@ export function useDockPosition(storageKey: string, defaultCorner: DockCorner, i
   }, [isDragging, targetX, targetY])
 
   const style = { left: smoothX, top: smoothY, right: 'auto', bottom: 'auto', visibility: isReady ? 'visible' : 'hidden' } as const
+  const refreshPosition = useCallback((immediate = true) => {
+    moveToCorner(corner, immediate)
+  }, [corner, moveToCorner])
 
   return {
     bindDock: ref,
     corner,
     isDragging,
+    refreshPosition,
     style,
     dragHandlers: { onPointerDown, onPointerMove, onPointerUp: finishDrag, onPointerCancel: finishDrag },
   }

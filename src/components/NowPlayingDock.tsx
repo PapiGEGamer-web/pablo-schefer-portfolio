@@ -1,7 +1,7 @@
 import { AnimatePresence, useReducedMotion } from 'motion/react'
 import * as m from 'motion/react-m'
 import { ChevronDown, ExternalLink, Music2, Volume2, X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Locale } from '../content'
 import { useLanyardPresence, useSpotifyProgress } from '../hooks/useLanyardPresence'
@@ -15,7 +15,18 @@ export function NowPlayingDock({ locale, placement = 'bottom-right' }: { locale:
   const progress = useSpotifyProgress(track)
   const [expanded, setExpanded] = useState(false)
   const [visible, setVisible] = useState(true)
-  const { bindDock, corner, dragHandlers, isDragging, style } = useDockPosition('pablo-portfolio-spotify-dock-position', placement, 'spotify', Boolean(track))
+  const { bindDock, corner, dragHandlers, isDragging, refreshPosition, style } = useDockPosition('pablo-portfolio-spotify-dock-position', placement, 'spotify', Boolean(track))
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => refreshPosition(true))
+    const animationTimer = window.setTimeout(() => refreshPosition(true), 360)
+    const embedTimer = window.setTimeout(() => refreshPosition(true), 900)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(animationTimer)
+      window.clearTimeout(embedTimer)
+    }
+  }, [expanded, refreshPosition, track?.track_id])
 
   const labels = locale === 'es' ? {
     connecting: 'Conectando Spotify',
