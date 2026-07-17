@@ -176,6 +176,28 @@ export function useDockPosition(storageKey: string, defaultCorner: DockCorner, i
     }
   }, [active, corner, isReady, moveToCorner])
 
+  useLayoutEffect(() => {
+    const element = dockElement.current
+    if (!active || !isReady || !element || typeof ResizeObserver === 'undefined') return undefined
+
+    let frame = 0
+    const observer = new ResizeObserver(() => {
+      if (isDragging) return
+      window.cancelAnimationFrame(frame)
+      frame = window.requestAnimationFrame(() => {
+        const bounds = element.getBoundingClientRect()
+        cardSize.current = { width: bounds.width, height: bounds.height }
+        moveToCorner(corner, true)
+      })
+    })
+
+    observer.observe(element)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  }, [active, corner, isDragging, isReady, moveToCorner])
+
   const finishDrag = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (!isDragging) return
     const bounds = event.currentTarget.getBoundingClientRect()
