@@ -117,15 +117,15 @@ export function CommunityChat({ locale, mode = 'widget', onOpen }: CommunityChat
     setError('')
     const client = await getSupabase()
     const { error: insertError } = client
-      ? await client.rpc('send_chat_message', {
-        message_body: message,
-        display_name: username,
+      ? await client.from('chat_messages').insert({
+        user_id: auth.user.id,
+        username,
+        body: message,
       })
       : { error: new Error('not_configured') }
     if (insertError) {
       console.error('Community chat send failed:', insertError)
-      const errorCode = 'code' in insertError ? insertError.code : undefined
-      setError(errorCode === '42501' ? labels.error : (locale === 'es' ? 'El chat rechazó el mensaje. Vuelve a iniciar sesión e inténtalo otra vez.' : 'The chat rejected the message. Sign in again and try once more.'))
+      setError(locale === 'es' ? 'No se ha podido enviar el mensaje. Inténtalo de nuevo en unos segundos.' : 'The message could not be sent. Please try again in a few seconds.')
     }
     else setBody('')
     setSending(false)

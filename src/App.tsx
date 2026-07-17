@@ -16,7 +16,6 @@ const GamesAndGearPage = lazy(() => import('./pages/GamesAndGearPage').then((mod
 const MusicPage = lazy(() => import('./pages/MusicPage').then((module) => ({ default: module.MusicPage })))
 const AnimePage = lazy(() => import('./pages/AnimePage').then((module) => ({ default: module.AnimePage })))
 const AccountPage = lazy(() => import('./pages/AccountPage').then((module) => ({ default: module.AccountPage })))
-const ExperimentsPage = lazy(() => import('./pages/ExperimentsPage').then((module) => ({ default: module.ExperimentsPage })))
 const ProjectPage = lazy(() => import('./pages/ProjectPage').then((module) => ({ default: module.ProjectPage })))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })))
 const NowPlayingDock = lazy(() => import('./components/NowPlayingDock').then((module) => ({ default: module.NowPlayingDock })))
@@ -32,7 +31,6 @@ function getSeo(content: SiteCopy, pathname: string) {
   if (pathname === '/juegos-y-equipo') return content.seo.gamesGear
   if (pathname === '/musica') return content.seo.music
   if (pathname === '/anime') return content.seo.anime
-  if (pathname === '/experimentos') return content.seo.experiments
   if (pathname === '/cuenta') return { title: 'Cuenta — Pablo Schefer', description: 'Registro, verificación por correo e inicio de sesión en el portfolio de Pablo Schefer.' }
   if (pathname === '/proyectos/fnlb') return { title: 'FNLB — Proyecto y comunidad', description: 'Colaboración de Pablo Schefer con el ecosistema FNLB.' }
   if (pathname === '/proyectos/kernelos') return { title: 'KernelOS — Proyecto y comunidad', description: 'Colaboración de Pablo Schefer con KernelOS, su CustomOS y comunidad.' }
@@ -178,7 +176,6 @@ function App() {
               <Route path="/musica" element={<MusicPage content={content} locale={locale} />} />
               <Route path="/anime" element={<AnimePage content={content} locale={locale} />} />
               <Route path="/cuenta" element={<AccountPage locale={locale} />} />
-              <Route path="/experimentos" element={<ExperimentsPage locale={locale} />} />
               <Route path="/proyectos/fnlb" element={<ProjectPage projectId="fnlb" locale={locale} />} />
               <Route path="/proyectos/kernelos" element={<ProjectPage projectId="kernelos" locale={locale} />} />
               <Route path="*" element={<NotFoundPage content={content} />} />

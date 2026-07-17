@@ -70,7 +70,6 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
                 <MagneticLink href="/perfil" variant="ghost">{home.secondaryCta}</MagneticLink>
               </div>
             </m.div>
-            {chatOpen && <CommunityChat locale={locale} mode="inline" onOpen={() => setChatOpen(false)} />}
           </div>
 
           <div className="hero__visual-stack">
@@ -82,6 +81,8 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
             <CommunityChat locale={locale} mode="widget" onOpen={() => setChatOpen(true)} />
           </div>
         </div>
+
+        {chatOpen && <CommunityChat locale={locale} mode="inline" onOpen={() => setChatOpen(false)} />}
 
         <Link className="scroll-cue" to="/#capacidades">
           <ArrowDown size={15} aria-hidden="true" />

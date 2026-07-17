@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
-import { Atom, ChevronDown, Gamepad2, Menu, Music2, Radio, Tv, UserRound, X } from 'lucide-react'
+import { ChevronDown, Gamepad2, Menu, Music2, Radio, Tv, UserRound, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
 import { useAuth } from '../contexts/AuthContext'
@@ -175,10 +175,6 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                     <span>{content.nav.anime}</span>
                     <small className="nav-live"><Tv size={11} aria-hidden="true" /> Lanyard</small>
                   </Link>
-                  <Link to="/experimentos" role="menuitem" onClick={closeNavigation}>
-                    <span>{content.nav.experiments}</span>
-                    <small><Atom size={11} aria-hidden="true" /> Lab</small>
-                  </Link>
                 </m.div>
               )}
             </AnimatePresence>
@@ -300,7 +296,6 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                     <Link to="/juegos-y-equipo" onClick={closeNavigation}>{content.nav.gamesGear}</Link>
                     <Link to="/musica" onClick={closeNavigation}>{content.nav.music}</Link>
                     <Link to="/anime" onClick={closeNavigation}>{content.nav.anime}</Link>
-                    <Link to="/experimentos" onClick={closeNavigation}>{content.nav.experiments}</Link>
                   </m.div>
                 )}
               </AnimatePresence>
