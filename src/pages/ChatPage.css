@@ -1,0 +1,7 @@
+.chat-page__signal { position: relative; display: grid; width: min(320px, 70vw); aspect-ratio: 1; justify-self: end; place-items: center; color: var(--cyan); background: radial-gradient(circle, rgba(129,216,204,.13), transparent 68%); border: 1px solid var(--line); border-radius: 50%; }
+.chat-page__signal i { position: absolute; width: 10px; aspect-ratio: 1; background: var(--amber); border-radius: 50%; box-shadow: 0 0 18px rgba(240,162,74,.55); animation: chatOrbit 7s linear infinite; }
+.chat-page__signal i:nth-child(2) { animation-duration: 11s; animation-delay: -3s; }
+.chat-page__signal i:nth-child(3) { width: 7px; background: var(--cyan); animation-duration: 15s; animation-delay: -7s; }
+@keyframes chatOrbit { from { transform: rotate(0) translateX(115px) rotate(0); } to { transform: rotate(360deg) translateX(115px) rotate(-360deg); } }
+.chat-page__room { padding-top: 4rem; }
+@media (max-width: 900px) { .chat-page__signal { width: min(220px, 56vw); justify-self: center; } @keyframes chatOrbit { from { transform: rotate(0) translateX(78px) rotate(0); } to { transform: rotate(360deg) translateX(78px) rotate(-360deg); } } }

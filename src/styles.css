@@ -517,9 +517,39 @@ h3 {
   justify-self: end;
 }
 
+.hero__visual-stack {
+  position: relative;
+  display: grid;
+  justify-items: end;
+}
+
+.hero__visual-stack > .community-chat,
+.hero__visual-stack > .chat-launcher {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  right: 0;
+  bottom: auto;
+}
+
+.hero__visual-stack > .chat-launcher {
+  width: min(230px, 100%);
+}
+
 .monogram {
+  --orbit-node-1-x: 0px;
+  --orbit-node-1-y: 0px;
+  --orbit-node-2-x: 0px;
+  --orbit-node-2-y: 0px;
+  --orbit-node-3-x: 0px;
+  --orbit-node-3-y: 0px;
+  --orbit-node-4-x: 0px;
+  --orbit-node-4-y: 0px;
+  --orbit-node-5-x: 0px;
+  --orbit-node-5-y: 0px;
   position: relative;
   width: 100%;
+  touch-action: pan-y;
 }
 
 .monogram svg {
@@ -608,6 +638,17 @@ h3 {
 .monogram__node--three { animation-delay: -2s; }
 .monogram__node--four { fill: var(--cyan); opacity: 0.8; animation-delay: -1.55s; }
 .monogram__node--five { opacity: 0.72; animation-delay: -2.35s; }
+
+.monogram__node-shift {
+  transition: transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.monogram__node-shift--one { transform: translate(var(--orbit-node-1-x), var(--orbit-node-1-y)); }
+.monogram__node-shift--two { transform: translate(var(--orbit-node-2-x), var(--orbit-node-2-y)); }
+.monogram__node-shift--three { transform: translate(var(--orbit-node-3-x), var(--orbit-node-3-y)); }
+.monogram__node-shift--four { transform: translate(var(--orbit-node-4-x), var(--orbit-node-4-y)); }
+.monogram__node-shift--five { transform: translate(var(--orbit-node-5-x), var(--orbit-node-5-y)); }
 
 .monogram__code {
   position: absolute;

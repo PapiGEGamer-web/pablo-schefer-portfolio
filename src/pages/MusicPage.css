@@ -247,7 +247,8 @@
   width: 100%;
   border: 0;
   border-radius: 18px;
-  color-scheme: normal;
+  background: #181818;
+  color-scheme: dark;
 }
 
 .spotify-embed--compact {

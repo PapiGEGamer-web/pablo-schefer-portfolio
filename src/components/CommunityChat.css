@@ -1,0 +1,113 @@
+.chat-launcher {
+  display: grid;
+  width: min(290px, 100%);
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem;
+  color: var(--ink);
+  text-align: left;
+  background: rgba(17, 19, 20, 0.86);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.chat-launcher:hover { border-color: rgba(129, 216, 204, 0.36); transform: translateY(-4px); }
+.chat-launcher > span:first-child,
+.community-chat__header > span {
+  position: relative;
+  display: grid;
+  width: 36px;
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--cyan);
+  background: rgba(129, 216, 204, 0.08);
+  border-radius: 12px;
+}
+.chat-launcher i,
+.community-chat__header i { position: absolute; top: 2px; right: 2px; width: 7px; aspect-ratio: 1; background: #55d98a; border: 2px solid #151718; border-radius: 50%; }
+.chat-launcher > span:nth-child(2) { display: grid; gap: 0.15rem; }
+.chat-launcher strong { font-size: 0.72rem; }
+.chat-launcher small { color: var(--dim); font-size: 0.55rem; }
+
+.community-chat {
+  overflow: hidden;
+  background: rgba(15, 17, 18, 0.96);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38);
+}
+
+.community-chat--widget { width: min(370px, 100%); }
+.community-chat--page { width: min(100%, 980px); margin-inline: auto; }
+
+.community-chat__header {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+.community-chat__header > div { display: grid; gap: 0.12rem; }
+.community-chat__header strong { font-size: 0.75rem; }
+.community-chat__header small { color: var(--dim); font-size: 0.54rem; }
+.community-chat__header > a,
+.community-chat__header > button {
+  display: grid;
+  width: 32px;
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.community-chat__header > a:hover,
+.community-chat__header > button:hover { color: var(--ink); background: rgba(255, 255, 255, 0.06); }
+
+.community-chat__messages {
+  display: grid;
+  max-height: min(390px, 48svh);
+  gap: 0.55rem;
+  padding: 0.8rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.community-chat--page .community-chat__messages { min-height: 440px; max-height: 58svh; padding: 1rem; }
+.community-chat__messages article { display: grid; grid-template-columns: 30px minmax(0, 1fr); align-items: start; gap: 0.55rem; }
+.community-chat__messages article.is-own { padding-left: 2.2rem; }
+.community-chat__avatar { display: grid; width: 30px; aspect-ratio: 1; place-items: center; color: #111; font-size: 0.64rem; font-weight: 800; background: var(--cyan); border-radius: 50%; }
+.community-chat__messages article.is-own .community-chat__avatar { background: var(--amber); }
+.community-chat__messages article > div { min-width: 0; padding: 0.58rem 0.65rem; background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 6px 14px 14px; }
+.community-chat__messages article.is-own > div { background: rgba(240, 162, 74, 0.07); border-color: rgba(240, 162, 74, 0.14); }
+.community-chat__messages header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.25rem; }
+.community-chat__messages header strong { overflow: hidden; font-size: 0.62rem; text-overflow: ellipsis; white-space: nowrap; }
+.community-chat__messages time { flex: 0 0 auto; color: var(--dim); font: 0.48rem ui-monospace, 'Cascadia Code', monospace; }
+.community-chat__messages p { margin: 0; color: #b8bcba; font-size: 0.66rem; line-height: 1.5; overflow-wrap: anywhere; white-space: pre-wrap; }
+
+.community-chat__form { display: grid; grid-template-columns: minmax(0, 1fr) 40px; gap: 0.55rem; padding: 0.7rem; border-top: 1px solid var(--line); }
+.community-chat__form textarea { width: 100%; min-height: 40px; max-height: 120px; padding: 0.72rem 0.8rem; resize: none; color: var(--ink); font: 16px/1.4 inherit; background: rgba(255, 255, 255, 0.035); border: 1px solid var(--line); border-radius: 14px; outline: 0; }
+.community-chat__form textarea:focus { border-color: rgba(129, 216, 204, 0.4); }
+.community-chat__form button { display: grid; width: 40px; aspect-ratio: 1; place-items: center; align-self: end; color: #101213; background: var(--cyan); border: 0; border-radius: 13px; cursor: pointer; }
+.community-chat__form button:disabled { cursor: not-allowed; opacity: 0.4; }
+.community-chat__locked { display: grid; min-height: 235px; place-items: center; align-content: center; gap: 0.85rem; padding: 1.5rem; text-align: center; }
+.community-chat__locked > span { display: grid; width: 54px; aspect-ratio: 1; place-items: center; color: var(--amber); background: rgba(240, 162, 74, 0.08); border: 1px solid rgba(240, 162, 74, 0.18); border-radius: 18px; }
+.community-chat__locked p { max-width: 260px; margin: 0; color: var(--muted); font-size: 0.72rem; line-height: 1.55; }
+.community-chat__locked a { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.7rem 0.85rem; color: #111; font-size: 0.64rem; font-weight: 700; background: var(--amber); border-radius: 999px; }
+.community-chat__empty,
+.community-chat__error { margin: auto; color: var(--dim); font-size: 0.64rem; text-align: center; }
+.community-chat__error { padding: 0 0.8rem 0.7rem; color: #ee8a8a; }
+.community-chat__loading { width: 28px; aspect-ratio: 1; margin: auto; border: 2px solid var(--line); border-top-color: var(--cyan); border-radius: 50%; animation: orbitSpin 0.8s linear infinite; }
+
+@media (max-width: 600px) {
+  .community-chat { border-radius: 20px; }
+  .community-chat--page .community-chat__messages { min-height: 52svh; max-height: 58svh; }
+  .community-chat__messages article.is-own { padding-left: 0.8rem; }
+}

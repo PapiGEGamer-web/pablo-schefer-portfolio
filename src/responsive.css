@@ -1,0 +1,367 @@
+/* Final responsive layer: keeps every route usable from compact phones to wide displays. */
+
+@media (max-width: 1366px) and (min-width: 821px) {
+  .site-header,
+  .section,
+  .page-hero,
+  .site-footer {
+    width: min(100% - 40px, 1240px);
+  }
+
+  .hero {
+    padding-inline: max(20px, calc((100vw - 1240px) / 2));
+  }
+
+  .hero__title {
+    font-size: clamp(4rem, 7.2vw, 6.7rem);
+  }
+
+  .page-hero__copy h1 {
+    font-size: clamp(3.8rem, 7.4vw, 7rem);
+  }
+}
+
+@media (min-width: 821px) and (max-height: 820px) {
+  .hero {
+    min-height: 720px;
+    padding-top: 112px;
+    padding-bottom: 42px;
+  }
+
+  .hero__layout {
+    margin-top: 1rem;
+  }
+
+  .hero__title {
+    margin-bottom: 1.6rem;
+    font-size: clamp(3.7rem, 6.65vw, 6.5rem);
+  }
+
+  .hero__visual {
+    width: min(37vw, 430px);
+  }
+
+  .page-hero {
+    min-height: 680px;
+    padding-top: 112px;
+  }
+}
+
+@media (max-width: 820px) {
+  html {
+    font-size: 15px;
+  }
+
+  .hero {
+    padding-top: calc(86px + env(safe-area-inset-top, 0px));
+  }
+
+  .hero__status {
+    margin-bottom: 1.2rem;
+    line-height: 1.45;
+  }
+
+  .hero__layout {
+    gap: 1.35rem;
+    min-width: 0;
+  }
+
+  .hero__copy {
+    min-width: 0;
+  }
+
+  .hero__eyebrow {
+    width: 100%;
+    max-width: 100%;
+    order: 0;
+    margin-bottom: 0.25rem;
+    overflow-wrap: anywhere;
+  }
+
+  .hero__title {
+    width: 100%;
+    max-width: 100%;
+    order: 1;
+    margin-bottom: 0.35rem;
+    font-size: clamp(2.72rem, 12.4vw, 4.15rem);
+    line-height: 0.92;
+    letter-spacing: -0.068em;
+  }
+
+  .hero__title > span {
+    max-width: 100%;
+    padding-right: 0.04em;
+  }
+
+  .hero__visual {
+    width: min(62vw, 260px);
+    max-width: 260px;
+    order: 2;
+    margin: 0.15rem auto 0.5rem;
+  }
+
+  .hero__visual-stack {
+    width: 100%;
+    order: 2;
+    justify-items: center;
+  }
+
+  .hero__visual-stack .hero__visual {
+    order: initial;
+  }
+
+  .hero__visual-stack > .community-chat,
+  .hero__visual-stack > .chat-launcher {
+    position: static;
+    width: 100%;
+    max-width: 360px;
+    margin-top: 0.65rem;
+  }
+
+  .hero__intro-wrap {
+    width: 100%;
+    max-width: 100%;
+    order: 3;
+    gap: 1rem;
+  }
+
+  .hero__intro {
+    font-size: 0.9rem;
+    line-height: 1.62;
+  }
+
+  .hero__actions {
+    gap: 0.55rem;
+  }
+
+  .magnetic-link {
+    min-height: 46px;
+    padding-inline: 1rem;
+  }
+
+  .section {
+    padding-block: 4.25rem;
+  }
+
+  .section-heading {
+    gap: 0.9rem;
+    margin-bottom: 2.2rem;
+  }
+
+  .section-heading h2,
+  .profile h2,
+  .contact h2 {
+    font-size: clamp(2.35rem, 11.4vw, 3.65rem);
+    line-height: 0.98;
+    letter-spacing: -0.065em;
+  }
+
+  .section-heading__intro {
+    font-size: 0.86rem;
+    line-height: 1.62;
+  }
+
+  .capability-card {
+    min-height: 0;
+    padding: 1.25rem;
+  }
+
+  .capability-card__top {
+    margin-bottom: 2.6rem;
+  }
+
+  .capability-card h3 {
+    font-size: 1.55rem;
+  }
+
+  .proof-card {
+    min-height: 355px;
+    padding: 1.25rem;
+  }
+
+  .proof-card strong {
+    font-size: 3.35rem;
+  }
+
+  .page-hero {
+    gap: 2rem;
+    padding-top: calc(96px + env(safe-area-inset-top, 0px));
+    padding-bottom: 54px;
+  }
+
+  .page-hero__copy .eyebrow {
+    margin-bottom: 1.15rem;
+  }
+
+  .page-hero__copy h1 {
+    margin-bottom: 1.25rem;
+    font-size: clamp(2.65rem, 11.7vw, 4.1rem);
+    line-height: 0.96;
+    letter-spacing: -0.069em;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .page-hero__copy > p:last-of-type {
+    font-size: 0.9rem;
+    line-height: 1.62;
+  }
+
+  .profile-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .profile-stats article {
+    min-height: 104px;
+    grid-template-columns: 1fr;
+    align-content: end;
+    padding: 0.8rem;
+  }
+
+  .profile-stats strong {
+    font-size: clamp(1.65rem, 8.4vw, 2.35rem);
+  }
+
+  .profile-stats span {
+    font-size: 0.53rem;
+    line-height: 1.35;
+  }
+
+  .community-card {
+    min-height: 0;
+  }
+
+  .community-card__visual {
+    height: 135px;
+  }
+
+  .bridge-statement {
+    padding-block: 4.5rem;
+  }
+
+  .bridge-statement p {
+    font-size: clamp(2.25rem, 11.5vw, 3.7rem);
+  }
+
+  .contact {
+    padding-block: 4.5rem;
+  }
+
+  .now-dock,
+  .anime-dock {
+    max-width: calc(100vw - 16px);
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    width: calc(100% - 12px);
+    height: 56px;
+    padding-inline: 0.45rem;
+  }
+
+  .brand__mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .header-actions {
+    gap: 0.45rem;
+  }
+
+  .account-trigger,
+  .language-picker__trigger,
+  .menu-trigger {
+    min-width: 36px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .language-picker__trigger {
+    width: auto;
+    padding-inline: 0.45rem;
+  }
+
+  .hero {
+    padding-inline: 12px;
+    padding-bottom: 42px;
+  }
+
+  .hero__title {
+    font-size: clamp(2.58rem, 12.6vw, 3.65rem);
+  }
+
+  .hero__visual {
+    width: min(58vw, 228px);
+  }
+
+  .section,
+  .page-hero,
+  .site-footer {
+    width: calc(100% - 20px);
+  }
+
+  .page-hero__copy h1 {
+    font-size: clamp(2.45rem, 11.2vw, 3.55rem);
+  }
+
+  .profile-stats article {
+    min-width: 0;
+  }
+
+  .profile-stats span {
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-menu > a,
+  .mobile-menu__group > button {
+    min-height: 54px;
+    font-size: clamp(1.5rem, 8vw, 2.15rem);
+  }
+
+  .now-dock__summary {
+    grid-template-columns: 44px minmax(0, 1fr) 38px;
+    gap: 0.65rem;
+    padding: 0.65rem;
+  }
+
+  .now-dock__art {
+    width: 44px;
+  }
+
+  .now-dock__play {
+    width: 38px;
+  }
+
+  .anime-dock__body {
+    grid-template-columns: 50px minmax(0, 1fr) 34px;
+    gap: 0.65rem;
+    padding: 0.65rem;
+  }
+
+  .anime-dock__art {
+    width: 50px;
+    height: 66px;
+  }
+}
+
+@media (min-width: 2200px) {
+  .site-header,
+  .section,
+  .page-hero,
+  .site-footer,
+  .hero__layout {
+    max-width: 1680px;
+  }
+
+  .hero {
+    padding-inline: max(48px, calc((100vw - 1680px) / 2));
+  }
+}
+
+@media (pointer: coarse) {
+  .monogram__node-shift {
+    transform: none;
+  }
+}

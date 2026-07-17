@@ -14,6 +14,9 @@ importers:
       '@supabase/supabase-js':
         specifier: 2.110.6
         version: 2.110.6
+      chess.js:
+        specifier: 1.4.0
+        version: 1.4.0
       lucide-react:
         specifier: 1.24.0
         version: 1.24.0(react@19.2.7)
@@ -479,6 +482,9 @@ packages:
 
   caniuse-lite@1.0.30001805:
     resolution: {integrity: sha512-52noaS3DubycKSXaU30TwPGIp+POyQSUVa5jBEq3vkRkY0kjyb3LQgvhU6WGyCcyXqVLWO0Cw0Q6BSdD0kUfVA==}
+
+  chess.js@1.4.0:
+    resolution: {integrity: sha512-BBJgrrtKQOzFLonR0l+k64A98NLemPwNsCskwb+29bRwobUa4iTm51E1kwGPbWXAcfdDa18nad6vpPPKPWarqw==}
 
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
@@ -1457,6 +1463,8 @@ snapshots:
       update-browserslist-db: 1.2.3(browserslist@4.28.6)
 
   caniuse-lite@1.0.30001805: {}
+
+  chess.js@1.4.0: {}
 
   convert-source-map@2.0.0: {}
 

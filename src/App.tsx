@@ -16,6 +16,9 @@ const GamesAndGearPage = lazy(() => import('./pages/GamesAndGearPage').then((mod
 const MusicPage = lazy(() => import('./pages/MusicPage').then((module) => ({ default: module.MusicPage })))
 const AnimePage = lazy(() => import('./pages/AnimePage').then((module) => ({ default: module.AnimePage })))
 const AccountPage = lazy(() => import('./pages/AccountPage').then((module) => ({ default: module.AccountPage })))
+const ChatPage = lazy(() => import('./pages/ChatPage').then((module) => ({ default: module.ChatPage })))
+const MiniGamesPage = lazy(() => import('./pages/MiniGamesPage').then((module) => ({ default: module.MiniGamesPage })))
+const ProjectPage = lazy(() => import('./pages/ProjectPage').then((module) => ({ default: module.ProjectPage })))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })))
 const NowPlayingDock = lazy(() => import('./components/NowPlayingDock').then((module) => ({ default: module.NowPlayingDock })))
 const AnimeNowDock = lazy(() => import('./components/AnimeNowDock').then((module) => ({ default: module.AnimeNowDock })))
@@ -31,6 +34,10 @@ function getSeo(content: SiteCopy, pathname: string) {
   if (pathname === '/musica') return content.seo.music
   if (pathname === '/anime') return content.seo.anime
   if (pathname === '/cuenta') return { title: 'Cuenta — Pablo Schefer', description: 'Registro, verificación por correo e inicio de sesión en el portfolio de Pablo Schefer.' }
+  if (pathname === '/chat') return { title: 'Chat de la comunidad — Pablo Schefer', description: 'Chat en tiempo real para las cuentas del portfolio de Pablo Schefer.' }
+  if (pathname === '/minijuegos') return { title: 'Minijuegos — Pablo Schefer', description: 'Ajedrez online entre cuentas, Snake y memoria dentro del portfolio.' }
+  if (pathname === '/proyectos/fnlb') return { title: 'FNLB — Proyecto y comunidad', description: 'Colaboración de Pablo Schefer con el ecosistema FNLB.' }
+  if (pathname === '/proyectos/kernelos') return { title: 'KernelOS — Proyecto y comunidad', description: 'Colaboración de Pablo Schefer con KernelOS, su CustomOS y comunidad.' }
   return content.seo.notFound
 }
 
@@ -88,8 +95,19 @@ function App() {
             ? 'mobile'
             : 'desktop'
       const height = window.visualViewport?.height ?? window.innerHeight
+      const width = window.visualViewport?.width ?? window.innerWidth
+      const resolution = width <= 480
+        ? 'compact'
+        : width <= 820
+          ? 'mobile'
+          : width <= 1100
+            ? 'tablet'
+            : width <= 1920
+              ? 'desktop'
+              : 'wide'
 
       document.documentElement.dataset.mobilePlatform = platform
+      document.documentElement.dataset.viewport = resolution
       document.documentElement.style.setProperty('--app-height', `${height}px`)
     }
 
@@ -162,6 +180,10 @@ function App() {
               <Route path="/musica" element={<MusicPage content={content} locale={locale} />} />
               <Route path="/anime" element={<AnimePage content={content} locale={locale} />} />
               <Route path="/cuenta" element={<AccountPage locale={locale} />} />
+              <Route path="/chat" element={<ChatPage locale={locale} />} />
+              <Route path="/minijuegos" element={<MiniGamesPage locale={locale} />} />
+              <Route path="/proyectos/fnlb" element={<ProjectPage projectId="fnlb" locale={locale} />} />
+              <Route path="/proyectos/kernelos" element={<ProjectPage projectId="kernelos" locale={locale} />} />
               <Route path="*" element={<NotFoundPage content={content} />} />
             </Routes>
           </Suspense>

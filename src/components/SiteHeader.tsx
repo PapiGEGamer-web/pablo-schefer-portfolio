@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'motion/react'
 import * as m from 'motion/react-m'
-import { ChevronDown, Gamepad2, Menu, Music2, Radio, Tv, UserRound, X } from 'lucide-react'
+import { ChevronDown, Gamepad2, Menu, MessageCircle, Music2, Radio, Swords, Tv, UserRound, X } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
 import { useAuth } from '../contexts/AuthContext'
@@ -136,8 +136,8 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                   exit={{ opacity: 0, y: -6, scale: 0.98 }}
                   transition={{ duration: 0.18 }}
                 >
-                  <Link to="/#fnlb" role="menuitem" onClick={closeNavigation}><span>{content.nav.fnlb}</span><small>{locale === 'es' ? 'Comunidad' : 'Community'}</small></Link>
-                  <Link to="/#kernelos" role="menuitem" onClick={closeNavigation}><span>{content.nav.kernelos}</span><small>{locale === 'es' ? 'Comunidad · CustomOS' : 'Community · Custom OS'}</small></Link>
+                  <Link to="/proyectos/fnlb" role="menuitem" onClick={closeNavigation}><span>{content.nav.fnlb}</span><small>{locale === 'es' ? 'Proyecto · Comunidad' : 'Project · Community'}</small></Link>
+                  <Link to="/proyectos/kernelos" role="menuitem" onClick={closeNavigation}><span>{content.nav.kernelos}</span><small>{locale === 'es' ? 'Comunidad · CustomOS' : 'Community · Custom OS'}</small></Link>
                 </m.div>
               )}
             </AnimatePresence>
@@ -174,6 +174,14 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                   <Link to="/anime" role="menuitem" onClick={closeNavigation}>
                     <span>{content.nav.anime}</span>
                     <small className="nav-live"><Tv size={11} aria-hidden="true" /> Lanyard</small>
+                  </Link>
+                  <Link to="/chat" role="menuitem" onClick={closeNavigation}>
+                    <span>{content.nav.chat}</span>
+                    <small className="nav-live"><MessageCircle size={11} aria-hidden="true" /> Live</small>
+                  </Link>
+                  <Link to="/minijuegos" role="menuitem" onClick={closeNavigation}>
+                    <span>{content.nav.minigames}</span>
+                    <small><Swords size={11} aria-hidden="true" /> Online</small>
                   </Link>
                 </m.div>
               )}
@@ -279,8 +287,8 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
               <AnimatePresence initial={false}>
                 {mobileGroup === 'projects' && (
                   <m.div className="mobile-menu__submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
-                    <Link to="/#fnlb" onClick={closeNavigation}>{content.nav.fnlb}</Link>
-                    <Link to="/#kernelos" onClick={closeNavigation}>{content.nav.kernelos}</Link>
+                    <Link to="/proyectos/fnlb" onClick={closeNavigation}>{content.nav.fnlb}</Link>
+                    <Link to="/proyectos/kernelos" onClick={closeNavigation}>{content.nav.kernelos}</Link>
                   </m.div>
                 )}
               </AnimatePresence>
@@ -296,6 +304,8 @@ export function SiteHeader({ content, locale, onLocaleChange }: SiteHeaderProps)
                     <Link to="/juegos-y-equipo" onClick={closeNavigation}>{content.nav.gamesGear}</Link>
                     <Link to="/musica" onClick={closeNavigation}>{content.nav.music}</Link>
                     <Link to="/anime" onClick={closeNavigation}>{content.nav.anime}</Link>
+                    <Link to="/chat" onClick={closeNavigation}>{content.nav.chat}</Link>
+                    <Link to="/minijuegos" onClick={closeNavigation}>{content.nav.minigames}</Link>
                   </m.div>
                 )}
               </AnimatePresence>

@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom'
 import type { Locale, SiteCopy } from '../content'
 import { communities } from '../data/communities'
 import { CommunityCard } from '../components/CommunityCard'
+import { CommunityChat } from '../components/CommunityChat'
 import { ContactSection } from '../components/ContactSection'
 import { MagneticLink } from '../components/MagneticLink'
 import { Monogram } from '../components/Monogram'
+import { ReviewsSection } from '../components/ReviewsSection'
 
 const signalItems = [
   'DSC / 01',
@@ -68,11 +70,14 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
             </m.div>
           </div>
 
-          <m.div className="hero__visual" initial={{ opacity: 0, scale: 0.9, rotate: -4 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.25, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}>
-            <Monogram />
-            <div className="orbit-copy">{home.orbitLabel}</div>
-            <div className="visual-coordinates">SPAIN / UTC+02</div>
-          </m.div>
+          <div className="hero__visual-stack">
+            <m.div className="hero__visual" initial={{ opacity: 0, scale: 0.9, rotate: -4 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ delay: 0.25, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}>
+              <Monogram />
+              <div className="orbit-copy">{home.orbitLabel}</div>
+              <div className="visual-coordinates">SPAIN / UTC+02</div>
+            </m.div>
+            <CommunityChat locale={locale} mode="widget" />
+          </div>
         </div>
 
         <Link className="scroll-cue" to="/#capacidades">
@@ -224,6 +229,7 @@ export function HomePage({ content, locale }: { content: SiteCopy; locale: Local
         </div>
       </section>
 
+      <ReviewsSection locale={locale} />
       <ContactSection content={content} />
     </>
   )

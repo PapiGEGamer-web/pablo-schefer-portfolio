@@ -1,6 +1,29 @@
+import { useRef, type PointerEvent as ReactPointerEvent } from 'react'
+
 export function Monogram() {
+  const monogramRef = useRef<HTMLDivElement>(null)
+
+  const updatePointer = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2
+    const style = monogramRef.current?.style
+    const factors = [[0.75, 0.38], [-0.62, -0.44], [0.26, 0.88], [-0.48, 0.7], [0.56, -0.62]]
+    factors.forEach(([factorX, factorY], index) => {
+      style?.setProperty(`--orbit-node-${index + 1}-x`, `${x * 18 * factorX}px`)
+      style?.setProperty(`--orbit-node-${index + 1}-y`, `${y * 18 * factorY}px`)
+    })
+  }
+
+  const resetPointer = () => {
+    for (let index = 1; index <= 5; index += 1) {
+      monogramRef.current?.style.setProperty(`--orbit-node-${index}-x`, '0px')
+      monogramRef.current?.style.setProperty(`--orbit-node-${index}-y`, '0px')
+    }
+  }
+
   return (
-    <div className="monogram" aria-hidden="true">
+    <div className="monogram" ref={monogramRef} onPointerMove={updatePointer} onPointerLeave={resetPointer} aria-hidden="true">
       <svg viewBox="0 0 520 520" role="img">
         <defs>
           <linearGradient id="orbit" x1="0" y1="0" x2="1" y2="1">
@@ -21,11 +44,11 @@ export function Monogram() {
         <circle className="monogram__portrait-backdrop" cx="260" cy="260" r="140" />
         <image className="monogram__portrait" href="/media/profile/pablo-schefer-avatar.webp" x="128" y="128" width="264" height="264" preserveAspectRatio="xMidYMid slice" clipPath="url(#portraitClip)" />
         <circle className="monogram__portrait-ring" cx="260" cy="260" r="132" />
-        <circle className="monogram__node monogram__node--one" cx="96" cy="260" r="7" />
-        <circle className="monogram__node monogram__node--two" cx="424" cy="260" r="7" />
-        <circle className="monogram__node monogram__node--three" cx="260" cy="28" r="5" />
-        <circle className="monogram__node monogram__node--four" cx="168" cy="88" r="4" />
-        <circle className="monogram__node monogram__node--five" cx="356" cy="414" r="4" />
+        <g className="monogram__node-shift monogram__node-shift--one"><circle className="monogram__node monogram__node--one" cx="96" cy="260" r="7" /></g>
+        <g className="monogram__node-shift monogram__node-shift--two"><circle className="monogram__node monogram__node--two" cx="424" cy="260" r="7" /></g>
+        <g className="monogram__node-shift monogram__node-shift--three"><circle className="monogram__node monogram__node--three" cx="260" cy="28" r="5" /></g>
+        <g className="monogram__node-shift monogram__node-shift--four"><circle className="monogram__node monogram__node--four" cx="168" cy="88" r="4" /></g>
+        <g className="monogram__node-shift monogram__node-shift--five"><circle className="monogram__node monogram__node--five" cx="356" cy="414" r="4" /></g>
       </svg>
       <span className="monogram__code">PS/O · ONLINE</span>
     </div>

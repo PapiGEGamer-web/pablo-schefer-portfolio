@@ -17,6 +17,7 @@
   "dependencies": {
     "@fontsource-variable/manrope": "5.2.8",
     "@supabase/supabase-js": "2.110.6",
+    "chess.js": "1.4.0",
     "lucide-react": "1.24.0",
     "motion": "12.42.2",
     "react": "19.2.7",
