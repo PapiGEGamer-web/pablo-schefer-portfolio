@@ -30,8 +30,8 @@ importers:
         specifier: 7.18.1
         version: 7.18.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       systeminformation:
-        specifier: 5.27.13
-        version: 5.27.13
+        specifier: 5.31.7
+        version: 5.31.7
     devDependencies:
       '@eslint/js':
         specifier: 10.0.1
@@ -921,8 +921,8 @@ packages:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
 
-  systeminformation@5.27.13:
-    resolution: {integrity: sha512-geeE/7eNDoOhdc9j+qCsLlwbcyh0HnqhOZzmfNK4WBioWGUZbhwYrg+YZsZ3UJh4tmybQsnDuqzr3UoumMifew==}
+  systeminformation@5.31.7:
+    resolution: {integrity: sha512-/8NC53e5nP9nmhn42/ncdOkyJnOoue/Vy+tJOyUGd1Yv66G069wK4rrziwhrqDETgk78CudTQupw5z19S5uoZw==}
     engines: {node: '>=8.0.0'}
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
@@ -1841,7 +1841,7 @@ snapshots:
 
   source-map-js@1.2.1: {}
 
-  systeminformation@5.27.13: {}
+  systeminformation@5.31.7: {}
 
   tinyglobby@0.2.17:
     dependencies:
